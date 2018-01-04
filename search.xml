@@ -3,6 +3,14 @@
   
     
     <entry>
+      <title><![CDATA[hello]]></title>
+      <url>/2018/01/04/hello/</url>
+      <content type="html"></content>
+      
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[my first log]]></title>
       <url>/2018/01/03/article-title/</url>
       <content type="html"><![CDATA[<h2 id="date-2018-01-03-15-14-02"><a href="#date-2018-01-03-15-14-02" class="headerlink" title="date: 2018-01-03 15:14:02"></a>date: 2018-01-03 15:14:02</h2><h2 id="tags"><a href="#tags" class="headerlink" title="tags:"></a>tags:</h2><p><strong><em>this is my first blog</em></strong><br><br><strong>hello world!</strong></p>
