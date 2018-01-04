@@ -157,6 +157,10 @@
                         </h1>
                         <div>
                         
+                            `
+                                <span class="tag is-post-tag">life</span>
+                            `
+                                <span class="tag is-post-tag">art</span>
                             
                         
                         </div>
@@ -449,7 +453,7 @@
                 <p>Posts</p>
             </div>
             <div class="flex-1 is-flex flex-column center full-height">
-                <strong></strong>
+                <strong>2</strong>
                 <p>Tags</p>
             </div>
         </div>
@@ -459,6 +463,14 @@
             <strong>Tags</strong>
         </div>
         <div class="content-inner is-flex flex-wrap justify-space-between">
+            
+                <a class="tags-item" href="tags/life/" title="life" rel="1">
+                    life
+                </a>
+            
+                <a class="tags-item" href="tags/art/" title="art" rel="1">
+                    art
+                </a>
             
         </div>
     </div>
@@ -506,7 +518,7 @@
         <br>
         Copyright © Wu Hanyu 2018
         <br>
-        Propulsé by <a href="http://hexo.io/" target="_blank">Hexo</a>
+        Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
       </div>
     </div>
   </div>
@@ -515,5 +527,20 @@
 <script src="/js/search_core.js"></script>
 <script src="/js/script.js"></script>
 
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </body>
 </html>
