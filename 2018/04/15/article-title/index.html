@@ -6,14 +6,20 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
   <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
   
-  <title>Mot-clé: art | Kosaru&#39;s Blog</title>
+  <title>my first log | Kosaru&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Kosaru&#39;s Blog">
-<meta property="og:url" content="https://ko-saru.github.io/tags/art/index.html">
+  <meta name="description" content="tags:this is my first bloghello world!">
+<meta property="og:type" content="article">
+<meta property="og:title" content="my first log">
+<meta property="og:url" content="https://ko-saru.github.io/2018/04/15/article-title/index.html">
 <meta property="og:site_name" content="Kosaru&#39;s Blog">
+<meta property="og:description" content="tags:this is my first bloghello world!">
+<meta property="og:image" content="https://ko-saru.github.io/photo/2.JPG">
+<meta property="og:updated_time" content="2018-01-04T08:40:35.661Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Kosaru&#39;s Blog">
+<meta name="twitter:title" content="my first log">
+<meta name="twitter:description" content="tags:this is my first bloghello world!">
+<meta name="twitter:image" content="https://ko-saru.github.io/photo/2.JPG">
   
     <link rel="alternate" href="/atom.xml" title="Kosaru&#39;s Blog" type="application/atom+xml">
   
@@ -91,55 +97,79 @@
 
   <div id="main-wrap" class="position-relative" style="margin-top: 55px;">
       <div class="main-inner-content">
-          <style>
-    .container.tag-cate-wrap {
-        min-height: 93vh;
+          <!--博文页面-->
+
+<style>
+    .header-box {
+        height: 370px;
+        filter: blur(10px);
+        background-size: cover;
+        background-color: lightsteelblue;
     }
 
-    .category-title-inner {
-        padding-top: 50px;
+    .post-box {
+        padding: 15px;
+        padding-top: 60px;
+        min-height: 80vh;
+        margin-top: -200px;
+        border-radius: 4px;
+        background-color: rgba(255,255,255,.8);
     }
 
-    strong {
-        text-transform: capitalize;
+    .post-avatar {
+        height: 30px;
+        width: 30px;
+        border-radius: 50%;
+    }
+
+    .flow-chart {
+        text-align: center;
+    }
+
+    img[alt="post-cover"] {
+        display: block;
     }
 </style>
-
-
-<div class="container tag-cate-wrap">
-    <div class="category-title-inner content has-text-centered">
-        <h1><strong style="border-top: 2px solid; border-bottom: 2px solid;">tag·art</strong></h1>
-    </div>
-
-    
-    
-        <div class="box">
-            <article class="media">
-                
-                <a href="/2018/01/04/hello/">
+<header>
+    <div id="header_box" class="header-box"></div>
+</header>
+<section>
+    <div class="container post-box">
+        <div class="content post-title is-flex center flex-column" style="margin-bottom: 70px; overflow: auto;">
+            <h1 class="has-text-centered" style="padding-bottom: 10px; border-bottom: 3px solid #fff">
+                <strong>my first log</strong>
+            </h1>
+            
+            <div class="is-flex align-center">
+                <img class="post-avatar" src="/photo/wuhanyu.png">
+                <span style="padding:0 10px;"> <span class="sub-title">By</span> kosaru</span>
+                <span class="post-date sub-title">at: 2018-04-15</span>
+            </div>
+            
+                <div>
                     
-                    <div class="media-left">
-                        <figure class="image is-128x128">
-                            <img src="/photo/3.JPG" style="height: 100%; width: 100%">
-                        </figure>
-                    </div>
-                    
-                    <div class="media-content">
-                        <div class="content">
-                            <p>
-                                <strong>hello</strong> <small class="post-date">at: 2018-01-04</small>
-                                <br>
-                                
-
-                            </p>
-                            <button class="button is-info">Read</button>
-                        </div>
-                    </div>
-                </a>
-            </article>
+                </div>
+            
         </div>
-    
-</div>
+        <div class="content" style="overflow: auto">
+            <h2 id="tags"><a href="#tags" class="headerlink" title="tags:"></a>tags:</h2><p><img src="/photo/2.JPG" alt="Alt text"><br><strong><em>this is my first blog</em></strong><br><br><strong>hello world!</strong></p>
+
+        </div>
+        <div class="post-reply">
+            
+            
+        </div>
+    </div>
+</section>
+<script>
+    // 获取第一张图, 用以当封面背景图
+    var img = document.querySelectorAll('img')[1]
+
+    if (img) {
+        var header_box = document.querySelector('#header_box')
+        header_box.style.backgroundImage = 'url('+ img.src +')'
+    }
+</script>
       </div>
   </div>
   <style>
