@@ -25,10 +25,10 @@
       <url>/2018/04/15/hello-world/</url>
       <content type="html"><![CDATA[<div align="center" style="display:none"><br><img src="/photo/1.png" height="330" width="495"><br></div>
 
-<iframe height="498" width="510" src="http://player.youku.com/embed/XNjcyMDU4Njg0">
+<iframe height="498" width="510" src="http://player.youku.com/embed/XNjcyMDU4Njg0"><br></iframe>
 
 <p><img src="/photo/1.png" alt="alt post-cover"></p>
-</iframe>]]></content>
+]]></content>
       
         
         <tags>
@@ -71,9 +71,7 @@
         
         <tags>
             
-            <tag> operating system </tag>
-            
-            <tag> programming </tag>
+            <tag> operating system， programming </tag>
             
         </tags>
         
