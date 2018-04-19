@@ -6,21 +6,21 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
   <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
   
-  <title>hello | Kosaru&#39;s Blog</title>
+  <title>多线程编程优点 | Kosaru&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="哈哈哈哈">
-<meta name="keywords" content="life,art">
+  <meta name="description" content="回顾">
+<meta name="keywords" content="operating system">
 <meta property="og:type" content="article">
-<meta property="og:title" content="hello">
+<meta property="og:title" content="多线程编程优点">
 <meta property="og:url" content="https://ko-saru.github.io/2018/01/04/hello/index.html">
 <meta property="og:site_name" content="Kosaru&#39;s Blog">
-<meta property="og:description" content="哈哈哈哈">
-<meta property="og:image" content="https://ko-saru.github.io/photo/3.JPG">
-<meta property="og:updated_time" content="2018-01-04T08:44:05.467Z">
+<meta property="og:description" content="回顾">
+<meta property="og:image" content="https://ko-saru.github.io/photo/3.jpg">
+<meta property="og:updated_time" content="2018-04-19T08:15:28.079Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="hello">
-<meta name="twitter:description" content="哈哈哈哈">
-<meta name="twitter:image" content="https://ko-saru.github.io/photo/3.JPG">
+<meta name="twitter:title" content="多线程编程优点">
+<meta name="twitter:description" content="回顾">
+<meta name="twitter:image" content="https://ko-saru.github.io/photo/3.jpg">
   
     <link rel="alternate" href="/atom.xml" title="Kosaru&#39;s Blog" type="application/atom+xml">
   
@@ -138,7 +138,7 @@
     <div class="container post-box">
         <div class="content post-title is-flex center flex-column" style="margin-bottom: 70px; overflow: auto;">
             <h1 class="has-text-centered" style="padding-bottom: 10px; border-bottom: 3px solid #fff">
-                <strong>hello</strong>
+                <strong>多线程编程优点</strong>
             </h1>
             
             <div class="is-flex align-center">
@@ -149,16 +149,22 @@
             
                 <div>
                     
-                         <a class="tag is-post-tag" href="/tags/life/">life</a>
-                    
-                         <a class="tag is-post-tag" href="/tags/art/">art</a>
+                         <a class="tag is-post-tag" href="/tags/operating-system/">operating system</a>
                     
                 </div>
             
         </div>
         <div class="content" style="overflow: auto">
-            <p><img src="/photo/3.JPG" alt="Alt text"></p>
+            <p><div align="center" style="display:none"><br><img src="/photo/3.jpg" height="330" width="495"><br></div></p>
+<font size="4" color="red"><br><strong>多线程编程具有如下4个优点：</strong><br></font>
 
+<font size="4" color="red"><strong>①响应度高：</strong></font><br><font size="4"><br>如果对一个交互程序采用多线程，那么即使其部分阻塞或执行比较冗长的操作，该程序仍能继续执行，从而增加了对用户的响应程度。例如：多线程web浏览器在用一个线程装入图像时，能通过另一个线程与用户交互。<br></font>
+
+<font size="4" color="red"><strong>②资源共享：</strong></font><br><font size="4"><br>线程默认共享它们所属进程的内存和资源。代码和数据共享的优点是它能允许一个应用程序在同一地址空间有多个不同的活动线程。<br></font>
+
+<font size="4" color="red"><strong>③经济：</strong></font><br><font size="4"><br>进程创建所需要的内存和资源的分配比价昂贵，由于线程能共享它们所属进程的资源，所以创建和切换线程会更加经济。实际地测量进程创建和管理与线程创建和管理的差别较为困难，但是前者通常要比后者花费更多时间。例如：对于Solaris，进程创建要比线程创建慢30倍，而进程切换要比线程切换慢5倍。<br></font>
+
+<font size="4" color="red"><strong>④多处理器体系结构的利用：</strong></font><br><font size="4"><br>多线程的优点之一是能充分使用多处理器体系结构，以便每个进程能并行运行在不同的处理器上。不管有多少cpu，单线程进程只能运行在一个cpu上。在多cpu上使用多线程加强了并发功能。<br></font>
         </div>
         <div class="post-reply">
             
@@ -206,5 +212,20 @@
 <script src="/js/search_core.js"></script>
 <script src="/js/script.js"></script>
 
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </body>
 </html>
