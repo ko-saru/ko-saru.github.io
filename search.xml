@@ -97,6 +97,35 @@
         
     </entry>
     
+    <entry>
+      <title><![CDATA[多线程编程优点]]></title>
+      <url>/2018/01/04/%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%BC%96%E7%A8%8B%E5%A5%BD%E5%A4%84/</url>
+      <content type="html"><![CDATA[<div align="center" style="display:none"><br><img src="/photo/3.JPG" height="330" width="495"><br></div>
+
+<font size="4" color="red">线程：</font><font size="4">一种CPU利用的基本单元，它是形成多线程计算机的基础。线程是CPU使用的基本单元。</font><br><br><font size="4" color="red">进程：</font><font size="4">可看做是正在执行的程序。进程需要一定的资源（CPU时间、内存、文件和I/O设备）来完成其任务。</font><br><br><font size="4" color="red">【注】：</font><font size="4">进程是CPU分配资源的基本单位，线程是CPU调度的基本单位。</font>
+
+<p><strong><font size="4" color="red"><br>多线程编程具有如下4个优点：<br></font></strong></p>
+<p><strong><font size="4" color="red">①响应度高：</font></strong><font size="4">如果对一个交互程序采用多线程，那么即使其部分阻塞或执行比较冗长的操作，该程序仍能继续执行，从而增加了对用户的响应程度。例如：多线程web浏览器在用一个线程装入图像时，能通过另一个线程与用户交互。<br></font><br></p>
+<p><strong><font size="4" color="red">②资源共享：</font></strong><font size="4">线程默认共享它们所属进程的内存和资源。代码和数据共享的优点是它能允许一个应用程序在同一地址空间有多个不同的活动线程。<br></font><br></p>
+<p><strong><font size="4" color="red">③经济：</font></strong><font size="4">进程创建所需要的内存和资源的分配比价昂贵，由于线程能共享它们所属进程的资源，所以创建和切换线程会更加经济。实际地测量进程创建和管理与线程创建和管理的差别较为困难，但是前者通常要比后者花费更多时间。例如：对于Solaris，进程创建要比线程创建慢30倍，而进程切换要比线程切换慢5倍。<br></font><br></p>
+<p><strong><font size="4" color="red">④多处理器体系结构的利用：</font></strong><font size="4">多线程的优点之一是能充分使用多处理器体系结构，以便每个进程能并行运行在不同的处理器上。不管有多少cpu，单线程进程只能运行在一个cpu上。在多cpu上使用多线程加强了并发功能。<br></font></p>
+]]></content>
+      
+        <categories>
+            
+            <category> 线程 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> operating system， programming </tag>
+            
+        </tags>
+        
+    </entry>
+    
   
   
 </search>
