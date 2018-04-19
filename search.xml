@@ -41,7 +41,10 @@
     <entry>
       <title><![CDATA[多线程编程优点]]></title>
       <url>/2018/01/04/%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%BC%96%E7%A8%8B%E5%A5%BD%E5%A4%84/</url>
-      <content type="html"><![CDATA[<div align="center" style="display:none"><br><img src="/photo/3.JPG" height="330" width="495"><br></div>
+      <content type="html"><![CDATA[<p><div align="center" style="display:none"><br><img src="/photo/3.JPG" height="330" width="495"><br></div></p>
+<font size="4" color="red"><br>线程：一种CPU利用的基本单元，它是形成多线程计算机的基础。线程是CPU使用的基本单元。<br><br>进程：可看做是正在执行的程序。进程需要一定的资源（CPU时间、内存、文件和I/O设备）来完成其任务。<br><br>【注】：进程是CPU分配资源的基本单位，线程是CPU调度的基本单位。<br></font>
+
+<font size="4" color="red"><br>线程：一种CPU利用的基本单元，它是形成多线程计算机的基础。<br></font>
 
 <font size="4" color="red"><br><strong>多线程编程具有如下4个优点：</strong><br></font>
 
@@ -62,7 +65,7 @@
         
         <tags>
             
-            <tag> operating system </tag>
+            <tag> operating system，programming </tag>
             
         </tags>
         
