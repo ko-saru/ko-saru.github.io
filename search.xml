@@ -22,7 +22,7 @@
     <entry>
       <title><![CDATA[Hello World]]></title>
       <url>/2018/04/15/hello-world/</url>
-      <content type="html"><![CDATA[<p><img src="/photo/1.png" alt="post-cover text"></p>
+      <content type="html"><![CDATA[<p><img src="/photo/1.png" alt="alt post-cover"></p>
 ]]></content>
       
         
