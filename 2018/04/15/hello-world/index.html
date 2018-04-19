@@ -16,8 +16,8 @@
 <meta property="og:site_name" content="Kosaru&#39;s Blog">
 <meta property="og:description" content="排序算法回顾">
 <meta property="og:image" content="https://ko-saru.github.io/photo/1.png">
-<meta property="og:image" content="https://ko-saru.github.io/photo/1.png">
-<meta property="og:updated_time" content="2018-04-19T09:45:42.237Z">
+<meta property="og:image" content="https://ko-saru.github.io/photo/merge.jpg">
+<meta property="og:updated_time" content="2018-04-19T09:54:31.624Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="归并排序">
 <meta name="twitter:description" content="排序算法回顾">
@@ -156,12 +156,61 @@
             
         </div>
         <div class="content" style="overflow: auto">
-            <div align="center" style="display:none"><br><img src="/photo/1.png" height="330" width="495"><br></div>
+            <p><div align="center" style="display:none"><br><img src="/photo/1.png" height="330" width="495"><br></div><br>思想：分治思想</p>
+<p>时间复杂度：O(nlgn)</p>
+<p>稳定性：稳定</p>
+<p>归并过程：<br><img src="/photo/merge.jpg" alt="alt text"></p>
+<p>代码如下：</p>
+<pre><code>public class MergeSort {
 
-<iframe width="560" height="315" src="http://tv.sohu.com/upload/static/share/share_play.html#90268916_9365222_0_9001_0" frameborder="0" allowfullscreen></iframe>
+    public static void merge(int[] a, int low, int mid, int high) {
+        int[] temp = new int[high - low + 1];
+        int i = low;// 左指针
+        int j = mid + 1;// 右指针
+        int k = 0;
+        // 把较小的数先移到新数组中
+        while (i &lt;= mid &amp;&amp; j &lt;= high) {
+            if (a[i] &lt; a[j]) {
+                temp[k++] = a[i++];
+            } else {
+                temp[k++] = a[j++];
+            }
+        }
+        // 把左边剩余的数移入数组
+        while (i &lt;= mid) {
+            temp[k++] = a[i++];
+        }
+        // 把右边边剩余的数移入数组
+        while (j &lt;= high) {
+            temp[k++] = a[j++];
+        }
+        // 把新数组中的数覆盖nums数组
+        for (int k2 = 0; k2 &lt; temp.length; k2++) {
+            a[k2 + low] = temp[k2];
+        }
+    }
 
-<p><img src="/photo/1.png" alt="alt post-cover"></p>
+    public static void mergeSort(int[] a, int low, int high) {
+        int mid = (low + high) / 2;
+        if (low &lt; high) {
+            // 左边
+            mergeSort(a, low, mid);
+            // 右边
+            mergeSort(a, mid + 1, high);
+            // 左右归并
+            merge(a, low, mid, high);
+            System.out.println(Arrays.toString(a));
+        }
 
+    }
+
+    public static void main(String[] args) {
+        int a[] = { 51, 46, 20, 18, 65, 97, 82, 30, 77, 50 };
+        mergeSort(a, 0, a.length - 1);
+        System.out.println(&quot;排序结果：&quot; + Arrays.toString(a));
+    }
+}
+</code></pre>
         </div>
         <div class="post-reply">
             
