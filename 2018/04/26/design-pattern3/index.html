@@ -16,7 +16,7 @@
 <meta property="og:site_name" content="Kosaru&#39;s Blog">
 <meta property="og:description" content="单例模式">
 <meta property="og:image" content="https://ko-saru.github.io/photo/4-26/8.jpg">
-<meta property="og:updated_time" content="2018-04-26T14:15:28.827Z">
+<meta property="og:updated_time" content="2018-04-26T14:28:49.522Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="设计模式（三）">
 <meta name="twitter:description" content="单例模式">
@@ -267,8 +267,12 @@
     }  
 }  
 </code></pre><p><font size="4">考虑性能的话，整个程序只需创建一次实例，所以性能也不会有什么影响。</font><br> </p>
-<p><font size="4">饿汉式（static final field）另一种较为直接的写法如下：</font><br><br>    public class Singleton{<br>        //类加载时就初始化<br>        private static final Singleton instance = new Singleton();  </p>
-<pre><code>    private Singleton(){}  
+<p><font size="4">饿汉式（static final field）另一种较为直接的写法如下：</font><br> </p>
+<pre><code>public class Singleton{  
+    //类加载时就初始化  
+    private static final Singleton instance = new Singleton();  
+
+    private Singleton(){}  
 
     public static Singleton getInstance(){  
         return instance;  
@@ -327,5 +331,20 @@
 <script src="/js/search_core.js"></script>
 <script src="/js/script.js"></script>
 
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </body>
 </html>
