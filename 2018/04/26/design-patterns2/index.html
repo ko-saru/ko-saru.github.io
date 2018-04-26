@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html class="full-height">
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="//cdn.bootcss.com/bulma/0.4.1/css/bulma.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+  
+  <title>设计模式（二） | Kosaru&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="工厂方法模式、抽象工厂模式">
+<meta name="keywords" content="technology">
+<meta property="og:type" content="article">
+<meta property="og:title" content="设计模式（二）">
+<meta property="og:url" content="https://ko-saru.github.io/2018/04/26/design-patterns2/index.html">
+<meta property="og:site_name" content="Kosaru&#39;s Blog">
+<meta property="og:description" content="工厂方法模式、抽象工厂模式">
+<meta property="og:image" content="https://ko-saru.github.io/photo/bg.jpg">
+<meta property="og:image" content="https://ko-saru.github.io/photo/4-26/1.png">
+<meta property="og:image" content="https://ko-saru.github.io/photo/4-26/2.jpg">
+<meta property="og:image" content="https://ko-saru.github.io/photo/4-26/3.jpg">
+<meta property="og:updated_time" content="2018-04-26T12:23:37.468Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="设计模式（二）">
+<meta name="twitter:description" content="工厂方法模式、抽象工厂模式">
+<meta name="twitter:image" content="https://ko-saru.github.io/photo/bg.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="Kosaru&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/common.css">
+<link rel="stylesheet" href="/css/nav.css">
+<link rel="stylesheet" href="/css/layout.css">
+  
+
+</head>
+
+<body>
+  <header id="navbar" class="overflow-hidden">
+  <div class="container">
+    <nav class="nav">
+         <div class="nav-left">
+            <a href="/" class="nav-item" style="font-size: 20px;">
+              <span class="logo">kosaru</span>'s Blog
+            </a>
+         </div>
+        <div class="nav-center is-hidden position-relative" id="search_container">
+            <div class="nav-item full-width full-height">
+                <i class="fa fa-search has-padding" aria-hidden="true"></i>
+                <input type="text" id="search_input" class="search-input full-height full-width" placeholder="Search post" autofocus>
+                <i id="close_search" class="fa fa-times" aria-hidden="true"></i>
+            </div>
+            <div id="search_result"></div>
+        </div>
+        <div class="nav-right nav-menu">
+            <a class="nav-item" id="search">
+                <i class="fa fa-search" aria-hidden="true"></i>
+            </a>
+            
+            <a class="nav-item" href="/">
+                Home
+            </a>
+            
+            <a class="nav-item" href="/works/index.html">
+                My Works
+            </a>
+            
+            <a class="nav-item" href="/about">
+                About
+            </a>
+            
+        </div>
+        <span class="nav-toggle" id="navMenuDropdown">
+            <span></span>
+            <span></span>
+            <span></span>
+        </span>
+        <div class="navbar-menu position-absolute full-width content-box is-hidden-desktop is-flex flex-column center" style="top: 100%;">
+            
+            <a class="nav-item flex-1" href="/">
+                Home
+            </a>
+            
+            <a class="nav-item flex-1" href="/works/index.html">
+                My Works
+            </a>
+            
+            <a class="nav-item flex-1" href="/about">
+                About
+            </a>
+            
+        </div>
+    </nav>
+  </div>
+</header>
+
+  <div id="main-wrap" class="position-relative" style="margin-top: 55px;">
+      <div class="main-inner-content">
+          <!--博文页面-->
+
+<style>
+    .header-box {
+        height: 370px;
+        filter: blur(10px);
+        background-size: cover;
+        background-color: lightsteelblue;
+    }
+
+    .post-box {
+        padding: 15px;
+        padding-top: 60px;
+        min-height: 80vh;
+        margin-top: -200px;
+        border-radius: 4px;
+        background-color: rgba(255,255,255,.8);
+    }
+
+    .post-avatar {
+        height: 30px;
+        width: 30px;
+        border-radius: 50%;
+    }
+
+    .flow-chart {
+        text-align: center;
+    }
+
+    img[alt="post-cover"] {
+        display: block;
+    }
+</style>
+<header>
+    <div id="header_box" class="header-box"></div>
+</header>
+<section>
+    <div class="container post-box">
+        <div class="content post-title is-flex center flex-column" style="margin-bottom: 70px; overflow: auto;">
+            <h1 class="has-text-centered" style="padding-bottom: 10px; border-bottom: 3px solid #fff">
+                <strong>设计模式（二）</strong>
+            </h1>
+            
+            <div class="is-flex align-center">
+                <img class="post-avatar" src="/photo/wuhanyu.png">
+                <span style="padding:0 10px;"> <span class="sub-title">By</span> kosaru</span>
+                <span class="post-date sub-title">at: 2018-04-26</span>
+            </div>
+            
+                <div>
+                    
+                         <a class="tag is-post-tag" href="/tags/technology/">technology</a>
+                    
+                </div>
+            
+        </div>
+        <div class="content" style="overflow: auto">
+            <p><div align="center" style="display:none"><br><img src="/photo/bg.jpg" height="330" width="495"><br></div><br><strong><font size="5">三、Java的23种设计模式</font></strong><br></p>
+<p></p><h1>A、创建模式</h1><hr><p></p>
+<p></p><p><font size="4"><br>从这一块开始，我们详细介绍Java中23种设计模式的概念，应用场景等情况，并结合他们的特点及设计模式的原则进行分析。<br>首先，简单工厂模式不属于23种设计模式，简单工厂一般分为：普通简单工厂、多方法简单工厂、静态方法简单工厂。<br></font><br></p><p></p>
+<p></p><h2>0、简单工厂模式</h2><font size="4">简单工厂模式分为三种：</font><br><strong><em><h3>I.普通简单工厂模式</h3></em></strong><font size="4">就是建立一个工厂类，对实现了同一接口的一些类进行实例的创建。首先看关系图：</font><br><br><img src="/photo/4-26/1.png" alt="alt text"><br><p></p>
+<p><font size="4">举例如下：（我们举一个发送邮件和短信的例子）</font></p>
+<p>首先，创建二者的共同接口：<br></p>
+<pre><code>public interface Sender {  
+    public void Send();  
+}  
+</code></pre><p><font size="4">其次，创建实现类：</font><br></p>
+<pre><code>public class MailSender implements Sender {  
+    @Override  
+    public void Send() {  
+        System.out.println(&quot;this is mailsender!&quot;);  
+    }  
+}
+
+public class SmsSender implements Sender {  
+    @Override  
+    public void Send() {  
+        System.out.println(&quot;this is sms sender!&quot;);  
+    }  
+} 
+</code></pre><p><font size="4">最后，建工厂类：</font><br> </p>
+<pre><code>public class SendFactory {  
+
+    public Sender produce(String type) {  
+        if (&quot;mail&quot;.equals(type)) {  
+            return new MailSender();  
+        } else if (&quot;sms&quot;.equals(type)) {  
+            return new SmsSender();  
+        } else {  
+            System.out.println(&quot;请输入正确的类型!&quot;);  
+            return null;  
+        }  
+    }  
+}
+</code></pre><p><font size="4">我们来测试下：</font><br> </p>
+<pre><code>public class FactoryTest {  
+
+    public static void main(String[] args) {  
+        SendFactory factory = new SendFactory();  
+        Sender sender = factory.produce(&quot;sms&quot;);  
+        sender.Send();  
+    }  
+}
+</code></pre><p><font size="4">输出：this is sms sender!</font><br><br><strong><em><h3>II.多方法简单工厂模式（多方法）</h3></em></strong><font size="4">是对普通工厂方法模式的改进，在普通工厂方法模式中，如果传递的字符串出错，则不能正确创建对象，而多个工厂方法模式是提供多个工厂方法，分别创建对象。关系图：</font><br><br><img src="/photo/4-26/2.jpg" alt="alt text"><br></p>
+<p><font size="4">将上面的代码做下修改，改动下SendFactory类就行，如下：</font><br> </p>
+<pre><code>public class SendFactory {  
+
+    public Sender produceMail(){  
+        return new MailSender();  
+    }  
+
+    public Sender produceSms(){  
+        return new SmsSender();  
+    }  
+} 
+</code></pre><p><font size="4">测试类如下：</font><br>  </p>
+<pre><code>public class FactoryTest {  
+
+    public static void main(String[] args) {  
+        SendFactory factory = new SendFactory();  
+        Sender sender = factory.produceMail();  
+        sender.Send();  
+    }  
+} 
+</code></pre><p><font size="4">输出：this is mailsender!</font><br><br><strong><em><h3>III.静态方法简单工厂模式（多个静态方法）</h3></em></strong>  <font size="4">将上面的多个工厂方法模式里的方法置为静态的，不需要创建实例，直接调用即可。</font><br></p>
+<pre><code>public class SendFactory {  
+
+    public static Sender produceMail(){  
+        return new MailSender();  
+    }  
+
+    public static Sender produceSms(){  
+        return new SmsSender();  
+    }  
+}  
+public class FactoryTest {  
+
+    public static void main(String[] args) {      
+        Sender sender = SendFactory.produceMail();  
+        sender.Send();  
+    }  
+}  
+</code></pre><p><font size="4">输出：this is mailsender!</font><br></p>
+<p><font size="4">总体来说，工厂模式适合：凡是出现了大量的产品需要创建，并且具有共同的接口时，可以通过工厂方法模式进行创建。在以上的三种模式中，第一种如果传入的字符串有误，不能正确创建对象，第三种相对于第二种，不需要实例化工厂类，所以，大多数情况下，我们会选用第三种——静态工厂方法模式。</font><br></p><h2>1、工厂方法模式（Factory Method）</h2><p></p>
+<p><font size="4">简单工厂模式有一个问题就是，类的创建依赖工厂类，也就是说，如果想要拓展程序，必须对工厂类进行修改，这违背了闭包原则，所以，从设计角度考虑，有一定的问题，如何解决？就用到抽象工厂模式，创建多个工厂类，这样一旦需要增加新的功能，直接增加新的工厂类就可以了，不需要修改之前的代码。因为抽象工厂不太好理解，我们先看看图，然后就和代码，就比较容易理解。</font><br><br><img src="/photo/4-26/3.jpg" alt="alt text"><br></p>
+<p><font size="4">请看例子：</font><br></p>
+<pre><code>public interface Sender {  
+    public void Send();  
+}  
+</code></pre><p><font size="4">两个实现类：</font><br></p>
+<pre><code>public class MailSender implements Sender {  
+    @Override  
+    public void Send() {  
+        System.out.println(&quot;this is mailsender!&quot;);  
+    }  
+} 
+public class SmsSender implements Sender {  
+
+    @Override  
+    public void Send() {  
+        System.out.println(&quot;this is sms sender!&quot;);  
+    }  
+} 
+</code></pre><p><font size="4">两个工厂类：</font><br></p>
+<pre><code>public class SendMailFactory implements Provider {  
+
+    @Override  
+    public Sender produce(){  
+        return new MailSender();  
+    }  
+} 
+public class SendSmsFactory implements Provider{  
+
+    @Override  
+    public Sender produce() {  
+        return new SmsSender();  
+    }  
+}  
+</code></pre><p><font size="4">再提供一个接口：</font><br></p>
+<pre><code>public interface Provider {  
+    public Sender produce();  
+} 
+</code></pre><p><font size="4">测试类：</font><br></p>
+<pre><code>public class Test {  
+
+    public static void main(String[] args) {  
+        Provider provider = new SendMailFactory();  
+        Sender sender = provider.produce();  
+        sender.Send();  
+    }  
+}
+</code></pre><p><font size="4">其实这个模式的好处就是，如果你现在想增加一个功能：发及时信息，则只需做一个实现类，实现Sender接口，同时做一个工厂类，实现Provider接口，就OK了，无需去改动现成的代码。这样做，拓展性较好！</font><br></p><h2>2、抽象工厂模式（Abstract Factory）</h2><font size="4">工厂方法模式和抽象工厂模式不好分清楚，可以参照<a href="http://ichennan.com/2016/08/09/DesignPattern.html" target="_blank" rel="noopener">三者间比较</a>。他们的区别如下：</font><br><br><strong><font size="4">工厂方法模式：</font></strong><br><font size="4">一个抽象产品类，可以派生出多个具体产品类。</font><br><font size="4">一个抽象工厂类，可以派生出多个具体工厂类。</font><br><font size="4">每个具体工厂类只能创建一个具体产品类的实例。</font><br><br><strong><font size="4">抽象工厂模式：</font></strong><br><font size="4">多个抽象产品类，每个抽象产品类可以派生出多个具体产品类。</font><br><font size="4">一个抽象工厂类，可以派生出多个具体工厂类。</font><br><font size="4">每个具体工厂类可以创建多个具体产品类的实例，也就是创建的是一个产品线下的多个产品。</font><br><br><strong><font size="4">区别：</font></strong><br><p></p>
+<p><font size="4">工厂方法模式只有一个抽象产品类，而抽象工厂模式有多个。</font><br><font size="4">工厂方法模式的具体工厂类只能创建一个具体产品类的实例，而抽象工厂模式可以创建多个。</font><br><font size="4">工厂方法创建 “一种” 产品，他的着重点在于”怎么创建”，也就是说如果你开发，你的大量代码很可能围绕着这种产品的构造，初始化这些细节上面。也因为如此，类似的产品之间有很多可以复用的特征，所以会和模版方法相随。</font><br><font size="4">抽象工厂需要创建一些列产品，着重点在于”创建哪些”产品上，也就是说，如果你开发，你的主要任务是划分不同差异的产品线，并且尽量保持每条产品线接口一致，从而可以从同一个抽象工厂继承。</font><br><br><strong><font size="4">对于java来说，你能见到的大部分抽象工厂模式都是这样的：</font></strong><br></p>
+<p><font size="4">—它的里面是一堆工厂方法，每个工厂方法返回某种类型的对象。</font><br></p>
+<p><font size="4">比如说工厂可以生产鼠标和键盘。那么抽象工厂的实现类（它的某个具体子类）的对象都可以生产鼠标和键盘，但可能工厂A生产的是罗技的键盘和鼠标，工厂B是微软的。</font><br></p>
+<p><font size="4">这样A和B就是工厂，对应于抽象工厂；<br>每个工厂生产的鼠标和键盘就是产品，对应于工厂方法；</font><br></p>
+<p><font size="4">用了工厂方法模式，你替换生成键盘的工厂方法，就可以把键盘从罗技换到微软。但是用了抽象工厂模式，你只要换家工厂，就可以同时替换鼠标和键盘一套。如果你要的产品有几十个，当然用抽象工厂模式一次替换全部最方便（这个工厂会替你用相应的工厂方法）</font><br></p>
+<p><font size="4">所以说抽象工厂就像工厂，而工厂方法则像是工厂的一种产品生产线。</font><br></p>
+
+        </div>
+        <div class="post-reply">
+            
+            
+        </div>
+    </div>
+</section>
+<script>
+    // 获取第一张图, 用以当封面背景图
+    var img = document.querySelectorAll('img')[1]
+
+    if (img) {
+        var header_box = document.querySelector('#header_box')
+        header_box.style.backgroundImage = 'url('+ img.src +')'
+    }
+</script>
+      </div>
+  </div>
+  <style>
+  #footer {
+    min-height: 10vh;
+    background: black;
+    color: #fff;
+  }
+
+  #footer a {
+    color: #e1e1e1;
+  }
+</style>
+<footer id="footer" class="has-text-centered is-flex center">
+  <div class="container has-padding">
+    <div>
+      <div>
+        <!--请您保留作者署名, 主题制作来之不易-->
+        Theme by <a href="http://haojen.github.io/">Haojen Ma</a>
+        <br>
+        Copyright © Wu Hanyu 2018
+        <br>
+        Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="/js/search_core.js"></script>
+<script src="/js/script.js"></script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>
