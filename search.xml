@@ -5,7 +5,7 @@
     <entry>
       <title><![CDATA[设计模式（三）]]></title>
       <url>/2018/04/26/design-pattern3/</url>
-      <content type="html"><![CDATA[<p><div align="center" style="display:none"><br><img src="/photo/bg.jpg" height="330" width="495"><br></div><br><strong><font size="5">3、单例模式（Singleton）</font></strong><br></p>
+      <content type="html"><![CDATA[<p><div align="center" style="display:none"><br><img src="/photo/4-26/8.jpg" height="330" width="495"><br></div><br><strong><font size="5">3、单例模式（Singleton）</font></strong><br></p>
 <p><font size="4">单例对象（Singleton）是一种常用的设计模式。在Java应用中，单例对象能保证在一个JVM中，该对象只有一个实例存在。这样的模式有几个<strong>好处</strong>：</font><br></p>
 <p><font size="4">1、某些类创建比较频繁，对于一些大型的对象，这是一笔很大的系统开销。</font><br></p>
 <p><font size="4">2、省去了new操作符，降低了系统内存的使用频率，减轻GC压力。</font><br></p>
