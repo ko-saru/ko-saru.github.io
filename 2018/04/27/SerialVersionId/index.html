@@ -20,7 +20,7 @@
 <meta property="og:image" content="https://ko-saru.github.io/photo/4-26/uid1.png">
 <meta property="og:image" content="https://ko-saru.github.io/photo/4-26/uid2.png">
 <meta property="og:image" content="https://ko-saru.github.io/photo/4-26/uid3.png">
-<meta property="og:updated_time" content="2018-04-27T13:15:41.456Z">
+<meta property="og:updated_time" content="2018-04-27T13:32:29.900Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="serialVersionUID的作用">
 <meta name="twitter:description" content="serialVersionUID的作用">
@@ -365,7 +365,7 @@ public class Person implements Serializable {
 <p><font size="4">最后的输出是 10，对于无法理解的读者认为，打印的 staticVar 是从读取的对象里获得的，应该是保存时的状态才对。之所以打印 10 的原因在于序列化时，并不保存静态变量，这其实比较容易理解，序列化保存的是对象的状态，静态变量属于类的状态，因此 序列化并不保存静态变量。</font><br> </p>
 <p><font size="5" color="red">父类的序列化与 Transient 关键字</font><br></p>
 <p><font size="4">情境：一个子类实现了 Serializable 接口，它的父类都没有实现 Serializable 接口，序列化该子类对象，然后反序列化后输出父类定义的某变量的数值，该变量数值与序列化时的数值不同。</font><br>  </p>
-<p><font size="4">解决：要想将父类对象也序列化，就需要让父类也实现Serializable 接口。如果父类不实现的话的，就 需要有默认的无参的构造函数。在父类没有实现 Serializable 接口时，虚拟机是不会序列化父对象的，而一个 Java 对象的构造必须先有父对象，才有子对象，反序列化也不例外。所以反序列化时，为了构造父对象，只能调用父类的无参构造函数作为默认的父对象。因此当我们取父对象的变量值时，它的值是调用父类无参构造函数后的值。如果你考虑到这种序列化的情况，在父类无参构造函数中对变量进行初始化，否则的话，父类变量值都是默认声明的值，如 int 型的默认是 0，string 型的默认是 null。</font><br> </p>
+<p><font size="4">解决：要想将父类对象也序列化，就需要让父类也实现Serializable 接口。如果父类不实现的话的，就需要有默认的无参的构造函数。在父类没有实现 Serializable 接口时，虚拟机是不会序列化父对象的，而一个 Java 对象的构造必先有父对象，才有子对象，反序列化也不例外。所以反序列化时，为了构造父对象，只能调用父类的无参构造函数作为默认的父对象。因此当我们取父对象的变量值时，它的值是调用父类无参构造函数后的值。如果你考虑到这种序列化的情况，在父类无参构造函数中对变量进行初始化，否则的话，父类变量值都是默认声明的值，如 int 型的默认是 0，string 型的默认是 null。</font><br> </p>
 <p><font size="4">Transient 关键字的作用是控制变量的序列化，在变量声明前加上该关键字，可以阻止该变量被序列化到文件中，在被反序列化后，transient 变量的值被设为初始值，如 int 型的是 0，对象型的是 null。</font><br></p>
 <p><font size="4">特性使用案例：</font><br> <font size="4">我们熟悉使用 Transient 关键字可以使得字段不被序列化，那么还有别的方法吗？根据父类对象序列化的规则，我们可以将不需要被序列化的字段抽取出来放到父类中，子类实现 Serializable 接口，父类不实现，根据父类序列化规则，父类的字段数据将不被序列化，形成类图如下所示。</font><br><br><img src="/photo/4-26/b.jpg" alt="alt text"><br><font size="4">上图中可以看出，attr1、attr2、attr3、attr5 都不会被序列化，放在父类中的好处在于当有另外一个 Child 类时，attr1、attr2、attr3 依然不会被序列化，不用重复抒写 transient，代码简洁。</font><br> </p>
 <p><font size="5" color="red">static final 修饰的serialVersionUID 如何被写入到序列化文件中的?</font><br></p>
@@ -430,7 +430,7 @@ public class Person implements Serializable {
         <br>
         Copyright © Wu Hanyu 2018
         <br>
-        Propulsé by <a href="http://hexo.io/" target="_blank">Hexo</a>
+        Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
       </div>
     </div>
   </div>
