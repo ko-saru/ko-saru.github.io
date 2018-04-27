@@ -14,11 +14,11 @@
 <p><font size="4">1.外界不能造对象  –把无参构造方法私有。</font><br> </p>
 <p><font size="4">2.类本身要造一个  –调用构造方法即可</font><br> </p>
 <p><font size="4">3.通过公共的方式对外提供</font><br> </p>
-<p><font size="4">–通过public修饰</font><br> </p>
-<p><font size="4">–又由于无参构造私有，所以要用static修饰符</font><br> </p>
+<p><font size="4">–该方法通过public修饰</font><br> </p>
+<p><font size="4">–又由于无参构造私有，所以要用static修饰符修饰该方法</font><br> </p>
 <p><font size="4">–为了保证静态方法只能访问静态成员，所以这个对象也要用static修饰</font><br> </p>
 <p><font size="4"> 如果这样…     static Student s = new Student();</font><br> </p>
-<p><font size="4"> 那么外界可以这样…   Student.s = null使用为null的对象可能出现空指针异常错误</font><br> <font size="4"> –所以要加private修饰</font><br> </p>
+<p><font size="4"> 那么外界可以这样…   Student.s = null使用为null的对象可能出现空指针异常错误</font><br> <font size="4"> –所以要加private修饰该对象</font><br> </p>
 <p><font size="4">首先我们写一个简单的单例类：</font><br> </p>
 <pre><code>public class Singleton {  
 
