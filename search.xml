@@ -290,7 +290,8 @@ protected Object clone() throws CloneNotSupportedException {
  * Native helper method for cloning. 
  */  
 private native Object internalClone(Cloneable o); 
-</code></pre><p><font size="4">clone方法首先会判对象是否实现了Cloneable接口，若无则抛出CloneNotSupportedException, 最后会调用internalClone. intervalClone是一个native方法，一般来说native方法的执行效率高于非native方法。</font><br><font size="4">当某个类要复写clone方法时，要继承Cloneable接口。通常的克隆对象都是通过super.clone()方法来克隆对象。</font><br><font size="4" color="red">2.浅克隆(shallow clone)</font><br></p>
+</code></pre><p><font size="4">clone方法首先会判对象是否实现了Cloneable接口，若无则抛出CloneNotSupportedException, 最后会调用internalClone. intervalClone是一个native方法，一般来说native方法的执行效率高于非native方法。</font><br><font size="4">当某个类要复写clone方法时，要继承Cloneable接口。通常的克隆对象都是通过super.clone()方法来克隆对象。</font><br></p>
+<p><font size="4" color="red">2.浅克隆(shallow clone)</font><br></p>
 <p><font size="4">克隆就是复制一个对象的复本.若只需要复制对象的字段值（对于基本数据类型,如:int,long,float等，则复制值；对于复合数据类型仅复制该字段值，如数组变量则复制地址，对于对象变量则复制对象的reference。例子：</font><br> </p>
 <pre><code>public class ShallowClone implements Cloneable{  
 
@@ -344,9 +345,8 @@ private native Object internalClone(Cloneable o);
     }  
 }
 </code></pre><p><font size="4">结果为：</font><br> </p>
-<p><font size="4">克隆前c1:  a=100 b=1000</font><br> <font size="4">克隆前c1:  a=100 b=5</font><br> </p>
-<p><font size="4">克隆后c2:  a=50 b[0]=5</font><br> <font size="4">c1和c2的对象模型：</font><br><br><img src="/photo/4-26/clone1.png" alt="alt text"><br></p>
-<p><font size="4">可以看出，基本类型可以使用浅克隆，而对于引用类型，由于引用的是内容相同，所以改变c2实例对象中的属性就会影响到c1。所以引用类型需要使用深克隆。另外，在开发一个不可变类的时候，如果这个不可变类中成员有引用类型，则就需要通过深克隆来达到不可变的目的。</font><br> <font size="4" color="red">深克隆(deep clone)</font><br><font size="4">深克隆与浅克隆的区别在于对复合数据类型的复制。若对象中的某个字段为复合类型，在克隆对象的时候，需要为该字段重新创建一个对象。例子：</font><br> </p>
+<p><font size="4">克隆前c1:  a=100 b=1000</font><br> <font size="4">克隆前c1:  a=100 b=5</font><br><font size="4">克隆后c2:  a=50 b[0]=5</font><br> <font size="4">c1和c2的对象模型：</font><br><br><img src="/photo/4-26/clone1.png" alt="alt text"><br></p>
+<p><font size="4">可看出，基本类型可以使用浅克隆，而对于引用类型，由于引用的是内容相同，所以改变c2实例对象中的属性就会影响到c1。所以引用类型需要使用深克隆。另外，在开发一个不可变类的时候，如果这个不可变类中成员有引用类型，则就需要通过深克隆来达到不可变的目的。</font><br> <font size="4" color="red">深克隆(deep clone)</font><br><font size="4">深克隆与浅克隆的区别在于对复合数据类型的复制。若对象中的某个字段为复合类型，在克隆对象的时候，需要为该字段重新创建一个对象。例子：</font><br> </p>
 <pre><code>public class DeepClone implements Cloneable {  
 
     private int a;   // 基本类型  
