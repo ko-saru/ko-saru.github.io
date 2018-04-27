@@ -6,21 +6,21 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
   <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
   
-  <title>大数相乘 | Kosaru&#39;s Blog</title>
+  <title>设计模式（四） | Kosaru&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="代码如下： public class Mutiply {      public static void main(String[] args){          String str1 = &amp;quot;7832974972840919321747983209327&amp;quot;;         String str2 = &amp;quot;1987432091904327543957&amp;quot;;">
-<meta name="keywords" content="programming">
+  <meta name="description" content="建造者模式">
+<meta name="keywords" content="technology">
 <meta property="og:type" content="article">
-<meta property="og:title" content="大数相乘">
-<meta property="og:url" content="https://ko-saru.github.io/2018/04/15/article-title/index.html">
+<meta property="og:title" content="设计模式（四）">
+<meta property="og:url" content="https://ko-saru.github.io/2018/04/27/design-pattern4/index.html">
 <meta property="og:site_name" content="Kosaru&#39;s Blog">
-<meta property="og:description" content="代码如下： public class Mutiply {      public static void main(String[] args){          String str1 = &amp;quot;7832974972840919321747983209327&amp;quot;;         String str2 = &amp;quot;1987432091904327543957&amp;quot;;">
-<meta property="og:image" content="https://ko-saru.github.io/photo/4.JPG">
-<meta property="og:updated_time" content="2018-04-26T12:53:08.854Z">
+<meta property="og:description" content="建造者模式">
+<meta property="og:image" content="https://ko-saru.github.io/photo/4-26/5.jpg">
+<meta property="og:updated_time" content="2018-04-27T10:14:07.493Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="大数相乘">
-<meta name="twitter:description" content="代码如下： public class Mutiply {      public static void main(String[] args){          String str1 = &amp;quot;7832974972840919321747983209327&amp;quot;;         String str2 = &amp;quot;1987432091904327543957&amp;quot;;">
-<meta name="twitter:image" content="https://ko-saru.github.io/photo/4.JPG">
+<meta name="twitter:title" content="设计模式（四）">
+<meta name="twitter:description" content="建造者模式">
+<meta name="twitter:image" content="https://ko-saru.github.io/photo/4-26/5.jpg">
   
     <link rel="alternate" href="/atom.xml" title="Kosaru&#39;s Blog" type="application/atom+xml">
   
@@ -138,66 +138,52 @@
     <div class="container post-box">
         <div class="content post-title is-flex center flex-column" style="margin-bottom: 70px; overflow: auto;">
             <h1 class="has-text-centered" style="padding-bottom: 10px; border-bottom: 3px solid #fff">
-                <strong>大数相乘</strong>
+                <strong>设计模式（四）</strong>
             </h1>
             
             <div class="is-flex align-center">
                 <img class="post-avatar" src="/photo/wuhanyu.png">
                 <span style="padding:0 10px;"> <span class="sub-title">By</span> kosaru</span>
-                <span class="post-date sub-title">at: 2018-04-15</span>
+                <span class="post-date sub-title">at: 2018-04-27</span>
             </div>
             
                 <div>
                     
-                         <a class="tag is-post-tag" href="/tags/programming/">programming</a>
+                         <a class="tag is-post-tag" href="/tags/technology/">technology</a>
                     
                 </div>
             
         </div>
         <div class="content" style="overflow: auto">
-            <p><div align="center" style="display:none"><br><img src="/photo/4.JPG" height="250" width="495"><br></div><br><strong>代码如下：</strong><br></p>
-<pre><code>public class Mutiply {
+            <p><div align="center" style="display:none"><br><img src="/photo/4-26/5.jpg" height="330" width="495"><br></div><br><strong><font size="5">4、建造者模式（Builder）</font></strong><br></p>
+<p><font size="4">工厂类模式提供的是创建单个类的模式，而建造者模式则是将各种产品集中起来进行管理，用来创建复合对象，所谓复合对象就是指某个类具有不同的属性，其实建造者模式就是前面抽象工厂模式和最后的Test结合起来得到的。我们看一下代码：</font><br> </p>
+<p><font size="4">还和前面一样，一个Sender接口，两个实现类MailSender和SmsSender。最后，建造者类如下：</font><br> </p>
+<pre><code>public class Builder {  
 
-    public static void main(String[] args){
+    private List&lt;Sender&gt; list = new ArrayList&lt;Sender&gt;();  
 
-        String str1 = &quot;7832974972840919321747983209327&quot;;
-        String str2 = &quot;1987432091904327543957&quot;;
-        System.out.println(multiply(str1,str2));
+    public void produceMailSender(int count){  
+        for(int i=0; i&lt;count; i++){  
+            list.add(new MailSender());  
+        }  
+    }  
 
-    }
-    public static String multiply(String num1,String num2){
+    public void produceSmsSender(int count){  
+        for(int i=0; i&lt;count; i++){  
+            list.add(new SmsSender());  
+        }  
+    }  
+} 
+</code></pre><p><font size="4">测试类：</font><br></p>
+<pre><code>public class Test {  
 
-        int len1 = num1.length();
-        int len2 = num2.length();
-        //结果最大长度len1+len2,最小为len1+len2-1
-        int[] num = new int[len1+len2]; //数组默认初始化均为0
-        for(int i=0;i&lt;len2;i++){
-
-            int n1 = num2.charAt(len2-1-i)-&apos;0&apos;;
-            int tmp = 0; //表示进位
-            for(int j=0;j&lt;len1;j++){
-                int n2 = num1.charAt(len1-1-j)-&apos;0&apos;;
-                tmp = tmp + num[i+j] + n1*n2;
-                num[i+j] = tmp%10;
-                tmp = tmp/10;
-            }
-            num[len1+i] = tmp; //下面的数与上面最高位相乘得到的那个进位
-
-        }
-        //现在数组中存的是从个位开始到高位，所以需要倒过来
-        //先找到数组中从后面开始不为0的数，该数为最高位。
-        int i = len1+len2-1;
-        while(i&gt;=0 &amp;&amp; num[i]==0){
-            i--;
-        }
-        String result = &quot;&quot;;
-        while(i&gt;=0){
-            result+=num[i--];
-        }
-        return result;
-    }
+    public static void main(String[] args) {  
+        Builder builder = new Builder();  
+        builder.produceMailSender(10);  
+    }  
 }
-</code></pre>
+</code></pre><p><font size="4">从这点看出，建造者模式将很多功能集成到一个类里，这个类可以创造出比较复杂的东西。所以与工程模式的区别就是：工厂模式关注的是创建单个产品，而建造者模式则关注创建符合对象，多个部分。因此，是选择工厂模式还是建造者模式，依实际情况而定。</font><br>  </p>
+
         </div>
         <div class="post-reply">
             
