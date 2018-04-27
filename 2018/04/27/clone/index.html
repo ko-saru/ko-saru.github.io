@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html class="full-height">
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="//cdn.bootcss.com/bulma/0.4.1/css/bulma.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+  
+  <title>Java Object对象之clone方法 | Kosaru&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="clone之深浅拷贝">
+<meta name="keywords" content="java">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java Object对象之clone方法">
+<meta property="og:url" content="https://ko-saru.github.io/2018/04/27/clone/index.html">
+<meta property="og:site_name" content="Kosaru&#39;s Blog">
+<meta property="og:description" content="clone之深浅拷贝">
+<meta property="og:image" content="https://ko-saru.github.io/photo/4-26/4.jpg">
+<meta property="og:image" content="https://ko-saru.github.io/photo/4-26/clone1.png">
+<meta property="og:image" content="https://ko-saru.github.io/photo/4-26/clone2.png">
+<meta property="og:updated_time" content="2018-04-27T11:54:11.115Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java Object对象之clone方法">
+<meta name="twitter:description" content="clone之深浅拷贝">
+<meta name="twitter:image" content="https://ko-saru.github.io/photo/4-26/4.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="Kosaru&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/common.css">
+<link rel="stylesheet" href="/css/nav.css">
+<link rel="stylesheet" href="/css/layout.css">
+  
+
+</head>
+
+<body>
+  <header id="navbar" class="overflow-hidden">
+  <div class="container">
+    <nav class="nav">
+         <div class="nav-left">
+            <a href="/" class="nav-item" style="font-size: 20px;">
+              <span class="logo">kosaru</span>'s Blog
+            </a>
+         </div>
+        <div class="nav-center is-hidden position-relative" id="search_container">
+            <div class="nav-item full-width full-height">
+                <i class="fa fa-search has-padding" aria-hidden="true"></i>
+                <input type="text" id="search_input" class="search-input full-height full-width" placeholder="Search post" autofocus>
+                <i id="close_search" class="fa fa-times" aria-hidden="true"></i>
+            </div>
+            <div id="search_result"></div>
+        </div>
+        <div class="nav-right nav-menu">
+            <a class="nav-item" id="search">
+                <i class="fa fa-search" aria-hidden="true"></i>
+            </a>
+            
+            <a class="nav-item" href="/">
+                Home
+            </a>
+            
+            <a class="nav-item" href="/works/index.html">
+                My Works
+            </a>
+            
+            <a class="nav-item" href="/about">
+                About
+            </a>
+            
+        </div>
+        <span class="nav-toggle" id="navMenuDropdown">
+            <span></span>
+            <span></span>
+            <span></span>
+        </span>
+        <div class="navbar-menu position-absolute full-width content-box is-hidden-desktop is-flex flex-column center" style="top: 100%;">
+            
+            <a class="nav-item flex-1" href="/">
+                Home
+            </a>
+            
+            <a class="nav-item flex-1" href="/works/index.html">
+                My Works
+            </a>
+            
+            <a class="nav-item flex-1" href="/about">
+                About
+            </a>
+            
+        </div>
+    </nav>
+  </div>
+</header>
+
+  <div id="main-wrap" class="position-relative" style="margin-top: 55px;">
+      <div class="main-inner-content">
+          <!--博文页面-->
+
+<style>
+    .header-box {
+        height: 370px;
+        filter: blur(10px);
+        background-size: cover;
+        background-color: lightsteelblue;
+    }
+
+    .post-box {
+        padding: 15px;
+        padding-top: 60px;
+        min-height: 80vh;
+        margin-top: -200px;
+        border-radius: 4px;
+        background-color: rgba(255,255,255,.8);
+    }
+
+    .post-avatar {
+        height: 30px;
+        width: 30px;
+        border-radius: 50%;
+    }
+
+    .flow-chart {
+        text-align: center;
+    }
+
+    img[alt="post-cover"] {
+        display: block;
+    }
+</style>
+<header>
+    <div id="header_box" class="header-box"></div>
+</header>
+<section>
+    <div class="container post-box">
+        <div class="content post-title is-flex center flex-column" style="margin-bottom: 70px; overflow: auto;">
+            <h1 class="has-text-centered" style="padding-bottom: 10px; border-bottom: 3px solid #fff">
+                <strong>Java Object对象之clone方法</strong>
+            </h1>
+            
+            <div class="is-flex align-center">
+                <img class="post-avatar" src="/photo/wuhanyu.png">
+                <span style="padding:0 10px;"> <span class="sub-title">By</span> kosaru</span>
+                <span class="post-date sub-title">at: 2018-04-27</span>
+            </div>
+            
+                <div>
+                    
+                         <a class="tag is-post-tag" href="/tags/java/">java</a>
+                    
+                </div>
+            
+        </div>
+        <div class="content" style="overflow: auto">
+            <p><div align="center" style="display:none"><br><img src="/photo/4-26/4.jpg" height="330" width="495"><br></div><br><strong><font size="5">Object对象之clone方法</font></strong><br></p>
+<p><font size="4" color="red">克隆的目的：</font><font size="4">快速创建一个已有对象的副本。</font><br> </p>
+<p><font size="4" color="red">克隆的步骤：</font><br></p>
+<p><font size="4">1.创建一个对象</font><br> </p>
+<p><font size="4">2.将原有对象的数据导入到新创建的数据中</font><br></p>
+<p><font size="4" color="red">1. Object的clone()源代码简介</font><br></p>
+<pre><code>/** 
+ * Creates and returns a copy of this {@code Object}. The default 
+ * implementation returns a so-called &quot;shallow&quot; copy: It creates a new 
+ * instance of the same class and then copies the field values (including 
+ * object references) from this instance to the new instance. A &quot;deep&quot; copy, 
+ * in contrast, would also recursively clone nested objects. A subclass that 
+ * needs to implement this kind of cloning should call {@code super.clone()} 
+ * to create the new instance and then create deep copies of the nested, 
+ * mutable objects. 
+ * 
+ * @return a copy of this object. 
+ * @throws CloneNotSupportedException 
+ *             if this object&apos;s class does not implement the {@code 
+ *             Cloneable} interface. 
+ */  
+protected Object clone() throws CloneNotSupportedException {  
+    if (!(this instanceof Cloneable)) {  
+        throw new CloneNotSupportedException(&quot;Class doesn&apos;t implement Cloneable&quot;);  
+    }  
+
+    return internalClone((Cloneable) this);  
+}  
+
+/* 
+ * Native helper method for cloning. 
+ */  
+private native Object internalClone(Cloneable o); 
+</code></pre><p><font size="4">clone方法首先会判对象是否实现了Cloneable接口，若无则抛出CloneNotSupportedException, 最后会调用internalClone. intervalClone是一个native方法，一般来说native方法的执行效率高于非native方法。</font><br><font size="4">当某个类要复写clone方法时，要继承Cloneable接口。通常的克隆对象都是通过super.clone()方法来克隆对象。</font><br><font size="4" color="red">2.浅克隆(shadow clone)</font><br></p>
+<p><font size="4">克隆就是复制一个对象的复本.若只需要复制对象的字段值（对于基本数据类型,如:int,long,float等，则复制值；对于复合数据类型仅复制该字段值，如数组变量则复制地址，对于对象变量则复制对象的reference。例子：</font><br> </p>
+<pre><code>public class ShadowClone implements Cloneable{  
+
+    private int a;   // 基本类型  
+    private int[] b; // 非基本类型  
+    // 重写Object.clone()方法,并把protected改为public  
+    @Override  
+    public Object clone(){  
+        ShadowClone sc = null;  
+        try  
+        {  
+            sc = (ShadowClone) super.clone();  
+        } catch (CloneNotSupportedException e){  
+            e.printStackTrace();  
+        }  
+        return sc;  
+    }  
+    public int getA()  
+    {  
+        return a;  
+    }  
+    public void setA(int a)  
+    {  
+        this.a = a;  
+    }  
+    public int[] getB() {  
+    return b;  
+    }  
+    public void setB(int[] b) {  
+    this.b = b;  
+    }    
+} 
+</code></pre><p><font size="4">然后进行测试：</font><br> </p>
+<pre><code>public class Test{  
+    public static void main(String[] args) throws CloneNotSupportedException{  
+        ShadowClone c1 = new ShadowClone();  
+        //对c1赋值  
+        c1.setA(100) ;  
+        c1.setB(new int[]{1000}) ;  
+
+        System.out.println(&quot;克隆前c1:  a=&quot;+c1.getA()+&quot; b=&quot;+c1.getB()[0]);  
+        //克隆出对象c2,并对c2的属性A,B,C进行修改  
+        ShadowClone c2 = (ShadowClone) c1.clone();  
+        //对c2进行修改  
+        c2.setA(50) ;  
+        int []a = c2.getB() ;  
+        a[0]=5 ;  
+        c2.setB(a);  
+        System.out.println(&quot;克隆前c1:  a=&quot;+c1.getA()+&quot; b=&quot;+c1.getB()[0]);  
+        System.out.println(&quot;克隆后c2:  a=&quot;+c2.getA()+ &quot; b[0]=&quot;+c2.getB()[0]);  
+    }  
+}
+</code></pre><p><font size="4">结果为：</font><br> </p>
+<p><font size="4">克隆前c1:  a=100 b=1000</font><br> <font size="4">克隆前c1:  a=100 b=5</font><br> </p>
+<p><font size="4">克隆后c2:  a=50 b[0]=5</font><br> <font size="4">c1和c2的对象模型：</font><br><br><img src="/photo/4-26/clone1.png" alt="alt text"><br></p>
+<p><font size="4">可以看出，基本类型可以使用浅克隆，而对于引用类型，由于引用的是内容相同，所以改变c2实例对象中的属性就会影响到c1。所以引用类型需要使用深克隆。另外，在开发一个不可变类的时候，如果这个不可变类中成员有引用类型，则就需要通过深克隆来达到不可变的目的。</font><br> <font size="4" color="red">深克隆(deep clone)</font><br><font size="4">深克隆与浅克隆的区别在于对复合数据类型的复制。若对象中的某个字段为复合类型，在克隆对象的时候，需要为该字段重新创建一个对象。例子：</font><br> </p>
+<pre><code>public class DeepClone implements Cloneable {  
+
+    private int a;   // 基本类型  
+    private int[] b; // 非基本类型  
+    // 重写Object.clone()方法,并把protected改为public  
+    @Override  
+    public Object clone(){  
+        DeepClone sc = null;  
+        try  
+        {  
+            sc = (DeepClone) super.clone();  
+            int[] t = sc.getB();  
+            int[] b1 = new int[t.length];  
+            for (int i = 0; i &lt; b1.length; i++) {  
+                b1[i] = t[i];  
+            }  
+            sc.setB(b1);  
+        } catch (CloneNotSupportedException e){  
+            e.printStackTrace();  
+        }  
+        return sc;  
+    }  
+    public int getA()  
+    {  
+        return a;  
+    }  
+    public void setA(int a)  
+    {  
+        this.a = a;  
+    }  
+    public int[] getB() {  
+        return b;  
+    }  
+    public void setB(int[] b) {  
+        this.b = b;  
+    }  
+} 
+</code></pre><p><font size="4">结果为：</font><br></p>
+<p><font size="4">克隆前c1:  a=100 b=1000</font><br> <font size="4">克隆前c1:  a=100 b=1000</font><br> <font size="4">克隆后c2:  a=50 b[0]=5</font><br> <font size="4">c1和c2的对象模型：</font><br><br><img src="/photo/4-26/clone2.png" alt="alt text"><br></p>
+<p><font size="4" color="red">4、总结：</font><br><font size="4"></font></p>
+<p><font size="4">1.克隆方法用于创建对象的拷贝，为了使用clone方法，类必须实现java.lang.Cloneable接口重写protected方法clone，如果没有实现Clonebale接口会抛出CloneNotSupportedException.</font><br> </p>
+<p><font size="4">2.在克隆java对象的时候不会调用构造器</font><br> </p>
+<p><font size="4">3.java提供一种叫浅拷贝（shallow copy）的默认方式实现clone，创建好对象的副本后然后通过赋值拷贝内容，意味着如果你的类包含引用类型，那么原始对象和克隆都将指向相同的引用内容，这是很危险的，因为发生在可变的字段上任何改变将反应到他们所引用的共同内容上。为了避免这种情况，需要对引用的内容进行深度克隆。</font><br> </p>
+
+        </div>
+        <div class="post-reply">
+            
+            
+        </div>
+    </div>
+</section>
+<script>
+    // 获取第一张图, 用以当封面背景图
+    var img = document.querySelectorAll('img')[1]
+
+    if (img) {
+        var header_box = document.querySelector('#header_box')
+        header_box.style.backgroundImage = 'url('+ img.src +')'
+    }
+</script>
+      </div>
+  </div>
+  <style>
+  #footer {
+    min-height: 10vh;
+    background: black;
+    color: #fff;
+  }
+
+  #footer a {
+    color: #e1e1e1;
+  }
+</style>
+<footer id="footer" class="has-text-centered is-flex center">
+  <div class="container has-padding">
+    <div>
+      <div>
+        <!--请您保留作者署名, 主题制作来之不易-->
+        Theme by <a href="http://haojen.github.io/">Haojen Ma</a>
+        <br>
+        Copyright © Wu Hanyu 2018
+        <br>
+        Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="/js/search_core.js"></script>
+<script src="/js/script.js"></script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>
