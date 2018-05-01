@@ -3,6 +3,111 @@
   
     
     <entry>
+      <title><![CDATA[设计模式(九)]]></title>
+      <url>/2018/05/01/design-pattern9/</url>
+      <content type="html"><![CDATA[<p><div align="center" style="display:none"><br><img src="/photo/5-1/1.jpg" height="330" width="495"><br></div></p>
+<p></p><h1>9、外观模式（Facade）</h1><hr><p></p>
+<p><font size="4">外观模式是为了解决类与类之家的依赖关系的，像spring一样，可以将类和类之间的关系配置到配置文件中，而外观模式就是将他们的关系放在一个Facade类中，降低了类类之间的耦合度，该模式中没有涉及到接口，看下类图：（我们以一个计算机的启动过程为例）</font><br><br><img src="/photo/5-1/c.jpg" alt="alt text"><br></p>
+<p><font size="4">我们先看下实现类：</font><br> </p>
+<pre><code>public class CPU {  
+
+    public void startup(){  
+        System.out.println(&quot;cpu startup!&quot;);  
+    }  
+
+    public void shutdown(){  
+        System.out.println(&quot;cpu shutdown!&quot;);  
+    }  
+} 
+</code></pre><p><br></p>
+<pre><code>public class Memory {  
+
+    public void startup(){  
+        System.out.println(&quot;memory startup!&quot;);  
+    }  
+
+    public void shutdown(){  
+        System.out.println(&quot;memory shutdown!&quot;);  
+    }  
+}  
+</code></pre><p><br></p>
+<pre><code>public class Disk {  
+
+    public void startup(){  
+        System.out.println(&quot;disk startup!&quot;);  
+    }  
+
+    public void shutdown(){  
+        System.out.println(&quot;disk shutdown!&quot;);  
+    }  
+}
+</code></pre><p><br></p>
+<pre><code>public class Computer {  
+    private CPU cpu;  
+    private Memory memory;  
+    private Disk disk;  
+
+    public Computer(){  
+        cpu = new CPU();  
+        memory = new Memory();  
+        disk = new Disk();  
+    }  
+
+    public void startup(){  
+        System.out.println(&quot;start the computer!&quot;);  
+        cpu.startup();  
+        memory.startup();  
+        disk.startup();  
+        System.out.println(&quot;start computer finished!&quot;);  
+    }  
+
+    public void shutdown(){  
+        System.out.println(&quot;begin to close the computer!&quot;);  
+        cpu.shutdown();  
+        memory.shutdown();  
+        disk.shutdown();  
+        System.out.println(&quot;computer closed!&quot;);  
+    }  
+}
+</code></pre><p><font size="4">User类如下：</font><br> </p>
+<pre><code>public class User {  
+
+    public static void main(String[] args) {  
+        Computer computer = new Computer();  
+        computer.startup();  
+        computer.shutdown();  
+    }  
+} 
+</code></pre><p><font size="4">输出：</font><br> </p>
+<p><font size="4">start the computer!</font><br> </p>
+<p><font size="4">cpu startup!</font><br> </p>
+<p><font size="4">memory startup!</font><br> </p>
+<p><font size="4">disk startup!</font><br> </p>
+<p><font size="4">start computer finished!</font><br> </p>
+<p><font size="4">begin to close the computer!</font><br> </p>
+<p><font size="4">cpu shutdown!</font><br> </p>
+<p><font size="4">memory shutdown!</font><br> </p>
+<p><font size="4">disk shutdown!</font><br> </p>
+<p><font size="4">computer closed!</font><br> </p>
+<p><font size="4">如果我们没有Computer类，那么，CPU、Memory、Disk他们之间将会相互持有实例，产生关系，这样会造成严重的依赖，修改一个类，可能会带来其他类的修改，这不是我们想要看到的，有了Computer类，他们之间的关系被放在了Computer类里，这样就起到了解耦的作用，这，就是外观模式！</font><br> </p>
+]]></content>
+      
+        <categories>
+            
+            <category> 设计模式 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> technology </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[设计模式(八)]]></title>
       <url>/2018/05/01/design-pattern8/</url>
       <content type="html"><![CDATA[<p><div align="center" style="display:none"><br><img src="/photo/4-28/4.jpg" height="330" width="495"><br></div></p>
