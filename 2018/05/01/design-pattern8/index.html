@@ -6,21 +6,22 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
   <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
   
-  <title>设计模式（五） | Kosaru&#39;s Blog</title>
+  <title>设计模式(八) | Kosaru&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="原型模式">
+  <meta name="description" content="代理模式">
 <meta name="keywords" content="technology">
 <meta property="og:type" content="article">
-<meta property="og:title" content="设计模式（五）">
-<meta property="og:url" content="https://ko-saru.github.io/2018/04/27/design-pattern5/index.html">
+<meta property="og:title" content="设计模式(八)">
+<meta property="og:url" content="https://ko-saru.github.io/2018/05/01/design-pattern8/index.html">
 <meta property="og:site_name" content="Kosaru&#39;s Blog">
-<meta property="og:description" content="原型模式">
-<meta property="og:image" content="https://ko-saru.github.io/photo/4-26/4.jpg">
-<meta property="og:updated_time" content="2018-04-27T10:49:30.026Z">
+<meta property="og:description" content="代理模式">
+<meta property="og:image" content="https://ko-saru.github.io/photo/4-28/4.jpg">
+<meta property="og:image" content="https://ko-saru.github.io/photo/5-1/b.jpg">
+<meta property="og:updated_time" content="2018-05-01T12:24:04.602Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="设计模式（五）">
-<meta name="twitter:description" content="原型模式">
-<meta name="twitter:image" content="https://ko-saru.github.io/photo/4-26/4.jpg">
+<meta name="twitter:title" content="设计模式(八)">
+<meta name="twitter:description" content="代理模式">
+<meta name="twitter:image" content="https://ko-saru.github.io/photo/4-28/4.jpg">
   
     <link rel="alternate" href="/atom.xml" title="Kosaru&#39;s Blog" type="application/atom+xml">
   
@@ -138,13 +139,13 @@
     <div class="container post-box">
         <div class="content post-title is-flex center flex-column" style="margin-bottom: 70px; overflow: auto;">
             <h1 class="has-text-centered" style="padding-bottom: 10px; border-bottom: 3px solid #fff">
-                <strong>设计模式（五）</strong>
+                <strong>设计模式(八)</strong>
             </h1>
             
             <div class="is-flex align-center">
                 <img class="post-avatar" src="/photo/wuhanyu.png">
                 <span style="padding:0 10px;"> <span class="sub-title">By</span> kosaru</span>
-                <span class="post-date sub-title">at: 2018-04-27</span>
+                <span class="post-date sub-title">at: 2018-05-01</span>
             </div>
             
                 <div>
@@ -155,65 +156,59 @@
             
         </div>
         <div class="content" style="overflow: auto">
-            <p><div align="center" style="display:none"><br><img src="/photo/4-26/4.jpg" height="330" width="495"><br></div><br><strong><font size="5">5、原型模式（Prototype）</font></strong><br></p>
-<p><font size="4">原型模式虽然是创建型的模式，但是与工程模式没有关系，从名字即可看出，该模式的思想就是将一个对象作为原型，对其进行复制、克隆，产生一个和原对象类似的新对象。本小结会通过对象的复制，进行讲解。在Java中，复制对象是通过clone()实现的，先创建一个原型类：</font><br> </p>
-<pre><code>public class Prototype implements Cloneable {  
-
-    public Object clone() throws CloneNotSupportedException {  
-        Prototype proto = (Prototype) super.clone();  
-        return proto;  
-    }  
+            <p><div align="center" style="display:none"><br><img src="/photo/4-28/4.jpg" height="330" width="495"><br></div></p>
+<p></p><h1>8、代理模式（Proxy）</h1><hr><p></p>
+<p><font size="4">其实每个模式名称就表明了该模式的作用，代理模式就是多一个代理类出来，替原对象进行一些操作，比如我们在租房子的时候回去找中介，为什么呢？因为你对该地区房屋的信息掌握的不够全面，希望找一个更熟悉的人去帮你做，此处的代理就是这个意思。再如我们有的时候打官司，我们需要请律师，因为律师在法律方面有专长，可以替我们进行操作，表达我们的想法。先来看看关系图：</font><br><br><img src="/photo/5-1/b.jpg" alt="alt text"><br></p>
+<p><font size="4">根据上文的阐述，代理模式就比较容易的理解了，我们看下代码：</font><br> </p>
+<pre><code>public interface Sourceable {  
+    public void method();  
 }  
-</code></pre><p><font size="4">很简单，一个原型类，只需要实现Cloneable接口，覆写clone方法，此处clone方法可以改成任意的名称，因为Cloneable接口是个空接口，你可以任意定义实现类的方法名，如cloneA或者cloneB，因为此处的重点是super.clone()这句话，super.clone()调用的是Object的clone()方法，而在Object类中，clone()是native的，具体怎么实现，我会在另一篇文章中，关于解读Java中本地方法的调用，此处不再深究。在这儿，我将结合对象的浅复制和深复制来说一下，首先需要了解对象深、浅复制的概念：</font><br> <font size="4">浅复制：将一个对象复制后，基本数据类型的变量都会重新创建，而引用类型，指向的还是原对象所指向的。</font><br> <font size="4">深复制：将一个对象复制后，不论是基本数据类型还有引用类型，都是重新创建的。简单来说，就是深复制进行了完全彻底的复制，而浅复制不彻底。</font><br> <font size="4">此处，写一个深浅复制的例子：</font><br> </p>
-<pre><code>public class Prototype implements Cloneable, Serializable {  
+</code></pre><p><br></p>
+<pre><code>public class Source implements Sourceable {  
 
-    private static final long serialVersionUID = 1L;  
-    private String string;  
+    @Override  
+    public void method() {  
+        System.out.println(&quot;the original method!&quot;);  
+    }  
+} 
+</code></pre><p><br></p>
+<pre><code>public class Proxy implements Sourceable {  
 
-    private SerializableObject obj;  
+    private Source source;  
+    public Proxy(){  
+        super();  
+        this.source = new Source();  
+    }  
+    @Override  
+    public void method() {  
+        before();  
+        source.method();  
+        atfer();  
+    }  
+    private void atfer() {  
+        System.out.println(&quot;after proxy!&quot;);  
+    }  
+    private void before() {  
+        System.out.println(&quot;before proxy!&quot;);  
+    }  
+} 
+</code></pre><p><font size="4">测试类：</font><br> </p>
+<pre><code>public class ProxyTest {  
 
-    /* 浅复制 */  
-    public Object clone() throws CloneNotSupportedException {  
-        Prototype proto = (Prototype) super.clone();  
-        return proto;  
+    public static void main(String[] args) {  
+        Sourceable source = new Proxy();  
+        source.method();  
     }  
 
-    /* 深复制 */  
-    public Object deepClone() throws IOException, ClassNotFoundException {  
-
-        /* 写入当前对象的二进制流 */  
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();  
-        ObjectOutputStream oos = new ObjectOutputStream(bos);  
-        oos.writeObject(this);  
-
-        /* 读出二进制流产生的新对象 */  
-        ByteArrayInputStream bis = new ByteArrayInputStream(bos.toByteArray());  
-        ObjectInputStream ois = new ObjectInputStream(bis);  
-        return ois.readObject();  
-    }  
-
-    public String getString() {  
-        return string;  
-    }  
-
-    public void setString(String string) {  
-        this.string = string;  
-    }  
-
-    public SerializableObject getObj() {  
-        return obj;  
-    }  
-
-    public void setObj(SerializableObject obj) {  
-        this.obj = obj;  
-    }  
-
-}  
-
-class SerializableObject implements Serializable {  
-    private static final long serialVersionUID = 1L;  
-}  
-</code></pre><p><font size="4">要实现深复制，需要采用流的形式读入当前对象的二进制输入，再写出二进制数据对应的对象。</font><br> </p>
+} 
+</code></pre><p><font size="4">输出：</font><br> </p>
+<p><font size="4">before proxy!</font><br> </p>
+<p><font size="4">the original method!：</font><br> </p>
+<p><font size="4">after proxy!</font><br> </p>
+<p><font size="4">代理模式的应用场景：</font><br> </p>
+<p><font size="4">如果已有的方法在使用的时候需要对原有的方法进行改进，此时有两种办法：</font><br> </p>
+<p><font size="4">1、修改原有的方法来适应。这样违反了“对扩展开放，对修改关闭”的原则。</font><br> </p>
+<p><font size="4">2、就是采用一个代理类调用原有的方法，且对产生的结果进行控制。这种方法就是代理模式。使用代理模式，可以将功能划分的更加清晰，有助于后期维护！</font><br> </p>
 
         </div>
         <div class="post-reply">
