@@ -6,11 +6,11 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
   <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
   
-  <title>Catégorie: java | Kosaru&#39;s Blog</title>
+  <title>Archives: 2018/5 | Kosaru&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta property="og:type" content="website">
 <meta property="og:title" content="Kosaru&#39;s Blog">
-<meta property="og:url" content="https://ko-saru.github.io/categories/java/index.html">
+<meta property="og:url" content="https://ko-saru.github.io/archives/2018/05/index.html">
 <meta property="og:site_name" content="Kosaru&#39;s Blog">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Kosaru&#39;s Blog">
@@ -92,113 +92,105 @@
   <div id="main-wrap" class="position-relative" style="margin-top: 55px;">
       <div class="main-inner-content">
           <style>
-    .container.tag-cate-wrap {
-        min-height: 93vh;
+    .post-hover:hover {
+        box-shadow: inset 0 0 100px #000;
+        transition: box-shadow .2s;
     }
 
-    .category-title-inner {
-        padding-top: 50px;
+    .sub-post-container .post-hover:hover h3 {
+        text-decoration: underline gray;
     }
 
-    strong {
-        text-transform: capitalize;
+
+    .primary-item-main {
+        height: 330px;
+        background-size: cover;
     }
+
+    .primary-container .title,
+    .primary-container .sub-title,
+    .primary-container .post-content-text,
+    .primary-container .date {
+        color: #fff;
+    }
+
+    .post-content-text {
+        color: #f1f1f1!important;
+    }
+
+    .primary-container .post-hover {
+        background: black;
+    }
+
+    .content-bg-mask {
+        background: rgba(0,0,0,.4);
+    }
+
 </style>
 
-
-<div class="container tag-cate-wrap">
-    <div class="category-title-inner content has-text-centered">
-        <h1><strong style="border-top: 2px solid; border-bottom: 2px solid;">category·java</strong></h1>
+<div style="background: #f5f8f9;">
+    <div id="main-container" class="container" style="padding-top: 20px;">
+        <div class="is-flex main-content justify-center">
+            <section class="column is-9">
+                
+<div class="primary-container content-box is-flex-desktop clear-padding bottom-line" style="margin-bottom: 25px;">
+    <div class="column  is-12">
+        <a href="/2018/05/01/design-pattern7/">
+            <div class="full-height post-hover"
+                 style="
+                         background-image: url('/photo/4-28/1.jpg');
+                         height: 350px;
+                         background-size: cover;
+                         background-repeat: no-repeat;
+                         ">
+                    <div class=" is-flex flex-column center content has-text-centered full-height has-padding content-bg-mask">
+                        <h1 class="title text-shadow" style="margin-bottom: 15px;">
+                            设计模式(七)
+                        </h1>
+                        <div>
+                        
+                            `
+                                <span class="tag is-post-tag">technology</span>
+                            
+                        
+                        </div>
+                        <p class="post-content-text is-marginless has-padding text-shadow">
+                            
+7、装饰模式（Decorator）
+顾名思义，装饰模式就是给一个对象增加一些新的功能，而且是动态的，要求装饰对象和被装饰对象实现同一个接口，装饰对象持有被装饰对象的实例，关系图如下：
+Source类是被装饰类，Decorator类是一..
+                        </p>
+                        <p class="date text-shadow">2018-05-01</p>
+                        <button class="button is-info is-small">Read More</button>
+                    </div>
+            </div>
+        </a>
     </div>
-
-    
-    
-        <div class="box">
-            <article class="media">
-                
-                <a href="/2018/04/28/Integer/">
-                    
-                    <div class="media-left">
-                        <figure class="image is-128x128">
-                            <img src="/photo/4-28/2.png" style="height: 100%; width: 100%">
-                        </figure>
-                    </div>
-                    
-                    <div class="media-content">
-                        <div class="content">
-                            <p>
-                                <strong>Integer与int知多少</strong> <small class="post-date">at: 2018-04-28</small>
-                                <br>
-                                Integer与int的种种比较
-如果面试官问Integer与int的区别：估计大多数人只会说道两点，Ingeter是int的包装类，int的初值为0，Ingeter的初值为null。但是如果面试官再问一下Integer i = 1;int ii = 1; i==ii为true还是为false？估计就有一部分人答不出来了，如果再问一下其他的，估计更多的人..
-                            </p>
-                            <button class="button is-info">Read</button>
-                        </div>
-                    </div>
-                </a>
-            </article>
+    <div class="column is-5 is-hidden-touch" style="padding-left: 0;">
+        <div class="full-height is-flex flex-column justify-space-between" style="min-height: 350px;">
+            
+            
         </div>
-    
-        <div class="box">
-            <article class="media">
-                
-                <a href="/2018/04/27/SerialVersionId/">
-                    
-                    <div class="media-left">
-                        <figure class="image is-128x128">
-                            <img src="/photo/4-26/uid.jpg" style="height: 100%; width: 100%">
-                        </figure>
-                    </div>
-                    
-                    <div class="media-content">
-                        <div class="content">
-                            <p>
-                                <strong>serialVersionUID的作用</strong> <small class="post-date">at: 2018-04-27</small>
-                                <br>
-                                java类中serialversionuid 作用
-serialVersionUID适用于Java的序列化机制。简单来说，Java的序列化机制是通过判断类的serialVersionUID来验证版本一致性的。在进行反序列化时，JVM会把传来的字节流中的serialVersionUID与本地相应实体类的serialVersionUID进行比较，如果相同就认..
-                            </p>
-                            <button class="button is-info">Read</button>
-                        </div>
-                    </div>
-                </a>
-            </article>
-        </div>
-    
-        <div class="box">
-            <article class="media">
-                
-                <a href="/2018/04/27/clone/">
-                    
-                    <div class="media-left">
-                        <figure class="image is-128x128">
-                            <img src="/photo/4-26/a.jpg" style="height: 100%; width: 100%">
-                        </figure>
-                    </div>
-                    
-                    <div class="media-content">
-                        <div class="content">
-                            <p>
-                                <strong>Java Object对象之clone方法</strong> <small class="post-date">at: 2018-04-27</small>
-                                <br>
-                                Object对象之clone方法
-克隆的目的：快速创建一个已有对象的副本。 
-克隆的步骤：
-1.创建一个对象 
-2.将原有对象的数据导入到新创建的数据中
-1. Object的clone()源代码简介
-/** 
- * Creates and returns a copy of this {@code Object}. The default 
- * imp..
-                            </p>
-                            <button class="button is-info">Read</button>
-                        </div>
-                    </div>
-                </a>
-            </article>
-        </div>
-    
+    </div>
+    <div class="column is-12 is-hidden-desktop">
+        
+        
+    </div>
 </div>
+
+                    
+                    
+                
+                <!--翻頁-->
+                <nav class="pagination is-flex" style="justify-content: flex-end">
+                    
+                </nav>
+            </section>
+            
+        </div>
+    </div>
+</div>
+
       </div>
   </div>
   <style>

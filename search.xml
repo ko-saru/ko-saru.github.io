@@ -3,6 +3,73 @@
   
     
     <entry>
+      <title><![CDATA[设计模式(七)]]></title>
+      <url>/2018/05/01/design-pattern7/</url>
+      <content type="html"><![CDATA[<p><div align="center" style="display:none"><br><img src="/photo/4-28/1.jpg" height="330" width="495"><br></div></p>
+<p></p><h1>7、装饰模式（Decorator）</h1><hr><p></p>
+<p><font size="4">顾名思义，装饰模式就是给一个对象增加一些新的功能，而且是动态的，要求装饰对象和被装饰对象实现同一个接口，装饰对象持有被装饰对象的实例，关系图如下：</font><br><br><img src="/photo/5-1/a.jpg" alt="alt text"><br></p>
+<p><font size="4">Source类是被装饰类，Decorator类是一个装饰类，可以为Source类动态的添加一些功能，代码如下：</font><br> </p>
+<pre><code>public interface Sourceable {  
+    public void method();  
+} 
+</code></pre><p><br></p>
+<pre><code>public class Source implements Sourceable {  
+
+    @Override  
+    public void method() {  
+        System.out.println(&quot;the original method!&quot;);  
+    }  
+}  
+</code></pre><p><br></p>
+<pre><code>public class Decorator implements Sourceable {  
+
+    private Sourceable source;  
+
+    public Decorator(Sourceable source){  
+        super();  
+        this.source = source;  
+    }  
+    @Override  
+    public void method() {  
+        System.out.println(&quot;before decorator!&quot;);  
+        source.method();  
+        System.out.println(&quot;after decorator!&quot;);  
+    }  
+}  
+</code></pre><p><font size="4">测试类：</font><br> </p>
+<pre><code>public class DecoratorTest {  
+
+    public static void main(String[] args) {  
+        Sourceable source = new Source();  
+        Sourceable obj = new Decorator(source);  
+        obj.method();  
+    }
+</code></pre><p><font size="4">输出：</font><br> </p>
+<p><font size="4">before decorator!</font><br> </p>
+<p><font size="4">the original method!</font><br> </p>
+<p><font size="4">after decorator!</font><br> </p>
+<p><font size="4" color="red">装饰器模式的应用场景：</font><br> </p>
+<p><font size="4">1、需要扩展一个类的功能。</font><br> </p>
+<p><font size="4">2、动态的为一个对象增加功能，而且还能动态撤销。（继承不能做到这一点，继承的功能是静态的，不能动态增删。）</font><br> </p>
+<p><font size="4">缺点：产生过多相似的对象，不易排错！</font><br> </p>
+]]></content>
+      
+        <categories>
+            
+            <category> 设计模式 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> technology </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[Integer与int知多少]]></title>
       <url>/2018/04/28/Integer/</url>
       <content type="html"><![CDATA[<p><div align="center" style="display:none"><br><img src="/photo/4-28/2.png" height="330" width="495"><br></div><br><strong><font size="5">Integer与int的种种比较</font></strong><br></p>
