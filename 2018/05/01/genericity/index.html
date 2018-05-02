@@ -16,7 +16,7 @@
 <meta property="og:site_name" content="Kosaru&#39;s Blog">
 <meta property="og:description" content="java泛型">
 <meta property="og:image" content="https://ko-saru.github.io/photo/5-1/2.jpg">
-<meta property="og:updated_time" content="2018-05-02T05:56:49.866Z">
+<meta property="og:updated_time" content="2018-05-02T06:08:06.692Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="java泛型内部原理">
 <meta name="twitter:description" content="java泛型">
@@ -443,11 +443,11 @@ public Date getValue() {
 <p><font size="4">关于协变：。。。。。。</font><br> </p>
 <p><font size="4">并且，还有一点也许会有疑问，子类中的巧方法  Object   getValue()和Date getValue()是同 时存在的，可是如果是常规的两个方法，他们的方法签名是一样的，也就是说虚拟机根本不能分别这两个方法。如果是我们自己编写Java代码，这样的代码是无法通过编译器的检查的，但是虚拟机却是允许这样做的，因为虚拟机通过参数类型和返回类型来确定一个方法，所以编译器为了实现泛型的多态允许自己做这个看起来“不合法”的事情，然后交给虚拟器去区别。<br></font><br> </p>
 <p><font size="4"><strong>4、泛型类型变量不能是基本数据类型</strong></font><br></p>
-<p><font size="4">不能用类型参数替换基本类型。就比如，没有ArrayList<double>，只有ArrayList<double>。因为当类型擦除后，ArrayList的原始类型变为Object，但是Object类型不能存储double值，只能引用Double的值。</double></double></font><br> </p>
+<p><font size="4">不能用类型参数替换基本类型。就比如，没有ArrayList&lt;<strong>double</strong>&gt;，只有ArrayList&lt;<strong>Double</strong>&gt;。因为当类型擦除后，ArrayList的原始类型变为Object，但是Object类型不能存储double值，只能引用Double的值。</font><br> </p>
 <p><font size="4"><strong>5、运行时类型查询</strong></font><br></p>
 <p><font size="4">举个例子:</font><br> </p>
 <pre><code>ArrayList&lt;String&gt; arrayList=new ArrayList&lt;String&gt;();
-</code></pre><p><font size="4">因为类型擦除之后，ArrayList<string>只剩下原始类型，泛型信息String不存在了。那么，运行时进行类型查询的时候使用下面的方法是错误的</string></font><br> </p>
+</code></pre><p><font size="4">因为类型擦除之后，ArrayList&lt;<strong>String</strong>&gt;只剩下原始类型，泛型信息String不存在了。那么，运行时进行类型查询的时候使用下面的方法是错误的</font><br> </p>
 <pre><code>if( arrayList instanceof ArrayList&lt;String&gt;)    
 </code></pre><p><font size="4">java限定了这种类型查询的方式</font><br> </p>
 <pre><code>if( arrayList instanceof ArrayList&lt;?&gt;) 
@@ -510,7 +510,7 @@ public Date getValue() {
 <pre><code>objarray =&quot;Hello&quot;; //ERROR 
 </code></pre><p><font size="4">对于泛型而言，擦除降低了这个机制的效率。下面的赋值可以通过数组存储的检测，但仍然会导致类型错误。</font><br> </p>
 <pre><code>objarray =new Pair&lt;Employee&gt;(); 
-</code></pre><p><font size="4">提示：如果需要收集参数化类型对象，直接使用ArrayList：ArrayList<pair<string>&gt;最安全且有效。</pair<string></font><br> </p>
+</code></pre><p><font size="4">提示：如果需要收集参数化类型对象，直接使用ArrayList：ArrayList<pair<**string**>&gt;最安全且有效。</pair<**string**></font><br> </p>
 <p><font size="4"><strong>8、泛型类型的实例化</strong></font><br></p>
 <p><font size="4">不能实例化泛型类型。如，</font><br> </p>
 <pre><code>first = new T(); //ERROR
@@ -545,15 +545,15 @@ public Date getValue() {
     }  
 
 }
-</code></pre><p><font size="4">考虑一个Pair<string>。从概念上，它有两个equals方法：</string></font><br> </p>
-<p><font size="4">booleanequals(String); //在Pair<t>中定义</t></font><br> </p>
+</code></pre><p><font size="4">考虑一个Pair&lt;<strong>String</strong>&gt;。从概念上，它有两个equals方法：</font><br> </p>
+<p><font size="4">booleanequals(String); //在Pair&lt;<strong>T</strong>&gt;中定义</font><br> </p>
 <p><font size="4">boolean equals(Object); //从object中继承</font><br> </p>
 <p><font size="4">但是，这只是一种错觉。实际上，擦除后方法<br>boolean equals(T) 变成了方法 boolean equals(Object) 这与Object.equals方法是冲突的！当然，补救的办法是重新命名引发错误的方法。</font><br> </p>
 <p><font size="4">(2)泛型规范说明提及另一个原则“要支持擦除的转换，需要强行制一个类或者类型变量不能同时成为两个接口的子类，而这两个子类是同一接品的不同参数化。</font><br> </p>
 <p><font size="4">下面的代码是非法的：</font><br> </p>
 <pre><code>class Calendar implements Comparable&lt;Calendar&gt;{ ... }
 class GregorianCalendar extends Calendar implements Comparable&lt;GregorianCalendar&gt;{...} //ERROR   
-</code></pre><p><font size="4">GregorianCalendar会实现Comparable<calender>和Compable<gregoriancalendar>，这是同一个接口的不同参数化实现。这一限制与类型擦除的关系并不很明确。非泛型版本：</gregoriancalendar></calender></font><br> </p>
+</code></pre><p><font size="4">GregorianCalendar会实现Comparable&lt;<strong>Calender</strong>&gt;和Compable&lt;<strong>GregorianCalendar</strong>&gt;，这是同一个接口的不同参数化实现。这一限制与类型擦除的关系并不很明确。非泛型版本：</font><br> </p>
 <pre><code>class Calendar implements Comparable{ ... }  
 class GregorianCalendar extends Calendar implements Comparable{...} //ERROR
 </code></pre><p><font size="4">是合法的。</font><br> </p>
@@ -613,7 +613,7 @@ class GregorianCalendar extends Calendar implements Comparable{...} //ERROR
         <br>
         Copyright © Wu Hanyu 2018
         <br>
-        Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+        Propulsé by <a href="http://hexo.io/" target="_blank">Hexo</a>
       </div>
     </div>
   </div>
@@ -622,5 +622,20 @@ class GregorianCalendar extends Calendar implements Comparable{...} //ERROR
 <script src="/js/search_core.js"></script>
 <script src="/js/script.js"></script>
 
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </body>
 </html>
