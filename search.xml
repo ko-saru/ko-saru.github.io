@@ -55,8 +55,8 @@
         this.value = value;  
     }  
 } 
-</code></pre><p><font size="4">因为在Pair<t>中，T是一个无限定的类型变量，所以用Object替换。其结果就是一个普通的类，如同泛型加入java变成语言之前已经实现的那样。在程序中可以包含不同类型的Pair，如Pair<string>或Pair<integer>，但是，擦除类型后它们就成为原始的Pair类型了，原始类型都是Object。</integer></string></t></font><br> </p>
-<p><font size="4">从上面的那个例2中，我们也可以明白ArrayList<integer>被擦除类型后，原始类型也变成了Object，所以通过反射我们就可以存储字符串了。</integer></font><br> </p>
+</code></pre><p><font size="4">因为在Pair&lt;<strong>T</strong>&gt;中，T是一个无限定的类型变量，所以用Object替换。其结果就是一个普通的类，如同泛型加入java变成语言之前已经实现的那样。在程序中可以包含不同类型的Pair，如Pair&lt;<strong>String</strong>&gt;或Pair&lt;<strong>Integer</strong>&gt;，但是，擦除类型后它们就成为原始的Pair类型了，原始类型都是Object。</font><br> </p>
+<p><font size="4">从上面的那个例2中，我们也可以明白ArrayList&lt;<strong>Integer</strong>&gt;被擦除类型后，原始类型也变成了Object，所以通过反射我们就可以存储字符串了。</font><br> </p>
 <p><font size="4">如果类型变量有限定，那么原始类型就用第一个边界的类型变量来替换。比如Pair这样声明</font><br> </p>
 <p><font size="4">例4：</font><br> </p>
 <pre><code>public class Pair&lt;T extends Comparable&amp; Serializable&gt; { 
