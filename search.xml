@@ -3,6 +3,91 @@
   
     
     <entry>
+      <title><![CDATA[设计模式(十一)]]></title>
+      <url>/2018/05/02/design-pattern11/</url>
+      <content type="html"><![CDATA[<p><div align="center" style="display:none"><br><img src="/photo/5-2/2.jpg" height="330" width="495"><br></div></p>
+<p></p><h1>11、组合模式（Composite）</h1><hr><p></p>
+<p><font size="4">组合模式有时又叫<strong>部分-整体</strong>模式在处理类似树形结构的问题时比较方便，看看关系图：</font><br><br><img src="/photo/5-2/c.jpg" alt="alt text"><br></p>
+<p><font size="4">直接来看代码：</font><br> </p>
+<pre><code>public class TreeNode {  
+
+    private String name;  
+    private TreeNode parent;  
+    private Vector&lt;TreeNode&gt; children = new Vector&lt;TreeNode&gt;();  
+
+    public TreeNode(String name){  
+        this.name = name;  
+    }  
+
+    public String getName() {  
+        return name;  
+    }  
+
+    public void setName(String name) {  
+        this.name = name;  
+    }  
+
+    public TreeNode getParent() {  
+        return parent;  
+    }  
+
+    public void setParent(TreeNode parent) {  
+        this.parent = parent;  
+    }  
+
+    //添加孩子节点  
+    public void add(TreeNode node){  
+        children.add(node);  
+    }  
+
+    //删除孩子节点  
+    public void remove(TreeNode node){  
+        children.remove(node);  
+    }  
+
+    //取得孩子节点  
+    public Enumeration&lt;TreeNode&gt; getChildren(){  
+        return children.elements();  
+    }  
+}  
+</code></pre><p><br></p>
+<pre><code>public class Tree {  
+
+    TreeNode root = null;  
+
+    public Tree(String name) {  
+        root = new TreeNode(name);  
+    }  
+
+    public static void main(String[] args) {  
+        Tree tree = new Tree(&quot;A&quot;);  
+        TreeNode nodeB = new TreeNode(&quot;B&quot;);  
+        TreeNode nodeC = new TreeNode(&quot;C&quot;);  
+
+        nodeB.add(nodeC);  
+        tree.root.add(nodeB);  
+        System.out.println(&quot;build the tree finished!&quot;);  
+    }  
+}
+</code></pre><p><font size="4">使用场景：将多个对象组合在一起进行操作，常用于表示树形结构中，例如二叉树，数等。</font><br> </p>
+]]></content>
+      
+        <categories>
+            
+            <category> 设计模式 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> technology </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[设计模式(十)]]></title>
       <url>/2018/05/02/design-pattern10/</url>
       <content type="html"><![CDATA[<p><div align="center" style="display:none"><br><img src="/photo/5-2/1.jpg" height="330" width="495"><br></div></p>

@@ -6,7 +6,7 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
   <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
   
-  <title>Mot-clé: technology | Kosaru&#39;s Blog</title>
+  <title>Tag: technology | Kosaru&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta property="og:type" content="website">
 <meta property="og:title" content="Kosaru&#39;s Blog">
@@ -112,6 +112,39 @@
     </div>
 
     
+    
+        <div class="box">
+            <article class="media">
+                
+                <a href="/2018/05/02/design-pattern11/">
+                    
+                    <div class="media-left">
+                        <figure class="image is-128x128">
+                            <img src="/photo/5-2/2.jpg" style="height: 100%; width: 100%">
+                        </figure>
+                    </div>
+                    
+                    <div class="media-content">
+                        <div class="content">
+                            <p>
+                                <strong>设计模式(十一)</strong> <small class="post-date">at: 2018-05-02</small>
+                                <br>
+                                
+11、组合模式（Composite）
+组合模式有时又叫部分-整体模式在处理类似树形结构的问题时比较方便，看看关系图：
+直接来看代码： 
+public class TreeNode {  
+
+    private String name;  
+    private TreeNode parent;  
+    private Vector&lt;Tr..
+                            </p>
+                            <button class="button is-info">Read</button>
+                        </div>
+                    </div>
+                </a>
+            </article>
+        </div>
     
         <div class="box">
             <article class="media">
@@ -367,35 +400,6 @@ A、创建模式
             </article>
         </div>
     
-        <div class="box">
-            <article class="media">
-                
-                <a href="/2018/04/26/design-patternsmd/">
-                    
-                    <div class="media-left">
-                        <figure class="image is-128x128">
-                            <img src="/photo/design.jpg" style="height: 100%; width: 100%">
-                        </figure>
-                    </div>
-                    
-                    <div class="media-content">
-                        <div class="content">
-                            <p>
-                                <strong>设计模式（一）</strong> <small class="post-date">at: 2018-04-26</small>
-                                <br>
-                                
-
-一、设计模式的分类
-总体来说设计模式分为三大类：
-创建型模式（5种）：工厂方法模式、抽象工厂模式、单例模式、建造者模式、原型模式。结构型模式（7种）：适配器模式、装饰器模式、代理模式、外观模式、桥接模式、组合模式、享元模式。行为型模式（11种）：策略模式、模板方法模式、观察者模式、迭代子模式、责任链模式、命令模式、备忘录模式、状态模式、访问者模式、中..
-                            </p>
-                            <button class="button is-info">Read</button>
-                        </div>
-                    </div>
-                </a>
-            </article>
-        </div>
-    
 </div>
       </div>
   </div>
@@ -419,7 +423,7 @@ A、创建模式
         <br>
         Copyright © Wu Hanyu 2018
         <br>
-        Propulsé by <a href="http://hexo.io/" target="_blank">Hexo</a>
+        Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
       </div>
     </div>
   </div>
@@ -428,5 +432,20 @@ A、创建模式
 <script src="/js/search_core.js"></script>
 <script src="/js/script.js"></script>
 
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </body>
 </html>
