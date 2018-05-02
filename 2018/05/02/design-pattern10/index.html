@@ -6,21 +6,23 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
   <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
   
-  <title>设计模式（五） | Kosaru&#39;s Blog</title>
+  <title>设计模式(十) | Kosaru&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="原型模式">
+  <meta name="description" content="桥接模式">
 <meta name="keywords" content="technology">
 <meta property="og:type" content="article">
-<meta property="og:title" content="设计模式（五）">
-<meta property="og:url" content="https://ko-saru.github.io/2018/04/27/design-pattern5/index.html">
+<meta property="og:title" content="设计模式(十)">
+<meta property="og:url" content="https://ko-saru.github.io/2018/05/02/design-pattern10/index.html">
 <meta property="og:site_name" content="Kosaru&#39;s Blog">
-<meta property="og:description" content="原型模式">
-<meta property="og:image" content="https://ko-saru.github.io/photo/4-26/4.jpg">
-<meta property="og:updated_time" content="2018-04-27T10:49:30.026Z">
+<meta property="og:description" content="桥接模式">
+<meta property="og:image" content="https://ko-saru.github.io/photo/5-2/1.jpg">
+<meta property="og:image" content="https://ko-saru.github.io/photo/5-1/a.jpg">
+<meta property="og:image" content="https://ko-saru.github.io/photo/5-1/b.jpg">
+<meta property="og:updated_time" content="2018-05-02T06:18:28.440Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="设计模式（五）">
-<meta name="twitter:description" content="原型模式">
-<meta name="twitter:image" content="https://ko-saru.github.io/photo/4-26/4.jpg">
+<meta name="twitter:title" content="设计模式(十)">
+<meta name="twitter:description" content="桥接模式">
+<meta name="twitter:image" content="https://ko-saru.github.io/photo/5-2/1.jpg">
   
     <link rel="alternate" href="/atom.xml" title="Kosaru&#39;s Blog" type="application/atom+xml">
   
@@ -138,13 +140,13 @@
     <div class="container post-box">
         <div class="content post-title is-flex center flex-column" style="margin-bottom: 70px; overflow: auto;">
             <h1 class="has-text-centered" style="padding-bottom: 10px; border-bottom: 3px solid #fff">
-                <strong>设计模式（五）</strong>
+                <strong>设计模式(十)</strong>
             </h1>
             
             <div class="is-flex align-center">
                 <img class="post-avatar" src="/photo/wuhanyu.png">
                 <span style="padding:0 10px;"> <span class="sub-title">By</span> kosaru</span>
-                <span class="post-date sub-title">at: 2018-04-27</span>
+                <span class="post-date sub-title">at: 2018-05-02</span>
             </div>
             
                 <div>
@@ -155,65 +157,74 @@
             
         </div>
         <div class="content" style="overflow: auto">
-            <p><div align="center" style="display:none"><br><img src="/photo/4-26/4.jpg" height="330" width="495"><br></div><br><strong><font size="5">5、原型模式（Prototype）</font></strong><br></p>
-<p><font size="4">原型模式虽然是创建型的模式，但是与工程模式没有关系，从名字即可看出，该模式的思想就是将一个对象作为原型，对其进行复制、克隆，产生一个和原对象类似的新对象。本小结会通过对象的复制，进行讲解。在Java中，复制对象是通过clone()实现的，先创建一个原型类：</font><br> </p>
-<pre><code>public class Prototype implements Cloneable {  
+            <p><div align="center" style="display:none"><br><img src="/photo/5-2/1.jpg" height="330" width="495"><br></div></p>
+<p></p><h1>10、桥接模式（Bridge）</h1><hr><p></p>
+<p><font size="4">桥接模式就是把事物和其具体实现分开，使他们可以各自独立的变化。桥接的用意是：<strong>将抽象化与实现化解耦，使得二者可以独立变化</strong>，像我们常用的JDBC桥DriverManager一样，JDBC进行连接数据库的时候，在各个数据库之间进行切换，基本不需要动太多的代码，甚至丝毫不用动，原因就是JDBC提供统一接口，每个数据库提供各自的实现，用一个叫做数据库驱动的程序来桥接就行了。我们来看看关系图：</font><br><br><img src="/photo/5-1/a.jpg" alt="alt text"><br></p>
+<p><font size="4">实现代码：</font><br> </p>
+<p><font size="4">先定义接口：</font><br> </p>
+<pre><code>public interface Sourceable {  
+    public void method();  
+} 
+</code></pre><p><font size="4">分别定义两个实现类：：</font><br> </p>
+<pre><code>public class SourceSub1 implements Sourceable {  
 
-    public Object clone() throws CloneNotSupportedException {  
-        Prototype proto = (Prototype) super.clone();  
-        return proto;  
+    @Override  
+    public void method() {  
+        System.out.println(&quot;this is the first sub!&quot;);  
+    }  
+} 
+</code></pre><p><br></p>
+<pre><code>public class SourceSub2 implements Sourceable {  
+
+    @Override  
+    public void method() {  
+        System.out.println(&quot;this is the second sub!&quot;);  
     }  
 }  
-</code></pre><p><font size="4">很简单，一个原型类，只需要实现Cloneable接口，覆写clone方法，此处clone方法可以改成任意的名称，因为Cloneable接口是个空接口，你可以任意定义实现类的方法名，如cloneA或者cloneB，因为此处的重点是super.clone()这句话，super.clone()调用的是Object的clone()方法，而在Object类中，clone()是native的，具体怎么实现，我会在另一篇文章中，关于解读Java中本地方法的调用，此处不再深究。在这儿，我将结合对象的浅复制和深复制来说一下，首先需要了解对象深、浅复制的概念：</font><br> <font size="4">浅复制：将一个对象复制后，基本数据类型的变量都会重新创建，而引用类型，指向的还是原对象所指向的。</font><br> <font size="4">深复制：将一个对象复制后，不论是基本数据类型还有引用类型，都是重新创建的。简单来说，就是深复制进行了完全彻底的复制，而浅复制不彻底。</font><br> <font size="4">此处，写一个深浅复制的例子：</font><br> </p>
-<pre><code>public class Prototype implements Cloneable, Serializable {  
+</code></pre><p><font size="4">定义一个桥，持有Sourceable的一个实例：</font><br> </p>
+<pre><code>public abstract class Bridge {  
+    private Sourceable source;  
 
-    private static final long serialVersionUID = 1L;  
-    private String string;  
-
-    private SerializableObject obj;  
-
-    /* 浅复制 */  
-    public Object clone() throws CloneNotSupportedException {  
-        Prototype proto = (Prototype) super.clone();  
-        return proto;  
+    public void method(){  
+        source.method();  
     }  
 
-    /* 深复制 */  
-    public Object deepClone() throws IOException, ClassNotFoundException {  
-
-        /* 写入当前对象的二进制流 */  
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();  
-        ObjectOutputStream oos = new ObjectOutputStream(bos);  
-        oos.writeObject(this);  
-
-        /* 读出二进制流产生的新对象 */  
-        ByteArrayInputStream bis = new ByteArrayInputStream(bos.toByteArray());  
-        ObjectInputStream ois = new ObjectInputStream(bis);  
-        return ois.readObject();  
+    public Sourceable getSource() {  
+        return source;  
     }  
 
-    public String getString() {  
-        return string;  
+    public void setSource(Sourceable source) {  
+        this.source = source;  
     }  
-
-    public void setString(String string) {  
-        this.string = string;  
-    }  
-
-    public SerializableObject getObj() {  
-        return obj;  
-    }  
-
-    public void setObj(SerializableObject obj) {  
-        this.obj = obj;  
-    }  
-
 }  
-
-class SerializableObject implements Serializable {  
-    private static final long serialVersionUID = 1L;  
+</code></pre><p><br></p>
+<pre><code>public class MyBridge extends Bridge {  
+    public void method(){  
+        getSource().method();  
+    }  
 }  
-</code></pre><p><font size="4">要实现深复制，需要采用流的形式读入当前对象的二进制输入，再写出二进制数据对应的对象。</font><br> </p>
+</code></pre><p><font size="4">测试类：</font><br> </p>
+<pre><code>public class BridgeTest {  
+
+    public static void main(String[] args) {  
+
+        Bridge bridge = new MyBridge();  
+
+        /*调用第一个对象*/  
+        Sourceable source1 = new SourceSub1();  
+        bridge.setSource(source1);  
+        bridge.method();  
+
+        /*调用第二个对象*/  
+        Sourceable source2 = new SourceSub2();  
+        bridge.setSource(source2);  
+        bridge.method();  
+    }  
+}
+</code></pre><p><font size="4">output：</font><br> </p>
+<p><font size="4">this is the first sub!</font><br> </p>
+<p><font size="4">this is the second sub!</font><br> </p>
+<p><font size="4">这样，就通过对Bridge类的调用，实现了对接口Sourceable的实现类SourceSub1和SourceSub2的调用。接下来我再画个图，大家就应该明白了，因为这个图是我们JDBC连接的原理，有数据库学习基础的，一结合就都懂了。</font><br><br><img src="/photo/5-1/b.jpg" alt="alt text"><br></p>
 
         </div>
         <div class="post-reply">
