@@ -42,7 +42,7 @@
         }  
     }  
 
-    /* 返回连接到连接池 */  
+    /* 返回连接到连接池(当该连接不再用时加入连接池以备后续提供) */  
     public synchronized void release() {  
         pool.add(conn);  
     }  
