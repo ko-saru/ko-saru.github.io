@@ -16,7 +16,7 @@
 <meta property="og:site_name" content="Kosaru&#39;s Blog">
 <meta property="og:description" content="java泛型">
 <meta property="og:image" content="https://ko-saru.github.io/photo/5-1/2.jpg">
-<meta property="og:updated_time" content="2018-05-02T05:26:10.695Z">
+<meta property="og:updated_time" content="2018-05-02T05:29:05.511Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="java泛型内部原理">
 <meta name="twitter:description" content="java泛型">
@@ -159,7 +159,7 @@
 <p></p><h1>java泛型的内部原理：类型擦除以及类型擦除带来的问题</h1><hr><p></p>
 <p></p><h2>一、Java泛型的实现方法：类型擦除</h2><p></p>
 <p><font size="4">Java的泛型是伪泛型。为什么说Java的泛型是伪泛型呢？因为，在编译期间，所有的泛型信息都会被擦除掉。<strong>正确理解泛型概念的首要前提是理解类型擦出（type erasure）</strong>。</font><br><br><strong><font size="4">Java中的泛型基本上都是在编译器这个层次来实现的。在生成的Java字节码中是不包含泛型中的类型信息的。使用泛型的时候加上的类型参数，会在编译器在编译的时候去掉。这个过程就称为类型擦除。</font><br></strong></p>
-<p><font size="4">如在代码中定义的List&lt;<strong>object</strong>&gt;和List&lt;<strong>String</strong>&gt;等类型，在编译后都会编程List。JVM看到的只是List，而由泛型附加的类型信息对JVM来说是不可见的。Java编译器会在编译时尽可能的发现可能出错的地方，但是仍然无法避免在运行时刻出现类型转换异常的情况。类型擦除也是Java的泛型实现方法与C++模版机制实现方式之间的重要区别。</font><br>  </p>
+<p><font size="4">如在代码中定义的List&lt;<strong>Object</strong>&gt;和List&lt;<strong>String</strong>&gt;等类型，在编译后都会编程List。JVM看到的只是List，而由泛型附加的类型信息对JVM来说是不可见的。Java编译器会在编译时尽可能的发现可能出错的地方，但是仍然无法避免在运行时刻出现类型转换异常的情况。类型擦除也是Java的泛型实现方法与C++模版机制实现方式之间的重要区别。</font><br>  </p>
 <p><font size="4">可以通过两个简单的例子，来证明java泛型的类型擦除。</font><br> </p>
 <p><font size="4">例1、</font><br> </p>
 <pre><code>public class Test {  
@@ -622,5 +622,20 @@ class GregorianCalendar extends Calendar implements Comparable{...} //ERROR
 <script src="/js/search_core.js"></script>
 <script src="/js/script.js"></script>
 
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </body>
 </html>
