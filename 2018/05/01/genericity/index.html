@@ -16,7 +16,7 @@
 <meta property="og:site_name" content="Kosaru&#39;s Blog">
 <meta property="og:description" content="java泛型">
 <meta property="og:image" content="https://ko-saru.github.io/photo/5-1/2.jpg">
-<meta property="og:updated_time" content="2018-05-02T05:33:40.595Z">
+<meta property="og:updated_time" content="2018-05-02T05:39:31.554Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="java泛型内部原理">
 <meta name="twitter:description" content="java泛型">
@@ -211,7 +211,7 @@
 <p><font size="4">例4：</font><br> </p>
 <pre><code>public class Pair&lt;T extends Comparable&amp; Serializable&gt; { 
 </code></pre><p><font size="4">注意：</font><br> </p>
-<p><font size="4">如果Pair这样声明public class Pair<t extends="" serializable&comparable=""> ，那么原始类型就用Serializable替换，而编译器在必要的时要向Comparable插入强制类型转换。为了提高效率，应该将标签（tagging）接口（即没有方法的接口）放在边界限定列表的末尾。</t></font><br> </p>
+<p><font size="4">如果Pair这样声明public class Pair&lt;<strong>T extends Serializable&amp;Comparable</strong>&gt; ，那么原始类型就用Serializable替换，而编译器在必要的时要向Comparable插入强制类型转换。为了提高效率，应该将标签（tagging）接口（即没有方法的接口）放在边界限定列表的末尾。</font><br> </p>
 <p><font size="4"><strong>要区分原始类型和泛型变量的类型</strong></font><br> </p>
 <p><font size="4">在调用泛型方法的时候，可以指定泛型，也可以不指定泛型。</font><br> </p>
 <p><font size="4">在不指定泛型的情况下，泛型变量的类型为 该方法中的几种类型的同一个父类的最小级，直到Object。</font><br> </p>
@@ -622,5 +622,20 @@ class GregorianCalendar extends Calendar implements Comparable{...} //ERROR
 <script src="/js/search_core.js"></script>
 <script src="/js/script.js"></script>
 
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </body>
 </html>
