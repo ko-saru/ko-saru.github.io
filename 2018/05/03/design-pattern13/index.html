@@ -6,23 +6,23 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
   <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
   
-  <title>设计模式(十二) | Kosaru&#39;s Blog</title>
+  <title>设计模式(十三) | Kosaru&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="享元模式">
+  <meta name="description" content="策略模式">
 <meta name="keywords" content="technology">
 <meta property="og:type" content="article">
-<meta property="og:title" content="设计模式(十二)">
-<meta property="og:url" content="https://ko-saru.github.io/2018/05/02/design-pattern12/index.html">
+<meta property="og:title" content="设计模式(十三)">
+<meta property="og:url" content="https://ko-saru.github.io/2018/05/03/design-pattern13/index.html">
 <meta property="og:site_name" content="Kosaru&#39;s Blog">
-<meta property="og:description" content="享元模式">
-<meta property="og:image" content="https://ko-saru.github.io/photo/5-2/3.jpg">
-<meta property="og:image" content="https://ko-saru.github.io/photo/5-2/d.jpg">
-<meta property="og:image" content="https://ko-saru.github.io/photo/5-2/e.jpg">
-<meta property="og:updated_time" content="2018-05-02T07:07:07.543Z">
+<meta property="og:description" content="策略模式">
+<meta property="og:image" content="https://ko-saru.github.io/photo/birthday/1.jpg">
+<meta property="og:image" content="https://ko-saru.github.io/photo/birthday/a.jpg">
+<meta property="og:image" content="https://ko-saru.github.io/photo/birthday/b.jpg">
+<meta property="og:updated_time" content="2018-05-03T07:30:24.475Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="设计模式(十二)">
-<meta name="twitter:description" content="享元模式">
-<meta name="twitter:image" content="https://ko-saru.github.io/photo/5-2/3.jpg">
+<meta name="twitter:title" content="设计模式(十三)">
+<meta name="twitter:description" content="策略模式">
+<meta name="twitter:image" content="https://ko-saru.github.io/photo/birthday/1.jpg">
   
     <link rel="alternate" href="/atom.xml" title="Kosaru&#39;s Blog" type="application/atom+xml">
   
@@ -140,13 +140,13 @@
     <div class="container post-box">
         <div class="content post-title is-flex center flex-column" style="margin-bottom: 70px; overflow: auto;">
             <h1 class="has-text-centered" style="padding-bottom: 10px; border-bottom: 3px solid #fff">
-                <strong>设计模式(十二)</strong>
+                <strong>设计模式(十三)</strong>
             </h1>
             
             <div class="is-flex align-center">
                 <img class="post-avatar" src="/photo/wuhanyu.png">
                 <span style="padding:0 10px;"> <span class="sub-title">By</span> kosaru</span>
-                <span class="post-date sub-title">at: 2018-05-02</span>
+                <span class="post-date sub-title">at: 2018-05-03</span>
             </div>
             
                 <div>
@@ -157,60 +157,73 @@
             
         </div>
         <div class="content" style="overflow: auto">
-            <p><div align="center" style="display:none"><br><img src="/photo/5-2/3.jpg" height="330" width="495"><br></div></p>
-<p></p><h1>12、享元模式（Flyweight）</h1><hr><p></p>
-<p><font size="4">享元模式的主要目的是实现对象的共享，即共享池，当系统中对象多的时候可以减少内存的开销，通常与工厂模式一起使用。</font><br><br><img src="/photo/5-2/d.jpg" alt="alt text"><br></p>
-<p><font size="4">FlyWeightFactory负责创建和管理享元单元，当一个客户端请求时，工厂需要检查当前对象池中是否有符合条件的对象，如果有，就返回已经存在的对象，如果没有，则创建一个新对象，FlyWeight是超类。一提到共享池，我们很容易联想到Java里面的JDBC连接池，想想每个连接的特点，我们不难总结出：适用于作共享的一些个对象，他们有一些共有的属性，就拿数据库连接池来说，url、driverClassName、username、password及dbname，这些属性对于每个连接来说都是一样的，所以就适合用享元模式来处理，建一个工厂类，将上述类似属性作为内部数据，其它的作为外部数据，在方法调用时，当做参数传进来，这样就节省了空间，减少了实例的数量。</font><br> </p>
-<p><font size="4">看个例子：</font><br><br><img src="/photo/5-2/e.jpg" alt="alt text"><br></p>
-<p><font size="4">看下数据库连接池的代码：</font><br> </p>
-<pre><code>public class ConnectionPool {  
+            <p><div align="center" style="display:none"><br><img src="/photo/birthday/1.jpg" height="330" width="495"><br></div></p>
+<p></p><h1>C、关系模式（11种）</h1><hr><p></p>
+<p><font size="4">先来张图，看看这11中模式的关系：</font><br> </p>
+<p><font size="4">第一类：通过父类与子类的关系进行实现。</font><br> </p>
+<p><font size="4">第二类：两个类之间。</font><br> </p>
+<p><font size="4">第三类：类的状态。</font><br> </p>
+<p><font size="4">第四类：通过中间类</font><br><br><img src="/photo/birthday/a.jpg" alt="alt text"><br></p>
+<p></p><h1>父类与子类关系</h1><hr><p></p>
+<p></p><h2>13、策略模式（strategy）</h2><hr><p></p>
+<p><font size="4">策略模式定义了一系列算法，并将每个算法封装起来，使他们可以相互替换，且算法的变化不会影响到使用算法的客户。需要设计一个接口，为一系列实现类提供统一的方法，多个实现类实现该接口，设计一个抽象类（可有可无，属于辅助类），提供辅助函数，关系图如下：</font><br><br><img src="/photo/birthday/b.jpg" alt="alt text"><br></p>
+<p><font size="4">图中ICalculator提供同意的方法，</font><br> </p>
+<p><font size="4">AbstractCalculator是辅助类，提供辅助方法，接下来，依次实现下每个类：</font><br> </p>
+<p><font size="4">首先统一接口：</font><br> </p>
+<pre><code>public interface ICalculator {  
+    public int calculate(String exp);  
+}  
+</code></pre><p><font size="4">辅助类：</font><br> </p>
+<pre><code>public abstract class AbstractCalculator {  
 
-    private Vector&lt;Connection&gt; pool;  
-
-    /*公有属性*/  
-    private String url = &quot;jdbc:mysql://localhost:3306/test&quot;;  
-    private String username = &quot;root&quot;;  
-    private String password = &quot;root&quot;;  
-    private String driverClassName = &quot;com.mysql.jdbc.Driver&quot;;  
-
-    private int poolSize = 100;  
-    private static ConnectionPool instance = null;  
-    Connection conn = null;  
-
-    /*构造方法，做一些初始化工作*/  
-    private ConnectionPool() {  
-        pool = new Vector&lt;Connection&gt;(poolSize);  
-
-        for (int i = 0; i &lt; poolSize; i++) {  
-            try {  
-                Class.forName(driverClassName);  
-                conn = DriverManager.getConnection(url, username, password);  
-                pool.add(conn);  
-            } catch (ClassNotFoundException e) {  
-                e.printStackTrace();  
-            } catch (SQLException e) {  
-                e.printStackTrace();  
-            }  
-        }  
-    }  
-
-    /* 返回连接到连接池(当该连接不再用时加入连接池以备后续提供) */  
-    public synchronized void release() {  
-        pool.add(conn);  
-    }  
-
-    /* 返回连接池中的一个数据库连接 */  
-    public synchronized Connection getConnection() {  
-        if (pool.size() &gt; 0) {  
-            Connection conn = pool.get(0);  
-            pool.remove(conn);  
-            return conn;  
-        } else {  
-            return null;  
-        }  
+    public int[] split(String exp,String opt){  
+        String array[] = exp.split(opt);  
+        int arrayInt[] = new int[2];  
+        arrayInt[0] = Integer.parseInt(array[0]);  
+        arrayInt[1] = Integer.parseInt(array[1]);  
+        return arrayInt;  
     }  
 }  
-</code></pre><p><font size="4">通过连接池的管理，实现了数据库连接的共享，不需要每一次都重新创建连接，节省了数据库重新创建的开销，提升了系统的性能！</font><br> </p>
+</code></pre><p><font size="4">三个实现类：</font><br> </p>
+<pre><code>public class Plus extends AbstractCalculator implements ICalculator {  
+
+    @Override  
+    public int calculate(String exp) {  
+        int arrayInt[] = split(exp,&quot;\\+&quot;);  
+        return arrayInt[0]+arrayInt[1];  
+    }  
+}
+</code></pre><p><br></p>
+<pre><code>public class Minus extends AbstractCalculator implements ICalculator {  
+
+    @Override  
+    public int calculate(String exp) {  
+        int arrayInt[] = split(exp,&quot;-&quot;);  
+        return arrayInt[0]-arrayInt[1];  
+    }  
+
+}  
+</code></pre><p><br></p>
+<pre><code>public class Multiply extends AbstractCalculator implements ICalculator {  
+
+    @Override  
+    public int calculate(String exp) {  
+        int arrayInt[] = split(exp,&quot;\\*&quot;);  
+        return arrayInt[0]*arrayInt[1];  
+    }  
+} 
+</code></pre><p><font size="4">简单的测试类：</font><br> </p>
+<pre><code>public class StrategyTest {  
+
+    public static void main(String[] args) {  
+        String exp = &quot;2+8&quot;;  
+        ICalculator cal = new Plus();  
+        int result = cal.calculate(exp);  
+        System.out.println(result);  
+    }  
+}
+</code></pre><p><font size="4">输出：10</font><br> </p>
+<p><font size="4">策略模式的决定权在用户，系统本身提供不同算法的实现，新增或者删除算法，对各种算法做封装。因此，策略模式多用在算法决策系统中，外部用户只需要决定用哪个算法即可。</font><br>   </p>
 
         </div>
         <div class="post-reply">
