@@ -20,7 +20,7 @@
 <meta property="og:image" content="https://ko-saru.github.io/photo/5-5/b.png">
 <meta property="og:image" content="https://ko-saru.github.io/photo/5-5/c.jpg">
 <meta property="og:image" content="https://ko-saru.github.io/photo/5-5/d.png">
-<meta property="og:updated_time" content="2018-05-05T07:56:50.567Z">
+<meta property="og:updated_time" content="2018-05-05T08:03:01.488Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="java虚拟机类加载机制">
 <meta name="twitter:description" content="java类加载机制">
@@ -324,7 +324,7 @@ public class ClinitTest{
 <p><font size="4">如果我们颠倒一下 Father 类中“public static int a = 1;”语句和“static语句块”的顺序，程序执行后，则会打印出1。很明显是根据规则 1，执行 Father 的()方法时，根据顺序先执行了 static 语句块中的内容，后执行了“public static int a = 1;”语句。</font><br> </p>
 <p><font size="4">另外，在颠倒二者的顺序之后，如果在 static 语句块中对 a 进行访问（比如将 a 赋给某个变量），在编译时将会报错，因为根据规则 1，它只能对 a 进行赋值，而不能访问。</font><br> </p>
 <p></p><h2>总结</h2><p></p>
-<p><font size="4">整个类加载过程中，除了在加载阶段用户应用程序可以自定义类加载器参与之外，其余所有的动作完全由虚拟机主导和控制。到了初始化才开始执行类中定义的 Java 程序代码（亦及字节码），但这里的执行代码只是个开端，它仅限于()方法。类加载过程中主要是将 Class 文件（准确地讲，应该是类的二进制字节流）加载到虚拟机内存中，真正执行字节码的操作，在加载完成后才真正开始。</font><br> </p>
+<p><font size="4">整个类加载过程中，除了在加载阶段用户应用程序可以自定义类加载器参与之外，其余所有的动作完全由虚拟机主导和控制。到了初始化才开始执行类中定义的 Java 程序代码（亦及字节码），但这里的执行代码只是个开端，它仅限于&lt;<strong>clinit</strong>&gt;()方法。类加载过程中主要是将 Class 文件（准确地讲，应该是类的二进制字节流）加载到虚拟机内存中，真正执行字节码的操作，在加载完成后才真正开始。</font><br> </p>
 
         </div>
         <div class="post-reply">
