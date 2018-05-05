@@ -75,7 +75,7 @@
 
 <p><font size="4">假设一个类变量的定义为：</font><br> </p>
 <pre><code>public static int value = 3；
-</code></pre><p><font size="4">那么变量 value 在准备阶段过后的初始值为 0，而不是 3，因为这时候尚未开始执行任何 Java 方法，而把 value 赋值为 3 的 putstatic 指令是在程序编译后，存放于类构造器 （）方法之中的，所以把 value 赋值为 3 的动作将在初始化阶段才会执行。</font><br> </p>
+</code></pre><p><font size="4">那么变量 value 在准备阶段过后的初始值为 0，而不是 3，因为这时候尚未开始执行任何 Java 方法，而把 value 赋值为 3 的 putstatic 指令是在程序编译后，存放于类构造器 &lt;<strong>clinit</strong>&gt;（）方法之中的，所以把 value 赋值为 3 的动作将在初始化阶段才会执行。</font><br> </p>
 <p><font size="4">下表列出了 Java 中所有基本数据类型以及 reference 类型的默认零值：</font><br><br><img src="/photo/5-5/c.jpg" alt="alt text"><br></p>
 <p><font size="4">这里还需要注意如下几点：</font><br> </p>
 <font size="4">
