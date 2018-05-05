@@ -6,19 +6,19 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
   <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
   
-  <title>Java中子类、父类、变量、static方法的加载顺序 | Kosaru&#39;s Blog</title>
+  <title>Java中父子类初始化顺序 | Kosaru&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="java类初始化顺序">
 <meta name="keywords" content="java">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Java中子类、父类、变量、static方法的加载顺序">
+<meta property="og:title" content="Java中父子类初始化顺序">
 <meta property="og:url" content="https://ko-saru.github.io/2018/05/05/review/index.html">
 <meta property="og:site_name" content="Kosaru&#39;s Blog">
 <meta property="og:description" content="java类初始化顺序">
 <meta property="og:image" content="https://ko-saru.github.io/photo/5-5/2.jpg">
-<meta property="og:updated_time" content="2018-05-05T08:37:36.314Z">
+<meta property="og:updated_time" content="2018-05-05T08:45:35.540Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Java中子类、父类、变量、static方法的加载顺序">
+<meta name="twitter:title" content="Java中父子类初始化顺序">
 <meta name="twitter:description" content="java类初始化顺序">
 <meta name="twitter:image" content="https://ko-saru.github.io/photo/5-5/2.jpg">
   
@@ -138,7 +138,7 @@
     <div class="container post-box">
         <div class="content post-title is-flex center flex-column" style="margin-bottom: 70px; overflow: auto;">
             <h1 class="has-text-centered" style="padding-bottom: 10px; border-bottom: 3px solid #fff">
-                <strong>Java中子类、父类、变量、static方法的加载顺序</strong>
+                <strong>Java中父子类初始化顺序</strong>
             </h1>
             
             <div class="is-flex align-center">
@@ -229,8 +229,9 @@ public class SubClass extends Parent {
 子类--构造器
 </code></pre><p><font size="4">在这段代码中，子类和父类中都有static变量和static代码块，父类中有无参的构造方法，从上面执行的结果可以得出下面结论：</font><br> </p>
 <p><font size="4">1、当代码进入到子类的main方法时，此时不执行main()方法中的任何语句，这时候会先开始按顺序先加载父类的static变量、static代码块，再加载子类的static变量、static代码块；</font><br> </p>
-<p><font size="4">2、当父类和子类的static变量和代码块加载完之后，开始按顺序执行main方法中的语句System.out.println(“<strong><strong><strong>*</strong></strong></strong>in main<strong><strong><strong><em>*</em></strong></strong></strong>“);</font><br> </p>
-<p><font size="4">3、执行完println语句之后，此时new一个子类对象，由于子类继承父类，此时会先按顺序初试化父类中的变量、代码块、构造方法，然后再初始化子类变量、代码块、构造方法。其中变量最先初始化创建，其次是代码块，构造方法最后创建；</font><br> </p>
+<p><font size="4">2、当父类和子类的static变量和代码块加载完之后，开始按顺序执行main方法中的语句</font></p>
+<pre><code>System.out.println(&quot;*************in main***************&quot;); 
+</code></pre><p><font size="4">3、执行完println语句之后，此时new一个子类对象，由于子类继承父类，此时会先按顺序初试化父类中的变量、代码块、构造方法，然后再初始化子类变量、代码块、构造方法。其中变量最先初始化创建，其次是代码块，构造方法最后创建；</font><br> </p>
 <p><font size="4">4、当new完一个子类对象之后，再new第二个子类对象时，由于static变量与方法还有代码块在内存中只加载一遍，此时父类和子类已经加载了一遍，所以不会再次加载</font><br> </p>
 <p><font size="4">5、当把子类main方法中的代码都删掉</font><br>   </p>
 <pre><code>System.out.println(&quot;*************in main***************&quot;);  
@@ -239,6 +240,102 @@ System.out.println(&quot;*************second subClass***************&quot;);
 new Super_Sub_Contr();  
 </code></pre><p><font size="4">此时执行程序，子类和父类的static变量和代码块也还是会加载，但是其它的变量、代码块、构造方法都不会加载。</font><br> </p>
 <p><font size="4">以上代码是在子类里面直接new子类对象，如果我们新建一个类，在这个类中new子类结果会是怎样？还有，当我们初始化变量时，变量调用了一个方法，这个方法会不会在变量初始时就执行？看看下面代码执行的结果：</font><br> </p>
+<pre><code>class Parent {  
+    // 静态变量  
+    public static String p_StaticField = &quot;父类--静态变量&quot;;  
+    // 变量(其实这用对象更好能体同这一点，如专门写一个类的实例)  
+
+    // 如果这个变量放在初始化块的后面，是会报错的，因为你根本没有被初始化  
+    public String p_Field = &quot;父类--变量&quot;;  
+
+    int a = getParent();  
+    // 静态初始化块  
+    static {  
+        System.out.println(p_StaticField);  
+        System.out.println(&quot;父类--静态初始化块&quot;);  
+    }  
+    // 初始化块  
+
+    {  
+        System.out.println(p_Field);  
+        System.out.println(&quot;父类--初始化块&quot;);  
+    }  
+    {  
+        System.out.println(a);  
+    }  
+
+    // 构造器  
+    public Parent() {  
+        System.out.println(&quot;父类--构造器&quot;);  
+    }  
+
+    private int getParent() {  
+        System.out.println(&quot;********getParent()*********&quot;);  
+        return 6;  
+    }  
+}  
+
+class SubClass extends Parent {  
+    // 静态变量  
+    public static String s_StaticField = &quot;子类--静态变量&quot;;  
+    // 变量  
+    public String s_Field = &quot;子类--变量&quot;;  
+    // 静态初始化块  
+    static {  
+        System.out.println(s_StaticField);  
+        System.out.println(&quot;子类--静态初始化块&quot;);  
+    }  
+    // 初始化块  
+    {  
+        System.out.println(s_Field);  
+        System.out.println(&quot;子类--初始化块&quot;);  
+    }  
+
+    // 构造器  
+    public SubClass() {  
+        // super();  
+        System.out.println(&quot;子类--构造器&quot;);  
+    }  
+
+}  
+
+public class Super_Sub_Contr{  
+    // 程序入口  
+    public static void main(String[] args) {  
+        System.out.println(&quot;*************in main***************&quot;);  
+        new SubClass();  
+        System.out.println(&quot;*************second subClass***************&quot;);  
+        new SubClass();  
+    }  
+} 
+</code></pre><p><font size="4">代码执行结果</font><br> </p>
+<pre><code>*************in main***************  
+父类--静态变量  
+父类--静态初始化块  
+子类--静态变量  
+子类--静态初始化块  
+********getParent()*********  
+父类--变量  
+父类--初始化块  
+6  
+父类--构造器  
+子类--变量  
+子类--初始化块  
+子类--构造器  
+*************second subClass***************  
+********getParent()*********  
+父类--变量  
+父类--初始化块  
+6  
+父类--构造器  
+子类--变量  
+子类--初始化块  
+子类--构造器  
+</code></pre><p><font size="4">从结果可知：</font><br> </p>
+<p><font size="4">1、当在另外一个类中new子类时，会先打印：</font></p>
+<pre><code>*************in main***************     
+</code></pre><p>这是因为在子类中new子类，此时子类还没有开始加载，所以当子类加载完后才能执行main方法；<br> </p>
+<p><font size="4">2、当初试化变量中调用了另一个方法时，会先执行这个方法完成变量的初始化，然后再初始化代码块；</font><br> </p>
 
         </div>
         <div class="post-reply">
