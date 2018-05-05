@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html class="full-height">
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="//cdn.bootcss.com/bulma/0.4.1/css/bulma.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+  
+  <title>Java中子类、父类、变量、static方法的加载顺序 | Kosaru&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="java类初始化顺序">
+<meta name="keywords" content="java">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java中子类、父类、变量、static方法的加载顺序">
+<meta property="og:url" content="https://ko-saru.github.io/2018/05/05/review/index.html">
+<meta property="og:site_name" content="Kosaru&#39;s Blog">
+<meta property="og:description" content="java类初始化顺序">
+<meta property="og:image" content="https://ko-saru.github.io/photo/5-5/2.jpg">
+<meta property="og:updated_time" content="2018-05-05T08:37:36.314Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java中子类、父类、变量、static方法的加载顺序">
+<meta name="twitter:description" content="java类初始化顺序">
+<meta name="twitter:image" content="https://ko-saru.github.io/photo/5-5/2.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="Kosaru&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/common.css">
+<link rel="stylesheet" href="/css/nav.css">
+<link rel="stylesheet" href="/css/layout.css">
+  
+
+</head>
+
+<body>
+  <header id="navbar" class="overflow-hidden">
+  <div class="container">
+    <nav class="nav">
+         <div class="nav-left">
+            <a href="/" class="nav-item" style="font-size: 20px;">
+              <span class="logo">kosaru</span>'s Blog
+            </a>
+         </div>
+        <div class="nav-center is-hidden position-relative" id="search_container">
+            <div class="nav-item full-width full-height">
+                <i class="fa fa-search has-padding" aria-hidden="true"></i>
+                <input type="text" id="search_input" class="search-input full-height full-width" placeholder="Search post" autofocus>
+                <i id="close_search" class="fa fa-times" aria-hidden="true"></i>
+            </div>
+            <div id="search_result"></div>
+        </div>
+        <div class="nav-right nav-menu">
+            <a class="nav-item" id="search">
+                <i class="fa fa-search" aria-hidden="true"></i>
+            </a>
+            
+            <a class="nav-item" href="/">
+                Home
+            </a>
+            
+            <a class="nav-item" href="/works/index.html">
+                My Works
+            </a>
+            
+            <a class="nav-item" href="/about">
+                About
+            </a>
+            
+        </div>
+        <span class="nav-toggle" id="navMenuDropdown">
+            <span></span>
+            <span></span>
+            <span></span>
+        </span>
+        <div class="navbar-menu position-absolute full-width content-box is-hidden-desktop is-flex flex-column center" style="top: 100%;">
+            
+            <a class="nav-item flex-1" href="/">
+                Home
+            </a>
+            
+            <a class="nav-item flex-1" href="/works/index.html">
+                My Works
+            </a>
+            
+            <a class="nav-item flex-1" href="/about">
+                About
+            </a>
+            
+        </div>
+    </nav>
+  </div>
+</header>
+
+  <div id="main-wrap" class="position-relative" style="margin-top: 55px;">
+      <div class="main-inner-content">
+          <!--博文页面-->
+
+<style>
+    .header-box {
+        height: 370px;
+        filter: blur(10px);
+        background-size: cover;
+        background-color: lightsteelblue;
+    }
+
+    .post-box {
+        padding: 15px;
+        padding-top: 60px;
+        min-height: 80vh;
+        margin-top: -200px;
+        border-radius: 4px;
+        background-color: rgba(255,255,255,.8);
+    }
+
+    .post-avatar {
+        height: 30px;
+        width: 30px;
+        border-radius: 50%;
+    }
+
+    .flow-chart {
+        text-align: center;
+    }
+
+    img[alt="post-cover"] {
+        display: block;
+    }
+</style>
+<header>
+    <div id="header_box" class="header-box"></div>
+</header>
+<section>
+    <div class="container post-box">
+        <div class="content post-title is-flex center flex-column" style="margin-bottom: 70px; overflow: auto;">
+            <h1 class="has-text-centered" style="padding-bottom: 10px; border-bottom: 3px solid #fff">
+                <strong>Java中子类、父类、变量、static方法的加载顺序</strong>
+            </h1>
+            
+            <div class="is-flex align-center">
+                <img class="post-avatar" src="/photo/wuhanyu.png">
+                <span style="padding:0 10px;"> <span class="sub-title">By</span> kosaru</span>
+                <span class="post-date sub-title">at: 2018-05-05</span>
+            </div>
+            
+                <div>
+                    
+                         <a class="tag is-post-tag" href="/tags/java/">java</a>
+                    
+                </div>
+            
+        </div>
+        <div class="content" style="overflow: auto">
+            <p><div align="center" style="display:none"><br><img src="/photo/5-5/2.jpg" height="330" width="495"><br></div></p>
+<p></p><h1>Java中子类、父类、变量、static方法的加载顺序</h1><hr><p></p>
+<p><font size="4">先来看一下下面这段代码</font><br> </p>
+<pre><code>class Parent {  
+    // 静态变量  
+    public static String p_StaticField = &quot;父类--静态变量&quot;;  
+    // 变量(其实这用对象更好能体同这一点，如专门写一个类的实例)  
+　　  
+    //如果这个变量放在初始化块的后面，是会报错的，因为你根本没有被初始化  
+    public String p_Field = &quot;父类--变量&quot;;  
+    // 静态初始化块  
+    static {  
+        System.out.println(p_StaticField);  
+        System.out.println(&quot;父类--静态初始化块&quot;);  
+    }  
+    // 初始化块  
+    {  
+        System.out.println(p_Field);  
+        System.out.println(&quot;父类--初始化块&quot;);  
+    }  
+    // 构造器  
+    public Parent() {  
+        System.out.println(&quot;父类--构造器&quot;);  
+    }  
+}  
+public class SubClass extends Parent {  
+    // 静态变量  
+    public static String s_StaticField = &quot;子类--静态变量&quot;;  
+    // 变量  
+    public String s_Field = &quot;子类--变量&quot;;  
+    // 静态初始化块  
+    static {  
+        System.out.println(s_StaticField);  
+        System.out.println(&quot;子类--静态初始化块&quot;);  
+    }  
+    // 初始化块  
+    {  
+        System.out.println(s_Field);  
+        System.out.println(&quot;子类--初始化块&quot;);  
+    }  
+    // 构造器  
+    public SubClass() {  
+        //super();  
+        System.out.println(&quot;子类--构造器&quot;);  
+    }  
+    // 程序入口  
+    public static void main(String[] args) {  
+        System.out.println(&quot;*************in main***************&quot;);  
+        new SubClass();  
+        System.out.println(&quot;*************second subClass***************&quot;);  
+        new SubClass();  
+    }  
+} 
+</code></pre><p><font size="4">代码的执行结果如下：</font><br> </p>
+<pre><code>父类--静态变量  
+父类--静态初始化块  
+子类--静态变量  
+子类--静态初始化块  
+*************in main***************  
+父类--变量  
+父类--初始化块  
+父类--构造器  
+子类--变量  
+子类--初始化块  
+子类--构造器  
+*************second subClass***************  
+父类--变量  
+父类--初始化块  
+父类--构造器  
+子类--变量  
+子类--初始化块  
+子类--构造器
+</code></pre><p><font size="4">在这段代码中，子类和父类中都有static变量和static代码块，父类中有无参的构造方法，从上面执行的结果可以得出下面结论：</font><br> </p>
+<p><font size="4">1、当代码进入到子类的main方法时，此时不执行main()方法中的任何语句，这时候会先开始按顺序先加载父类的static变量、static代码块，再加载子类的static变量、static代码块；</font><br> </p>
+<p><font size="4">2、当父类和子类的static变量和代码块加载完之后，开始按顺序执行main方法中的语句System.out.println(“<strong><strong><strong>*</strong></strong></strong>in main<strong><strong><strong><em>*</em></strong></strong></strong>“);</font><br> </p>
+<p><font size="4">3、执行完println语句之后，此时new一个子类对象，由于子类继承父类，此时会先按顺序初试化父类中的变量、代码块、构造方法，然后再初始化子类变量、代码块、构造方法。其中变量最先初始化创建，其次是代码块，构造方法最后创建；</font><br> </p>
+<p><font size="4">4、当new完一个子类对象之后，再new第二个子类对象时，由于static变量与方法还有代码块在内存中只加载一遍，此时父类和子类已经加载了一遍，所以不会再次加载</font><br> </p>
+<p><font size="4">5、当把子类main方法中的代码都删掉</font><br>   </p>
+<pre><code>System.out.println(&quot;*************in main***************&quot;);  
+new Super_Sub_Contr();  
+System.out.println(&quot;*************second subClass***************&quot;);  
+new Super_Sub_Contr();  
+</code></pre><p><font size="4">此时执行程序，子类和父类的static变量和代码块也还是会加载，但是其它的变量、代码块、构造方法都不会加载。</font><br> </p>
+<p><font size="4">以上代码是在子类里面直接new子类对象，如果我们新建一个类，在这个类中new子类结果会是怎样？还有，当我们初始化变量时，变量调用了一个方法，这个方法会不会在变量初始时就执行？看看下面代码执行的结果：</font><br> </p>
+
+        </div>
+        <div class="post-reply">
+            
+            
+        </div>
+    </div>
+</section>
+<script>
+    // 获取第一张图, 用以当封面背景图
+    var img = document.querySelectorAll('img')[1]
+
+    if (img) {
+        var header_box = document.querySelector('#header_box')
+        header_box.style.backgroundImage = 'url('+ img.src +')'
+    }
+</script>
+      </div>
+  </div>
+  <style>
+  #footer {
+    min-height: 10vh;
+    background: black;
+    color: #fff;
+  }
+
+  #footer a {
+    color: #e1e1e1;
+  }
+</style>
+<footer id="footer" class="has-text-centered is-flex center">
+  <div class="container has-padding">
+    <div>
+      <div>
+        <!--请您保留作者署名, 主题制作来之不易-->
+        Theme by <a href="http://haojen.github.io/">Haojen Ma</a>
+        <br>
+        Copyright © Wu Hanyu 2018
+        <br>
+        Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="/js/search_core.js"></script>
+<script src="/js/script.js"></script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>
