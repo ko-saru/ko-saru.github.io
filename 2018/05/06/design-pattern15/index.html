@@ -6,23 +6,22 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
   <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
   
-  <title>设计模式(十二) | Kosaru&#39;s Blog</title>
+  <title>设计模式(十五) | Kosaru&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="享元模式">
+  <meta name="description" content="观察者模式">
 <meta name="keywords" content="technology">
 <meta property="og:type" content="article">
-<meta property="og:title" content="设计模式(十二)">
-<meta property="og:url" content="https://ko-saru.github.io/2018/05/02/design-pattern12/index.html">
+<meta property="og:title" content="设计模式(十五)">
+<meta property="og:url" content="https://ko-saru.github.io/2018/05/06/design-pattern15/index.html">
 <meta property="og:site_name" content="Kosaru&#39;s Blog">
-<meta property="og:description" content="享元模式">
-<meta property="og:image" content="https://ko-saru.github.io/photo/5-2/3.jpg">
-<meta property="og:image" content="https://ko-saru.github.io/photo/5-2/d.jpg">
-<meta property="og:image" content="https://ko-saru.github.io/photo/5-2/e.jpg">
-<meta property="og:updated_time" content="2018-05-02T07:07:07.543Z">
+<meta property="og:description" content="观察者模式">
+<meta property="og:image" content="https://ko-saru.github.io/photo/5-6/2.jpg">
+<meta property="og:image" content="https://ko-saru.github.io/photo/5-6/b.jpg">
+<meta property="og:updated_time" content="2018-05-06T07:37:30.898Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="设计模式(十二)">
-<meta name="twitter:description" content="享元模式">
-<meta name="twitter:image" content="https://ko-saru.github.io/photo/5-2/3.jpg">
+<meta name="twitter:title" content="设计模式(十五)">
+<meta name="twitter:description" content="观察者模式">
+<meta name="twitter:image" content="https://ko-saru.github.io/photo/5-6/2.jpg">
   
     <link rel="alternate" href="/atom.xml" title="Kosaru&#39;s Blog" type="application/atom+xml">
   
@@ -140,13 +139,13 @@
     <div class="container post-box">
         <div class="content post-title is-flex center flex-column" style="margin-bottom: 70px; overflow: auto;">
             <h1 class="has-text-centered" style="padding-bottom: 10px; border-bottom: 3px solid #fff">
-                <strong>设计模式(十二)</strong>
+                <strong>设计模式(十五)</strong>
             </h1>
             
             <div class="is-flex align-center">
                 <img class="post-avatar" src="/photo/wuhanyu.png">
                 <span style="padding:0 10px;"> <span class="sub-title">By</span> kosaru</span>
-                <span class="post-date sub-title">at: 2018-05-02</span>
+                <span class="post-date sub-title">at: 2018-05-06</span>
             </div>
             
                 <div>
@@ -157,61 +156,95 @@
             
         </div>
         <div class="content" style="overflow: auto">
-            <p><div align="center" style="display:none"><br><img src="/photo/5-2/3.jpg" height="330" width="495"><br></div></p>
-<p></p><h1>12、享元模式（Flyweight）</h1><hr><p></p>
-<p><font size="4">享元模式的主要目的是实现对象的共享，即共享池，当系统中对象多的时候可以减少内存的开销，通常与工厂模式一起使用。</font><br><br><img src="/photo/5-2/d.jpg" alt="alt text"><br></p>
-<p><font size="4">FlyWeightFactory负责创建和管理享元单元，当一个客户端请求时，工厂需要检查当前对象池中是否有符合条件的对象，如果有，就返回已经存在的对象，如果没有，则创建一个新对象，FlyWeight是超类。一提到共享池，我们很容易联想到Java里面的JDBC连接池，想想每个连接的特点，我们不难总结出：适用于作共享的一些个对象，他们有一些共有的属性，就拿数据库连接池来说，url、driverClassName、username、password及dbname，这些属性对于每个连接来说都是一样的，所以就适合用享元模式来处理，建一个工厂类，将上述类似属性作为内部数据，其它的作为外部数据，在方法调用时，当做参数传进来，这样就节省了空间，减少了实例的数量。</font><br> </p>
-<p><font size="4">看个例子：</font><br><br><img src="/photo/5-2/e.jpg" alt="alt text"><br></p>
-<p><font size="4">看下数据库连接池的代码：</font><br> </p>
-<pre><code>public class ConnectionPool {  
+            <p><div align="center" style="display:none"><br><img src="/photo/5-6/2.jpg" height="330" width="495"><br></div></p>
+<p></p><h1>15、观察者模式（Observer）</h1><hr><p></p>
+<p><font size="4">包括这个模式在内的接下来的四个模式，都是类和类之间的关系，不涉及到继承，学的时候应该 记得归纳，记得本文最开始的那个图。观察者模式很好理解，类似于邮件订阅和RSS订阅，当我们浏览一些博客或wiki时，经常会看到RSS图标，就这的意思是，当你订阅了该文章，如果后续有更新，会及时通知你。其实，简单来讲就一句话：当一个对象变化时，其它依赖该对象的对象都会收到通知，并且随着变化！对象之间是一种一对多的关系。先来看看关系图：</font><br><br><img src="/photo/5-6/b.jpg" alt="alt text"><br></p>
+<p><font size="4">我解释下这些类的作用：MySubject类就是我们的主对象，Observer1和Observer2是依赖于MySubject的对象，当MySubject变化时，Observer1和Observer2必然变化。AbstractSubject类中定义着需要监控的对象列表，可以对其进行修改：增加或删除被监控对象，且当MySubject变化时，负责通知在列表内存在的对象。我们看实现代码：</font><br> </p>
+<p><font size="4">一个Observer接口：</font><br> </p>
+<pre><code>public interface Observer {  
+    public void update();  
+}
+</code></pre><p><font size="4">两个实现类：</font><br> </p>
+<pre><code>public class Observer1 implements Observer {  
 
-    private Vector&lt;Connection&gt; pool;  
+    @Override  
+    public void update() {  
+        System.out.println(&quot;observer1 has received!&quot;);  
+    }  
+}  
+</code></pre><p><br></p>
+<pre><code>public class Observer2 implements Observer {  
 
-    /*公有属性*/  
-    private String url = &quot;jdbc:mysql://localhost:3306/test&quot;;  
-    private String username = &quot;root&quot;;  
-    private String password = &quot;root&quot;;  
-    private String driverClassName = &quot;com.mysql.jdbc.Driver&quot;;  
-
-    private int poolSize = 100;  
-    private static ConnectionPool instance = null;  
-    Connection conn = null;  
-
-    /*构造方法，做一些初始化工作*/  
-    private ConnectionPool() {  
-        pool = new Vector&lt;Connection&gt;(poolSize);  
-
-        for (int i = 0; i &lt; poolSize; i++) {  
-            try {  
-                Class.forName(driverClassName);  
-                conn = DriverManager.getConnection(url, username, password);  
-                pool.add(conn);  
-            } catch (ClassNotFoundException e) {  
-                e.printStackTrace();  
-            } catch (SQLException e) {  
-                e.printStackTrace();  
-            }  
-        }  
+    @Override  
+    public void update() {  
+        System.out.println(&quot;observer2 has received!&quot;);  
     }  
 
-    /* 返回连接到连接池(当该连接不再用时加入连接池以备后续提供) */  
-    public synchronized void release() {  
-        pool.add(conn);  
+} 
+</code></pre><p><font size="4">Subject接口及实现类：</font><br> </p>
+<pre><code>public interface Subject {  
+
+    /*增加观察者*/  
+    public void add(Observer observer);  
+
+    /*删除观察者*/  
+    public void del(Observer observer);  
+
+    /*通知所有的观察者*/  
+    public void notifyObservers();  
+
+    /*自身的操作*/  
+    public void operation();  
+} 
+</code></pre><p><br></p>
+<pre><code>public abstract class AbstractSubject implements Subject {  
+
+    private Vector&lt;Observer&gt; vector = new Vector&lt;Observer&gt;();  
+    @Override  
+    public void add(Observer observer) {  
+        vector.add(observer);  
     }  
 
-    /* 返回连接池中的一个数据库连接 */  
-    public synchronized Connection getConnection() {  
-        if (pool.size() &gt; 0) {  
-            Connection conn = pool.get(0);  
-            pool.remove(conn);  
-            return conn;  
-        } else {  
-            return null;  
+    @Override  
+    public void del(Observer observer) {  
+        vector.remove(observer);  
+    }  
+
+    @Override  
+    public void notifyObservers() {  
+        Enumeration&lt;Observer&gt; enumo = vector.elements();  
+        while(enumo.hasMoreElements()){  
+            enumo.nextElement().update();  
         }  
     }  
 }  
-</code></pre><p><font size="4">通过连接池的管理，实现了数据库连接的共享，不需要每一次都重新创建连接，节省了数据库重新创建的开销，提升了系统的性能！</font><br> </p>
+</code></pre><p><br></p>
+<pre><code>public class MySubject extends AbstractSubject {  
 
+    @Override  
+    public void operation() {  
+        System.out.println(&quot;update self!&quot;);  
+        notifyObservers();  
+    }  
+
+} 
+</code></pre><p><font size="4">测试类：</font><br> </p>
+<pre><code>public class ObserverTest {  
+
+    public static void main(String[] args) {  
+        Subject sub = new MySubject();  
+        sub.add(new Observer1());  
+        sub.add(new Observer2());  
+
+        sub.operation();  
+    }  
+
+} 
+</code></pre><p><font size="4">代码的执行结果如下：</font><br> </p>
+<pre><code>update self!
+observer1 has received!
+observer2 has received!
+</code></pre>
         </div>
         <div class="post-reply">
             
