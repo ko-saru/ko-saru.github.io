@@ -6,21 +6,22 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
   <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
   
-  <title>大数相乘 | Kosaru&#39;s Blog</title>
+  <title>设计模式(十四) | Kosaru&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="代码如下： public class Mutiply {      public static void main(String[] args){          String str1 = &amp;quot;7832974972840919321747983209327&amp;quot;;         String str2 = &amp;quot;1987432091904327543957&amp;quot;;">
-<meta name="keywords" content="programming">
+  <meta name="description" content="模板方法模式">
+<meta name="keywords" content="technology">
 <meta property="og:type" content="article">
-<meta property="og:title" content="大数相乘">
-<meta property="og:url" content="https://ko-saru.github.io/2018/04/15/article-title/index.html">
+<meta property="og:title" content="设计模式(十四)">
+<meta property="og:url" content="https://ko-saru.github.io/2018/05/06/design-pattern14/index.html">
 <meta property="og:site_name" content="Kosaru&#39;s Blog">
-<meta property="og:description" content="代码如下： public class Mutiply {      public static void main(String[] args){          String str1 = &amp;quot;7832974972840919321747983209327&amp;quot;;         String str2 = &amp;quot;1987432091904327543957&amp;quot;;">
-<meta property="og:image" content="https://ko-saru.github.io/photo/4.JPG">
-<meta property="og:updated_time" content="2018-04-26T12:53:08.854Z">
+<meta property="og:description" content="模板方法模式">
+<meta property="og:image" content="https://ko-saru.github.io/photo/5-6/1.jpg">
+<meta property="og:image" content="https://ko-saru.github.io/photo/5-6/a.jpg">
+<meta property="og:updated_time" content="2018-05-06T06:20:01.488Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="大数相乘">
-<meta name="twitter:description" content="代码如下： public class Mutiply {      public static void main(String[] args){          String str1 = &amp;quot;7832974972840919321747983209327&amp;quot;;         String str2 = &amp;quot;1987432091904327543957&amp;quot;;">
-<meta name="twitter:image" content="https://ko-saru.github.io/photo/4.JPG">
+<meta name="twitter:title" content="设计模式(十四)">
+<meta name="twitter:description" content="模板方法模式">
+<meta name="twitter:image" content="https://ko-saru.github.io/photo/5-6/1.jpg">
   
     <link rel="alternate" href="/atom.xml" title="Kosaru&#39;s Blog" type="application/atom+xml">
   
@@ -138,66 +139,66 @@
     <div class="container post-box">
         <div class="content post-title is-flex center flex-column" style="margin-bottom: 70px; overflow: auto;">
             <h1 class="has-text-centered" style="padding-bottom: 10px; border-bottom: 3px solid #fff">
-                <strong>大数相乘</strong>
+                <strong>设计模式(十四)</strong>
             </h1>
             
             <div class="is-flex align-center">
                 <img class="post-avatar" src="/photo/wuhanyu.png">
                 <span style="padding:0 10px;"> <span class="sub-title">By</span> kosaru</span>
-                <span class="post-date sub-title">at: 2018-04-15</span>
+                <span class="post-date sub-title">at: 2018-05-06</span>
             </div>
             
                 <div>
                     
-                         <a class="tag is-post-tag" href="/tags/programming/">programming</a>
+                         <a class="tag is-post-tag" href="/tags/technology/">technology</a>
                     
                 </div>
             
         </div>
         <div class="content" style="overflow: auto">
-            <p><div align="center" style="display:none"><br><img src="/photo/4.JPG" height="250" width="495"><br></div><br><strong>代码如下：</strong><br></p>
-<pre><code>public class Mutiply {
+            <p><div align="center" style="display:none"><br><img src="/photo/5-6/1.jpg" height="330" width="495"><br></div></p>
+<p></p><h1>14、模板方法模式（Template Method）</h1><hr><p></p>
+<p><font size="4">解释一下模板方法模式，就是指：一个抽象类中，有一个主方法，再定义1…n个方法，可以是抽象的，也可以是实际的方法，定义一个类，继承该抽象类，重写抽象方法，通过调用抽象类，实现对子类的调用，先看个关系图：</font><br><br><img src="/photo/5-6/a.jpg" alt="alt text"><br></p>
+<p><font size="4">就是在AbstractCalculator类中定义一个主方法calculate，calculate()调用spilt()等，Plus和Minus分别继承AbstractCalculator类，通过对AbstractCalculator的调用实现对子类的调用，看下面的例子：</font><br> </p>
+<pre><code>public abstract class AbstractCalculator {  
 
-    public static void main(String[] args){
+    /*主方法，实现对本类其它方法的调用*/  
+    public final int calculate(String exp,String opt){  
+        int array[] = split(exp,opt);  
+        return calculate(array[0],array[1]);  
+    }  
 
-        String str1 = &quot;7832974972840919321747983209327&quot;;
-        String str2 = &quot;1987432091904327543957&quot;;
-        System.out.println(multiply(str1,str2));
+    /*被子类重写的方法*/  
+    abstract public int calculate(int num1,int num2);  
 
-    }
-    public static String multiply(String num1,String num2){
+    public int[] split(String exp,String opt){  
+        String array[] = exp.split(opt);  
+        int arrayInt[] = new int[2];  
+        arrayInt[0] = Integer.parseInt(array[0]);  
+        arrayInt[1] = Integer.parseInt(array[1]);  
+        return arrayInt;  
+    }  
+}  
+</code></pre><p><br></p>
+<pre><code>public class Plus extends AbstractCalculator {  
 
-        int len1 = num1.length();
-        int len2 = num2.length();
-        //结果最大长度len1+len2,最小为len1+len2-1
-        int[] num = new int[len1+len2]; //数组默认初始化均为0
-        for(int i=0;i&lt;len2;i++){
+    @Override  
+    public int calculate(int num1,int num2) {  
+        return num1 + num2;  
+    }  
+} 
+</code></pre><p><font size="4">测试类：</font><br> </p>
+<pre><code>public class StrategyTest {  
 
-            int n1 = num2.charAt(len2-1-i)-&apos;0&apos;;
-            int tmp = 0; //表示进位
-            for(int j=0;j&lt;len1;j++){
-                int n2 = num1.charAt(len1-1-j)-&apos;0&apos;;
-                tmp = tmp + num[i+j] + n1*n2;
-                num[i+j] = tmp%10;
-                tmp = tmp/10;
-            }
-            num[len1+i] = tmp; //下面的数与上面最高位相乘得到的那个进位
+    public static void main(String[] args) {  
+        String exp = &quot;8+8&quot;;  
+        AbstractCalculator cal = new Plus();  
+        int result = cal.calculate(exp, &quot;\\+&quot;);  
+        System.out.println(result);  
+    }  
+} 
+</code></pre><p><font size="4">我跟踪下这个小程序的执行过程：首先将exp和”\+”做参数，调用AbstractCalculator类里的calculate(String,String)方法，在calculate(String,String)里调用同类的split()，之后再调用calculate(int ,int)方法，从这个方法进入到子类中，执行完return num1 + num2后，将值返回到AbstractCalculator类，赋给result，打印出来。正好验证了我们开头的思路。</font><br> </p>
 
-        }
-        //现在数组中存的是从个位开始到高位，所以需要倒过来
-        //先找到数组中从后面开始不为0的数，该数为最高位。
-        int i = len1+len2-1;
-        while(i&gt;=0 &amp;&amp; num[i]==0){
-            i--;
-        }
-        String result = &quot;&quot;;
-        while(i&gt;=0){
-            result+=num[i--];
-        }
-        return result;
-    }
-}
-</code></pre>
         </div>
         <div class="post-reply">
             
