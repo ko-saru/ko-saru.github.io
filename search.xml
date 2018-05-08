@@ -608,239 +608,347 @@ public class EnumDemo4 {
 <font size="4">
 
 <ul>
-<li><p>序列化可能会破坏单例模式，比较每次反序列化一个序列化的对象实例时都会创建一个新的实例，解决方案如下：</p></li></ul></font><br> <p></p>
-<p>  //测试例子(四种写解决方式雷同)<br>  public class Singleton implements java.io.Serializable {     </p>
-<pre><code>public static Singleton INSTANCE = new Singleton();     
+<li>序列化可能会破坏单例模式，比较每次反序列化一个序列化的对象实例时都会创建一个新的实例，解决方案如下：</li></ul></font><br> 
 
-protected Singleton() {     
-}  
+<pre><code>//测试例子(四种写解决方式雷同)
+public class Singleton implements java.io.Serializable {     
+   public static Singleton INSTANCE = new Singleton();     
 
-//反序列时直接返回当前INSTANCE
-private Object readResolve() {     
-         return INSTANCE;     
-   }    
-</code></pre><p>  } </p>
-<font size="4">
+   protected Singleton() {     
+   }  
 
-<li><p>使用反射强行调用私有构造器，解决方式可以修改构造器，让它在创建第二个实例的时候抛异常，如下：</p></li></font><br><p></p>
-<p>  public static Singleton INSTANCE = new Singleton();<br>  private static volatile  boolean  flag = true;<br>  private Singleton(){</p>
-<pre><code>if(flag){
-flag = false;   
-}else{
-    throw new RuntimeException(&quot;The instance  already exists ！&quot;);
-}
-</code></pre><p>  }<br><font size="4">如上所述，问题确实也得到了解决，但问题是我们为此付出了不少努力，即添加了不少代码，还应该注意到如果单例类维持了其他对象的状态时还需要使他们成为transient的对象，这种就更复杂了，那有没有更简单更高效的呢？当然是有的，那就是枚举单例了，先来看看如何实现：</font><br> </p>
-<p>  public enum  SingletonEnum {</p>
-<pre><code>INSTANCE;
-private String name;
-public String getName(){
-    return name;
-}
-public void setName(String name){
-    this.name = name;
-}
-</code></pre><p>  }<br><font size="4">代码相当简洁，我们也可以像常规类一样编写enum类，为其添加变量和方法，访问方式也更简单，使用SingletonEnum.INSTANCE进行访问，这样也就避免调用getInstance方法，更重要的是使用枚举单例的写法，我们完全不用考虑序列化和反射的问题。枚举序列化是由jvm保证的，每一个枚举类型和定义的枚举变量在JVM中都是唯一的，在枚举类型的序列化和反序列化上，Java做了特殊的规定：在序列化时Java仅仅是将枚举对象的name属性输出到结果中，反序列化的时候则是通过java.lang.Enum的valueOf方法来根据名字查找枚举对象。同时，编译器是不允许任何对这种序列化机制的定制的并禁用了writeObject、readObject、readObjectNoData、writeReplace和readResolve等方法，从而保证了枚举实例的唯一性，这里我们不妨再次看看Enum类的valueOf方法：</font><br> </p>
-<p>  public static <t extends="" enum<t="">&gt; T valueOf(Class<t> enumType,</t></t></p>
-<pre><code>                                            String name) {
-    T result = enumType.enumConstantDirectory().get(name);
-    if (result != null)
-        return result;
-    if (name == null)
-        throw new NullPointerException(&quot;Name is null&quot;);
-    throw new IllegalArgumentException(
-        &quot;No enum constant &quot; + enumType.getCanonicalName() + &quot;.&quot; + name);
-}
-</code></pre><p><font size="4">实际上通过调用enumType(Class对象的引用)的enumConstantDirectory方法获取到的是一个Map集合，在该集合中存放了以枚举name为key和以枚举实例变量为value的Key&amp;Value数据，因此通过name的值就可以获取到枚举实例，看看enumConstantDirectory方法源码：</font><br> </p>
-<p>  Map<string, t=""> enumConstantDirectory() {</string,></p>
-<pre><code>    if (enumConstantDirectory == null) {
-        //getEnumConstantsShared最终通过反射调用枚举类的values方法
-        T[] universe = getEnumConstantsShared();
-        if (universe == null)
-            throw new IllegalArgumentException(
-                getName() + &quot; is not an enum type&quot;);
-        Map&lt;String, T&gt; m = new HashMap&lt;&gt;(2 * universe.length);
-        //map存放了当前enum类的所有枚举实例变量，以name为key值
-        for (T constant : universe)
-            m.put(((Enum&lt;?&gt;)constant).name(), constant);
-        enumConstantDirectory = m;
-    }
-    return enumConstantDirectory;
-}
-private volatile transient Map&lt;String, T&gt; enumConstantDirectory = null;
-</code></pre><p><font size="4">到这里我们也就可以看出枚举序列化确实不会重新创建新实例，jvm保证了每个枚举实例变量的唯一性。再来看看反射到底能不能创建枚举，下面试图通过反射获取构造器并创建枚举</font><br> </p>
-<p>  public static void main(String[] args) throws IllegalAccessException, InvocationTargetException, InstantiationException, NoSuchMethodException {</p>
-<pre><code>//获取枚举类的构造函数(前面的源码已分析过)
- Constructor&lt;SingletonEnum&gt; constructor=SingletonEnum.class.getDeclaredConstructor(String.class,int.class);
- constructor.setAccessible(true);
- //创建枚举
- SingletonEnum singleton=constructor.newInstance(&quot;otherInstance&quot;,9);
-}
-</code></pre><p><font size="4">执行报错</font><br> </p>
-<p>  Exception in thread “main” java.lang.IllegalArgumentException: Cannot reflectively create enum objects</p>
-<pre><code>at java.lang.reflect.Constructor.newInstance(Constructor.java:417)
-at zejian.SingletonEnum.main(SingletonEnum.java:38)
-at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
-at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-at java.lang.reflect.Method.invoke(Method.java:498)
-at com.intellij.rt.execution.application.AppMain.main(AppMain.java:144)
-</code></pre><p><font size="4">显然告诉我们不能使用反射创建枚举类，这是为什么呢？不妨看看newInstance方法源码：</font><br> </p>
-<p>  public T newInstance(Object … initargs)</p>
-<pre><code>    throws InstantiationException, IllegalAccessException,
-           IllegalArgumentException, InvocationTargetException
-{
-    if (!override) {
-        if (!Reflection.quickCheckMemberAccess(clazz, modifiers)) {
-            Class&lt;?&gt; caller = Reflection.getCallerClass();
-            checkAccess(caller, clazz, null, modifiers);
-        }
-    }
-    //这里判断Modifier.ENUM是不是枚举修饰符，如果是就抛异常
-    if ((clazz.getModifiers() &amp; Modifier.ENUM) != 0)
-        throw new IllegalArgumentException(&quot;Cannot reflectively create enum objects&quot;);
-    ConstructorAccessor ca = constructorAccessor;   // read volatile
-    if (ca == null) {
-        ca = acquireConstructorAccessor();
-    }
-    @SuppressWarnings(&quot;unchecked&quot;)
-    T inst = (T) ca.newInstance(initargs);
-    return inst;
-}
-</code></pre><p><font size="4">源码很了然，确实无法使用反射创建枚举实例，也就是说明了创建枚举实例只有编译器能够做到而已。显然枚举单例模式确实是很不错的选择，因此我们推荐使用它。但是这总不是万能的，对于android平台这个可能未必是最好的选择，在android开发中，内存优化是个大块头，而使用枚举时占用的内存常常是静态变量的两倍还多，因此android官方在内存优化方面给出的建议是尽量避免在android中使用enum。但是不管如何，关于单例，我们总是应该记住：线程安全，延迟加载，序列化与反序列化安全，反射安全是很重重要的。</font><br><br></p><h2><font color="red">EnumMap</font></h2><br><h2><font color="red">EnumMap基本用法</font></h2><br><font size="4">先思考这样一个问题，现在我们有一堆size大小相同而颜色不同的数据，需要统计出每种颜色的数量是多少以便将数据录入仓库，定义如下枚举用于表示颜色Color:</font><br> <p></p>
-<p>  enum Color {</p>
-<pre><code>GREEN,RED,BLUE,YELLOW
-</code></pre><p>  }<br><font size="4">我们有如下解决方案，使用Map集合来统计，key值作为颜色名称，value代表衣服数量，如下：</font><br> </p>
-<p>  import java.util.*;</p>
-<p>  /**</p>
+   //反序列时直接返回当前INSTANCE
+   private Object readResolve() {     
+            return INSTANCE;     
+      }    
+} 
+</code></pre><font size="4">
+
 <ul>
-<li>Created by zejian on 2017/5/10.</li>
-<li><p>Blog : <a href="http://blog.csdn.net/javazejian" target="_blank" rel="noopener">http://blog.csdn.net/javazejian</a> [原文地址,请尊重原创]<br>*/<br>public class EnumMapDemo {<br> public static void main(String[] args){</p>
-<pre><code>List&lt;Clothes&gt; list = new ArrayList&lt;&gt;();
-list.add(new Clothes(&quot;C001&quot;,Color.BLUE));
-list.add(new Clothes(&quot;C002&quot;,Color.YELLOW));
-list.add(new Clothes(&quot;C003&quot;,Color.RED));
-list.add(new Clothes(&quot;C004&quot;,Color.GREEN));
-list.add(new Clothes(&quot;C005&quot;,Color.BLUE));
-list.add(new Clothes(&quot;C006&quot;,Color.BLUE));
-list.add(new Clothes(&quot;C007&quot;,Color.RED));
-list.add(new Clothes(&quot;C008&quot;,Color.YELLOW));
-list.add(new Clothes(&quot;C009&quot;,Color.YELLOW));
-list.add(new Clothes(&quot;C010&quot;,Color.GREEN));
-//方案1:使用HashMap
-Map&lt;String,Integer&gt; map = new HashMap&lt;&gt;();
-for (Clothes clothes:list){
-   String colorName=clothes.getColor().name();
-   Integer count = map.get(colorName);
-    if(count!=null){
-        map.put(colorName,count+1);
-    }else {
-        map.put(colorName,1);
+<li>使用反射强行调用私有构造器，解决方式可以修改构造器，让它在创建第二个实例的时候抛异常，如下：</li></ul></font><br>
+
+<pre><code>public static Singleton INSTANCE = new Singleton();     
+private static volatile  boolean  flag = true;
+private Singleton(){
+    if(flag){
+    flag = false;   
+    }else{
+        throw new RuntimeException(&quot;The instance  already exists ！&quot;);
     }
 }
+</code></pre><p><font size="4">如上所述，问题确实也得到了解决，但问题是我们为此付出了不少努力，即添加了不少代码，还应该注意到如果单例类维持了其他对象的状态时还需要使他们成为transient的对象，这种就更复杂了，那有没有更简单更高效的呢？当然是有的，那就是枚举单例了，先来看看如何实现：</font><br> </p>
+<pre><code>public enum  SingletonEnum {
+    INSTANCE;
+    private String name;
+    public String getName(){
+        return name;
+    }
+    public void setName(String name){
+        this.name = name;
+    }
+}
+</code></pre><p><font size="4">代码相当简洁，我们也可以像常规类一样编写enum类，为其添加变量和方法，访问方式也更简单，使用SingletonEnum.INSTANCE进行访问，这样也就避免调用getInstance方法，更重要的是使用枚举单例的写法，我们完全不用考虑序列化和反射的问题。枚举序列化是由jvm保证的，每一个枚举类型和定义的枚举变量在JVM中都是唯一的，在枚举类型的序列化和反序列化上，Java做了特殊的规定：在序列化时Java仅仅是将枚举对象的name属性输出到结果中，反序列化的时候则是通过java.lang.Enum的valueOf方法来根据名字查找枚举对象。同时，编译器是不允许任何对这种序列化机制的定制的并禁用了writeObject、readObject、readObjectNoData、writeReplace和readResolve等方法，从而保证了枚举实例的唯一性，这里我们不妨再次看看Enum类的valueOf方法：</font><br> </p>
+<pre><code>public static &lt;T extends Enum&lt;T&gt;&gt; T valueOf(Class&lt;T&gt; enumType,
+                                              String name) {
+      T result = enumType.enumConstantDirectory().get(name);
+      if (result != null)
+          return result;
+      if (name == null)
+          throw new NullPointerException(&quot;Name is null&quot;);
+      throw new IllegalArgumentException(
+          &quot;No enum constant &quot; + enumType.getCanonicalName() + &quot;.&quot; + name);
+  }
+</code></pre><p><font size="4">实际上通过调用enumType(Class对象的引用)的enumConstantDirectory方法获取到的是一个Map集合，在该集合中存放了以枚举name为key和以枚举实例变量为value的Key&amp;Value数据，因此通过name的值就可以获取到枚举实例，看看enumConstantDirectory方法源码：</font><br> </p>
+<pre><code>Map&lt;String, T&gt; enumConstantDirectory() {
+        if (enumConstantDirectory == null) {
+            //getEnumConstantsShared最终通过反射调用枚举类的values方法
+            T[] universe = getEnumConstantsShared();
+            if (universe == null)
+                throw new IllegalArgumentException(
+                    getName() + &quot; is not an enum type&quot;);
+            Map&lt;String, T&gt; m = new HashMap&lt;&gt;(2 * universe.length);
+            //map存放了当前enum类的所有枚举实例变量，以name为key值
+            for (T constant : universe)
+                m.put(((Enum&lt;?&gt;)constant).name(), constant);
+            enumConstantDirectory = m;
+        }
+        return enumConstantDirectory;
+    }
+    private volatile transient Map&lt;String, T&gt; enumConstantDirectory = null;
+</code></pre><p><font size="4">到这里我们也就可以看出枚举序列化确实不会重新创建新实例，jvm保证了每个枚举实例变量的唯一性。再来看看反射到底能不能创建枚举，下面试图通过反射获取构造器并创建枚举</font><br> </p>
+<pre><code>public static void main(String[] args) throws IllegalAccessException, InvocationTargetException, InstantiationException, NoSuchMethodException {
+  //获取枚举类的构造函数(前面的源码已分析过)
+   Constructor&lt;SingletonEnum&gt; constructor=SingletonEnum.class.getDeclaredConstructor(String.class,int.class);
+   constructor.setAccessible(true);
+   //创建枚举
+   SingletonEnum singleton=constructor.newInstance(&quot;otherInstance&quot;,9);
+  }
+</code></pre><p><font size="4">执行报错</font><br> </p>
+<pre><code>Exception in thread &quot;main&quot; java.lang.IllegalArgumentException: Cannot reflectively create enum objects
+    at java.lang.reflect.Constructor.newInstance(Constructor.java:417)
+    at zejian.SingletonEnum.main(SingletonEnum.java:38)
+    at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+    at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+    at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+    at java.lang.reflect.Method.invoke(Method.java:498)
+    at com.intellij.rt.execution.application.AppMain.main(AppMain.java:144)
+</code></pre><p><font size="4">显然告诉我们不能使用反射创建枚举类，这是为什么呢？不妨看看newInstance方法源码：</font><br> </p>
+<pre><code>public T newInstance(Object ... initargs)
+        throws InstantiationException, IllegalAccessException,
+               IllegalArgumentException, InvocationTargetException
+    {
+        if (!override) {
+            if (!Reflection.quickCheckMemberAccess(clazz, modifiers)) {
+                Class&lt;?&gt; caller = Reflection.getCallerClass();
+                checkAccess(caller, clazz, null, modifiers);
+            }
+        }
+        //这里判断Modifier.ENUM是不是枚举修饰符，如果是就抛异常
+        if ((clazz.getModifiers() &amp; Modifier.ENUM) != 0)
+            throw new IllegalArgumentException(&quot;Cannot reflectively create enum objects&quot;);
+        ConstructorAccessor ca = constructorAccessor;   // read volatile
+        if (ca == null) {
+            ca = acquireConstructorAccessor();
+        }
+        @SuppressWarnings(&quot;unchecked&quot;)
+        T inst = (T) ca.newInstance(initargs);
+        return inst;
+    }
+</code></pre><p><font size="4">源码很了然，确实无法使用反射创建枚举实例，也就是说明了创建枚举实例只有编译器能够做到而已。显然枚举单例模式确实是很不错的选择，因此我们推荐使用它。但是这总不是万能的，对于android平台这个可能未必是最好的选择，在android开发中，内存优化是个大块头，而使用枚举时占用的内存常常是静态变量的两倍还多，因此android官方在内存优化方面给出的建议是尽量避免在android中使用enum。但是不管如何，关于单例，我们总是应该记住：线程安全，延迟加载，序列化与反序列化安全，反射安全是很重重要的。</font><br> </p>
+<p></p><h2><font color="red">EnumMap</font></h2><p></p>
+<p></p><h2><font color="red">EnumMap基本用法</font></h2><p></p>
+<p><font size="4">先思考这样一个问题，现在我们有一堆size大小相同而颜色不同的数据，需要统计出每种颜色的数量是多少以便将数据录入仓库，定义如下枚举用于表示颜色Color:</font><br> </p>
+<pre><code>enum Color {
+    GREEN,RED,BLUE,YELLOW
+}
+</code></pre><p><font size="4">我们有如下解决方案，使用Map集合来统计，key值作为颜色名称，value代表衣服数量，如下：</font><br> </p>
+<pre><code>import java.util.*;
 
-System.out.println(map.toString());
+/**
+ * Created by zejian on 2017/5/10.
+ * Blog : http://blog.csdn.net/javazejian [原文地址,请尊重原创]
+ */
+public class EnumMapDemo {
+    public static void main(String[] args){
+        List&lt;Clothes&gt; list = new ArrayList&lt;&gt;();
+        list.add(new Clothes(&quot;C001&quot;,Color.BLUE));
+        list.add(new Clothes(&quot;C002&quot;,Color.YELLOW));
+        list.add(new Clothes(&quot;C003&quot;,Color.RED));
+        list.add(new Clothes(&quot;C004&quot;,Color.GREEN));
+        list.add(new Clothes(&quot;C005&quot;,Color.BLUE));
+        list.add(new Clothes(&quot;C006&quot;,Color.BLUE));
+        list.add(new Clothes(&quot;C007&quot;,Color.RED));
+        list.add(new Clothes(&quot;C008&quot;,Color.YELLOW));
+        list.add(new Clothes(&quot;C009&quot;,Color.YELLOW));
+        list.add(new Clothes(&quot;C010&quot;,Color.GREEN));
+        //方案1:使用HashMap
+        Map&lt;String,Integer&gt; map = new HashMap&lt;&gt;();
+        for (Clothes clothes:list){
+           String colorName=clothes.getColor().name();
+           Integer count = map.get(colorName);
+            if(count!=null){
+                map.put(colorName,count+1);
+            }else {
+                map.put(colorName,1);
+            }
+        }
 
-System.out.println(&quot;---------------&quot;);
+        System.out.println(map.toString());
 
-//方案2:使用EnumMap
+        System.out.println(&quot;---------------&quot;);
+
+        //方案2:使用EnumMap
+        Map&lt;Color,Integer&gt; enumMap=new EnumMap&lt;&gt;(Color.class);
+
+        for (Clothes clothes:list){
+            Color color=clothes.getColor();
+            Integer count = enumMap.get(color);
+            if(count!=null){
+                enumMap.put(color,count+1);
+            }else {
+                enumMap.put(color,1);
+            }
+        }
+
+        System.out.println(enumMap.toString());
+    }
+
+    /**
+     输出结果:
+     {RED=2, BLUE=3, YELLOW=3, GREEN=2}
+     ---------------
+     {GREEN=2, RED=2, BLUE=3, YELLOW=3}
+     */
+}
+</code></pre><p><font size="4">代码比较简单，我们使用两种解决方案，一种是HashMap，一种EnumMap，虽然都统计出了正确的结果，但是EnumMap作为枚举的专属的集合，我们没有理由再去使用HashMap，毕竟EnumMap要求其Key必须为Enum类型，因而使用Color枚举实例作为key是最恰当不过了，也避免了获取name的步骤，更重要的是EnumMap效率更高，因为其内部是通过数组实现的（稍后分析），注意EnumMap的key值不能为null，虽说是枚举专属集合，但其操作与一般的Map差不多，概括性来说EnumMap是专门为枚举类型量身定做的Map实现，虽然使用其它的Map（如HashMap）也能完成相同的功能，但是使用EnumMap会更加高效，它只能接收同一枚举类型的实例作为键值且不能为null，由于枚举类型实例的数量相对固定并且有限，所以EnumMap使用数组来存放与枚举类型对应的值，毕竟数组是一段连续的内存空间，根据程序局部性原理，效率会相当高。下面我们来进一步了解EnumMap的用法，先看构造函数：</font><br> </p>
+<pre><code>//创建一个具有指定键类型的空枚举映射。
+EnumMap(Class&lt;K&gt; keyType) 
+//创建一个其键类型与指定枚举映射相同的枚举映射，最初包含相同的映射关系（如果有的话）。     
+EnumMap(EnumMap&lt;K,? extends V&gt; m) 
+//创建一个枚举映射，从指定映射对其初始化。
+EnumMap(Map&lt;K,? extends V&gt; m)   
+</code></pre><p><font size="4">与HashMap不同，它需要传递一个类型信息，即Class对象，通过这个参数EnumMap就可以根据类型信息初始化其内部数据结构，另外两只是初始化时传入一个Map集合，代码演示如下：</font><br> </p>
+<pre><code>//使用第一种构造
 Map&lt;Color,Integer&gt; enumMap=new EnumMap&lt;&gt;(Color.class);
+//使用第二种构造
+Map&lt;Color,Integer&gt; enumMap2=new EnumMap&lt;&gt;(enumMap);
+//使用第三种构造
+Map&lt;Color,Integer&gt; hashMap = new HashMap&lt;&gt;();
+hashMap.put(Color.GREEN, 2);
+hashMap.put(Color.BLUE, 3);
+Map&lt;Color, Integer&gt; enumMap = new EnumMap&lt;&gt;(hashMap);
+</code></pre><p><font size="4">至于EnumMap的方法，跟普通的map几乎没有区别，注意与HashMap的主要不同在于构造方法需要传递类型参数和EnumMap保证Key顺序与枚举中的顺序一致，但请记住Key不能为null。</font><br> </p>
+<p></p><h2><font color="red">EnumMap实现原理剖析</font></h2><p></p>
+<p><font size="4">EnumMap的源码有700多行，这里我们主要分析其内部存储结构，添加查找的实现，了解这几点，对应EnumMap内部实现原理也就比较清晰了，先看数据结构和构造函数</font><br> </p>
+<pre><code>public class EnumMap&lt;K extends Enum&lt;K&gt;, V&gt; extends AbstractMap&lt;K, V&gt;
+    implements java.io.Serializable, Cloneable
+{
+    //Class对象引用
+    private final Class&lt;K&gt; keyType;
 
-for (Clothes clothes:list){
-    Color color=clothes.getColor();
-    Integer count = enumMap.get(color);
-    if(count!=null){
-        enumMap.put(color,count+1);
-    }else {
-        enumMap.put(color,1);
+    //存储Key值的数组
+    private transient K[] keyUniverse;
+
+    //存储Value值的数组
+    private transient Object[] vals;
+
+    //map的size
+    private transient int size = 0;
+
+    //空map
+    private static final Enum&lt;?&gt;[] ZERO_LENGTH_ENUM_ARRAY = new Enum&lt;?&gt;[0];
+
+    //构造函数
+    public EnumMap(Class&lt;K&gt; keyType) {
+        this.keyType = keyType;
+        keyUniverse = getKeyUniverse(keyType);
+        vals = new Object[keyUniverse.length];
     }
+
+}
+</code></pre><p><font size="4">EnumMap继承了AbstractMap类，因此EnumMap具备一般map的使用方法，keyType表示类型信息，keyUniverse表示键数组，存储的是所有可能的枚举值，vals数组表示键对应的值，size表示键值对个数。在构造函数中通过keyUniverse = getKeyUniverse(keyType);初始化了keyUniverse数组的值，内部存储的是所有可能的枚举值，接着初始化了存在Value值得数组vals，其大小与枚举实例的个数相同，getKeyUniverse方法实现如下</font><br> </p>
+<pre><code>//返回枚举数组
+private static &lt;K extends Enum&lt;K&gt;&gt; K[] getKeyUniverse(Class&lt;K&gt; keyType) {
+        //最终调用到枚举类型的values方法，values方法返回所有可能的枚举值
+        return SharedSecrets.getJavaLangAccess()
+                                        .getEnumConstantsShared(keyType);
+    }
+</code></pre><p><font size="4">从方法的返回值来看，返回类型是枚举数组，事实也是如此，最终返回值正是枚举类型的values方法的返回值，前面我们分析过values方法返回所有可能的枚举值，因此keyUniverse数组存储就是枚举类型的所有可能的枚举值。接着看put方法的实现</font><br> </p>
+<pre><code>public V put(K key, V value) {
+       typeCheck(key);//检测key的类型
+       //获取存放value值得数组下标
+       int index = key.ordinal();
+       //获取旧值
+       Object oldValue = vals[index];
+       //设置value值
+       vals[index] = maskNull(value);
+       if (oldValue == null)
+           size++;
+       return unmaskNull(oldValue);//返回旧值
+   }
+</code></pre><p><font size="4">这里通过typeCheck方法进行了key类型检测，判断是否为枚举类型，如果类型不对，会抛出异常</font><br> </p>
+<pre><code>private void typeCheck(K key) {
+   Class&lt;?&gt; keyClass = key.getClass();//获取类型信息
+   if (keyClass != keyType &amp;&amp; keyClass.getSuperclass() != keyType)
+       throw new ClassCastException(keyClass + &quot; != &quot; + keyType);
+}
+</code></pre><p><font size="4">接着通过int index = key.ordinal()的方式获取到该枚举实例的顺序值，利用此值作为下标，把值存储在vals数组对应下标的元素中即vals[index]，这也是为什么EnumMap能维持与枚举实例相同存储顺序的原因，我们发现在对vals[]中元素进行赋值和返回旧值时分别调用了maskNull方法和unmaskNull方法</font><br> </p>
+<pre><code>//代表NULL值得空对象实例
+  private static final Object NULL = new Object() {
+        public int hashCode() {
+            return 0;
+        }
+
+        public String toString() {
+            return &quot;java.util.EnumMap.NULL&quot;;
+        }
+    };
+
+    private Object maskNull(Object value) {
+        //如果值为空，返回NULL对象，否则返回value
+        return (value == null ? NULL : value);
+    }
+
+    @SuppressWarnings(&quot;unchecked&quot;)
+    private V unmaskNull(Object value) {
+        //将NULL对象转换为null值
+        return (V)(value == NULL ? null : value);
+    }
+</code></pre><p><font size="4">由此看来EnumMap还是允许存放null值的，但key绝对不能为null，对于null值，EnumMap进行了特殊处理,将其包装为NULL对象，毕竟vals[]存的是Object，maskNull方法和unmaskNull方法正是用于null的包装和解包装的。这就是EnumMap集合的添加过程。下面接着看获取方法</font><br> </p>
+<pre><code>public V get(Object key) {
+       return (isValidKey(key) ?
+               unmaskNull(vals[((Enum&lt;?&gt;)key).ordinal()]) : null);
+   }
+
+//对Key值的有效性和类型信息进行判断
+private boolean isValidKey(Object key) {
+     if (key == null)
+         return false;
+
+     // Cheaper than instanceof Enum followed by getDeclaringClass
+     Class&lt;?&gt; keyClass = key.getClass();
+     return keyClass == keyType || keyClass.getSuperclass() == keyType;
+ }
+</code></pre><p><font size="4">相对应put方法，get方法显示相当简洁，key有效的话，直接通过ordinal方法取索引，然后在值数组vals里通过索引获取值返回。remove方法如下：</font><br> </p>
+<pre><code>public V remove(Object key) {
+        //判断key值是否有效
+        if (!isValidKey(key))
+            return null;
+        //直接获取索引
+        int index = ((Enum&lt;?&gt;)key).ordinal();
+
+        Object oldValue = vals[index];
+        //对应下标元素值设置为null
+        vals[index] = null;
+        if (oldValue != null)
+            size--;//减size
+        return unmaskNull(oldValue);
+    }
+</code></pre><p><font size="4">非常简单，key值有效，通过key获取下标索引值，把vals[]对应下标值设置为null，size减一。查看是否包含某个值，</font><br> </p>
+<pre><code>判断是否包含某value
+public boolean containsValue(Object value) {
+    value = maskNull(value);
+    //遍历数组实现
+    for (Object val : vals)
+        if (value.equals(val))
+            return true;
+
+    return false;
+}
+//判断是否包含key
+public boolean containsKey(Object key) {
+    return isValidKey(key) &amp;&amp; vals[((Enum&lt;?&gt;)key).ordinal()] != null;
+}
+</code></pre><p><font size="4">判断value直接通过遍历数组实现，而判断key就更简单了，判断key是否有效和对应vals[]中是否存在该值。ok~，这就是EnumMap的主要实现原理，即内部有两个数组，长度相同，一个表示所有可能的键(枚举值)，一个表示对应的值，不允许keynull，但允许value为null，键都有一个对应的索引，根据索引直接访问和操作其键数组和值数组，由于操作都是数组，因此效率很高。</font><br> </p>
+<p></p><h2><font color="red">EnumSet</font></h2><p></p>
+<p><font size="4">EnumSet是与枚举类型一起使用的专用 Set 集合，EnumSet 中所有元素都必须是枚举类型。与其他Set接口的实现类HashSet/TreeSet(内部都是用对应的HashMap/TreeMap实现的)不同的是，EnumSet在内部实现是位向量(稍后分析)，它是一种极为高效的位运算操作，由于直接存储和操作都是bit，因此EnumSet空间和时间性能都十分可观，足以媲美传统上基于 int 的“位标志”的运算，重要的是我们可像操作set集合一般来操作位运算，这样使用代码更简单易懂同时又具备类型安全的优势。注意EnumSet不允许使用 null 元素。试图插入 null 元素将抛出 NullPointerException，但试图测试判断是否存在null 元素或移除 null 元素则不会抛出异常，与大多数collection 实现一样，EnumSet不是线程安全的，因此在多线程环境下应该注意数据同步问题，ok~，下面先来简单看看EnumSet的使用方式。</font><br> </p>
+<p></p><h2><font color="red">EnumSet用法</font></h2><p></p>
+<p><font size="4">创建EnumSet并不能使用new关键字，因为它是个抽象类，而应该使用其提供的静态工厂方法，EnumSet的静态工厂方法比较多，如下：</font><br> </p>
+<pre><code>创建一个具有指定元素类型的空EnumSet。
+EnumSet&lt;E&gt;  noneOf(Class&lt;E&gt; elementType)       
+//创建一个指定元素类型并包含所有枚举值的EnumSet
+&lt;E extends Enum&lt;E&gt;&gt; EnumSet&lt;E&gt; allOf(Class&lt;E&gt; elementType)
+// 创建一个包括枚举值中指定范围元素的EnumSet
+&lt;E extends Enum&lt;E&gt;&gt; EnumSet&lt;E&gt; range(E from, E to)
+// 初始集合包括指定集合的补集
+&lt;E extends Enum&lt;E&gt;&gt; EnumSet&lt;E&gt; complementOf(EnumSet&lt;E&gt; s)
+// 创建一个包括参数中所有元素的EnumSet
+&lt;E extends Enum&lt;E&gt;&gt; EnumSet&lt;E&gt; of(E e)
+&lt;E extends Enum&lt;E&gt;&gt; EnumSet&lt;E&gt; of(E e1, E e2)
+&lt;E extends Enum&lt;E&gt;&gt; EnumSet&lt;E&gt; of(E e1, E e2, E e3)
+&lt;E extends Enum&lt;E&gt;&gt; EnumSet&lt;E&gt; of(E e1, E e2, E e3, E e4)
+&lt;E extends Enum&lt;E&gt;&gt; EnumSet&lt;E&gt; of(E e1, E e2, E e3, E e4, E e5)
+&lt;E extends Enum&lt;E&gt;&gt; EnumSet&lt;E&gt; of(E first, E... rest)
+//创建一个包含参数容器中的所有元素的EnumSet
+&lt;E extends Enum&lt;E&gt;&gt; EnumSet&lt;E&gt; copyOf(EnumSet&lt;E&gt; s)
+&lt;E extends Enum&lt;E&gt;&gt; EnumSet&lt;E&gt; copyOf(Collection&lt;E&gt; c)
+</code></pre><p><font size="4">代码演示如下：</font><br> </p>
+<pre><code>enum Color {
+    GREEN , RED , BLUE , BLACK , YELLOW
 }
 
-System.out.println(enumMap.toString());
-</code></pre><p> }</p>
-<p> /**<br>  输出结果:</p>
-<h2 id="RED-2-BLUE-3-YELLOW-3-GREEN-2"><a href="#RED-2-BLUE-3-YELLOW-3-GREEN-2" class="headerlink" title="  {RED=2, BLUE=3, YELLOW=3, GREEN=2}"></a>  {RED=2, BLUE=3, YELLOW=3, GREEN=2}</h2><p>  {GREEN=2, RED=2, BLUE=3, YELLOW=3}<br>  */<br>}<br><font size="4">代码比较简单，我们使用两种解决方案，一种是HashMap，一种EnumMap，虽然都统计出了正确的结果，但是EnumMap作为枚举的专属的集合，我们没有理由再去使用HashMap，毕竟EnumMap要求其Key必须为Enum类型，因而使用Color枚举实例作为key是最恰当不过了，也避免了获取name的步骤，更重要的是EnumMap效率更高，因为其内部是通过数组实现的（稍后分析），注意EnumMap的key值不能为null，虽说是枚举专属集合，但其操作与一般的Map差不多，概括性来说EnumMap是专门为枚举类型量身定做的Map实现，虽然使用其它的Map（如HashMap）也能完成相同的功能，但是使用EnumMap会更加高效，它只能接收同一枚举类型的实例作为键值且不能为null，由于枚举类型实例的数量相对固定并且有限，所以EnumMap使用数组来存放与枚举类型对应的值，毕竟数组是一段连续的内存空间，根据程序局部性原理，效率会相当高。下面我们来进一步了解EnumMap的用法，先看构造函数：</font><br> </p>
-<p>//创建一个具有指定键类型的空枚举映射。<br>EnumMap(Class<k> keyType)<br>//创建一个其键类型与指定枚举映射相同的枚举映射，最初包含相同的映射关系（如果有的话）。<br>EnumMap(EnumMap<k,? extends="" v=""> m)<br>//创建一个枚举映射，从指定映射对其初始化。<br>EnumMap(Map<k,? extends="" v=""> m)<br><font size="4">与HashMap不同，它需要传递一个类型信息，即Class对象，通过这个参数EnumMap就可以根据类型信息初始化其内部数据结构，另外两只是初始化时传入一个Map集合，代码演示如下：</font><br> </k,?></k,?></k></p>
-<p>//使用第一种构造<br>Map<color,integer> enumMap=new EnumMap&lt;&gt;(Color.class);<br>//使用第二种构造<br>Map<color,integer> enumMap2=new EnumMap&lt;&gt;(enumMap);<br>//使用第三种构造<br>Map<color,integer> hashMap = new HashMap&lt;&gt;();<br>hashMap.put(Color.GREEN, 2);<br>hashMap.put(Color.BLUE, 3);<br>Map<color, integer=""> enumMap = new EnumMap&lt;&gt;(hashMap);<br><font size="4">至于EnumMap的方法，跟普通的map几乎没有区别，注意与HashMap的主要不同在于构造方法需要传递类型参数和EnumMap保证Key顺序与枚举中的顺序一致，但请记住Key不能为null。</font><br><br><h2><font color="red">EnumMap实现原理剖析</font></h2><br><font size="4">EnumMap的源码有700多行，这里我们主要分析其内部存储结构，添加查找的实现，了解这几点，对应EnumMap内部实现原理也就比较清晰了，先看数据结构和构造函数</font><br> </color,></color,integer></color,integer></color,integer></p>
-<p>public class EnumMap<k extends="" enum<k="">, V&gt; extends AbstractMap<k, v=""><br> implements java.io.Serializable, Cloneable<br>{<br> //Class对象引用<br> private final Class<k> keyType;</k></k,></k></p>
-<p> //存储Key值的数组<br> private transient K[] keyUniverse;</p>
-<p> //存储Value值的数组<br> private transient Object[] vals;</p>
-<p> //map的size<br> private transient int size = 0;</p>
-<p> //空map<br> private static final Enum&lt;?&gt;[] ZERO_LENGTH_ENUM_ARRAY = new Enum&lt;?&gt;[0];</p>
-<p> //构造函数<br> public EnumMap(Class<k> keyType) {</k></p>
-<pre><code>this.keyType = keyType;
-keyUniverse = getKeyUniverse(keyType);
-vals = new Object[keyUniverse.length];
-</code></pre><p> }</p>
-<p>}<br><font size="4">EnumMap继承了AbstractMap类，因此EnumMap具备一般map的使用方法，keyType表示类型信息，keyUniverse表示键数组，存储的是所有可能的枚举值，vals数组表示键对应的值，size表示键值对个数。在构造函数中通过keyUniverse = getKeyUniverse(keyType);初始化了keyUniverse数组的值，内部存储的是所有可能的枚举值，接着初始化了存在Value值得数组vals，其大小与枚举实例的个数相同，getKeyUniverse方法实现如下</font><br> </p>
-<p>//返回枚举数组<br>private static <k extends="" enum<k="">&gt; K[] getKeyUniverse(Class<k> keyType) {</k></k></p>
-<pre><code>//最终调用到枚举类型的values方法，values方法返回所有可能的枚举值
-return SharedSecrets.getJavaLangAccess()
-                                .getEnumConstantsShared(keyType);
-</code></pre><p> }<br><font size="4">从方法的返回值来看，返回类型是枚举数组，事实也是如此，最终返回值正是枚举类型的values方法的返回值，前面我们分析过values方法返回所有可能的枚举值，因此keyUniverse数组存储就是枚举类型的所有可能的枚举值。接着看put方法的实现</font><br> </p>
-<p>public V put(K key, V value) {</p>
-<pre><code>typeCheck(key);//检测key的类型
-//获取存放value值得数组下标
-int index = key.ordinal();
-//获取旧值
-Object oldValue = vals[index];
-//设置value值
-vals[index] = maskNull(value);
-if (oldValue == null)
-    size++;
-return unmaskNull(oldValue);//返回旧值
-</code></pre><p> }<br><font size="4">这里通过typeCheck方法进行了key类型检测，判断是否为枚举类型，如果类型不对，会抛出异常</font><br> </p>
-<p>private void typeCheck(K key) {<br>Class&lt;?&gt; keyClass = key.getClass();//获取类型信息<br>if (keyClass != keyType &amp;&amp; keyClass.getSuperclass() != keyType)</p>
-<pre><code>throw new ClassCastException(keyClass + &quot; != &quot; + keyType);
-</code></pre><p>}<br><font size="4">接着通过int index = key.ordinal()的方式获取到该枚举实例的顺序值，利用此值作为下标，把值存储在vals数组对应下标的元素中即vals[index]，这也是为什么EnumMap能维持与枚举实例相同存储顺序的原因，我们发现在对vals[]中元素进行赋值和返回旧值时分别调用了maskNull方法和unmaskNull方法</font><br> </p>
-<p>//代表NULL值得空对象实例<br>private static final Object NULL = new Object() {</p>
-<pre><code>public int hashCode() {
-    return 0;
-}
 
-public String toString() {
-    return &quot;java.util.EnumMap.NULL&quot;;
-}
-</code></pre><p> };</p>
-<p> private Object maskNull(Object value) {</p>
-<pre><code>//如果值为空，返回NULL对象，否则返回value
-return (value == null ? NULL : value);
-</code></pre><p> }</p>
-<p> @SuppressWarnings(“unchecked”)<br> private V unmaskNull(Object value) {</p>
-<pre><code>//将NULL对象转换为null值
-return (V)(value == NULL ? null : value);
-</code></pre><p> }<br><font size="4">由此看来EnumMap还是允许存放null值的，但key绝对不能为null，对于null值，EnumMap进行了特殊处理,将其包装为NULL对象，毕竟vals[]存的是Object，maskNull方法和unmaskNull方法正是用于null的包装和解包装的。这就是EnumMap集合的添加过程。下面接着看获取方法</font><br> </p>
-<p>public V get(Object key) {</p>
-<pre><code>return (isValidKey(key) ?
-        unmaskNull(vals[((Enum&lt;?&gt;)key).ordinal()]) : null);
-</code></pre><p> }</p>
-<p>//对Key值的有效性和类型信息进行判断<br>private boolean isValidKey(Object key) {<br>   if (key == null)</p>
-<pre><code>return false;
-</code></pre><p>   // Cheaper than instanceof Enum followed by getDeclaringClass<br>   Class&lt;?&gt; keyClass = key.getClass();<br>   return keyClass == keyType || keyClass.getSuperclass() == keyType;<br>}<br><font size="4">相对应put方法，get方法显示相当简洁，key有效的话，直接通过ordinal方法取索引，然后在值数组vals里通过索引获取值返回。remove方法如下：</font><br> </p>
-<p>public V remove(Object key) {</p>
-<pre><code>//判断key值是否有效
-if (!isValidKey(key))
-    return null;
-//直接获取索引
-int index = ((Enum&lt;?&gt;)key).ordinal();
-
-Object oldValue = vals[index];
-//对应下标元素值设置为null
-vals[index] = null;
-if (oldValue != null)
-    size--;//减size
-return unmaskNull(oldValue);
-</code></pre><p> }<br><font size="4">非常简单，key值有效，通过key获取下标索引值，把vals[]对应下标值设置为null，size减一。查看是否包含某个值，</font><br> </p>
-<p>判断是否包含某value<br>public boolean containsValue(Object value) {<br> value = maskNull(value);<br> //遍历数组实现<br> for (Object val : vals)</p>
-<pre><code>if (value.equals(val))
-    return true;
-</code></pre><p> return false;<br>}<br>//判断是否包含key<br>public boolean containsKey(Object key) {<br> return isValidKey(key) &amp;&amp; vals[((Enum&lt;?&gt;)key).ordinal()] != null;<br>}<br><font size="4">判断value直接通过遍历数组实现，而判断key就更简单了，判断key是否有效和对应vals[]中是否存在该值。ok~，这就是EnumMap的主要实现原理，即内部有两个数组，长度相同，一个表示所有可能的键(枚举值)，一个表示对应的值，不允许keynull，但允许value为null，键都有一个对应的索引，根据索引直接访问和操作其键数组和值数组，由于操作都是数组，因此效率很高。</font><br><br></p><h2><font color="red">EnumSet</font></h2><br><font size="4">EnumSet是与枚举类型一起使用的专用 Set 集合，EnumSet 中所有元素都必须是枚举类型。与其他Set接口的实现类HashSet/TreeSet(内部都是用对应的HashMap/TreeMap实现的)不同的是，EnumSet在内部实现是位向量(稍后分析)，它是一种极为高效的位运算操作，由于直接存储和操作都是bit，因此EnumSet空间和时间性能都十分可观，足以媲美传统上基于 int 的“位标志”的运算，重要的是我们可像操作set集合一般来操作位运算，这样使用代码更简单易懂同时又具备类型安全的优势。注意EnumSet不允许使用 null 元素。试图插入 null 元素将抛出 NullPointerException，但试图测试判断是否存在null 元素或移除 null 元素则不会抛出异常，与大多数collection 实现一样，EnumSet不是线程安全的，因此在多线程环境下应该注意数据同步问题，ok~，下面先来简单看看EnumSet的使用方式。</font><br><br><h2><font color="red">EnumSet用法</font></h2><br><font size="4">创建EnumSet并不能使用new关键字，因为它是个抽象类，而应该使用其提供的静态工厂方法，EnumSet的静态工厂方法比较多，如下：</font><br> <p></p>
-<p>创建一个具有指定元素类型的空EnumSet。<br>EnumSet<e>  noneOf(Class<e> elementType)<br>//创建一个指定元素类型并包含所有枚举值的EnumSet<br><e extends="" enum<e="">&gt; EnumSet<e> allOf(Class<e> elementType)<br>// 创建一个包括枚举值中指定范围元素的EnumSet<br><e extends="" enum<e="">&gt; EnumSet<e> range(E from, E to)<br>// 初始集合包括指定集合的补集<br><e extends="" enum<e="">&gt; EnumSet<e> complementOf(EnumSet<e> s)<br>// 创建一个包括参数中所有元素的EnumSet<br><e extends="" enum<e="">&gt; EnumSet<e> of(E e)<br><e extends="" enum<e="">&gt; EnumSet<e> of(E e1, E e2)<br><e extends="" enum<e="">&gt; EnumSet<e> of(E e1, E e2, E e3)<br><e extends="" enum<e="">&gt; EnumSet<e> of(E e1, E e2, E e3, E e4)<br><e extends="" enum<e="">&gt; EnumSet<e> of(E e1, E e2, E e3, E e4, E e5)<br><e extends="" enum<e="">&gt; EnumSet<e> of(E first, E… rest)<br>//创建一个包含参数容器中的所有元素的EnumSet<br><e extends="" enum<e="">&gt; EnumSet<e> copyOf(EnumSet<e> s)<br><e extends="" enum<e="">&gt; EnumSet<e> copyOf(Collection<e> c)<br><font size="4">代码演示如下：</font><br> </e></e></e></e></e></e></e></e></e></e></e></e></e></e></e></e></e></e></e></e></e></e></e></e></e></e></e></e></p>
-<p>enum Color {<br> GREEN , RED , BLUE , BLACK , YELLOW<br>}</p>
-</li>
-</ul>
-
-
-<pre><code>public class EnumSetDemo {
+public class EnumSetDemo {
 
     public static void main(String[] args){
 
