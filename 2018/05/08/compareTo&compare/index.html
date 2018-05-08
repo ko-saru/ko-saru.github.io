@@ -6,21 +6,21 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
   <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
   
-  <title>大数相乘 | Kosaru&#39;s Blog</title>
+  <title>Java中compareTo与compare方法比较 | Kosaru&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="代码如下： public class Mutiply {      public static void main(String[] args){          String str1 = &amp;quot;7832974972840919321747983209327&amp;quot;;         String str2 = &amp;quot;1987432091904327543957&amp;quot;;">
-<meta name="keywords" content="programming">
+  <meta name="description" content="review">
+<meta name="keywords" content="java">
 <meta property="og:type" content="article">
-<meta property="og:title" content="大数相乘">
-<meta property="og:url" content="https://ko-saru.github.io/2018/04/15/article-title/index.html">
+<meta property="og:title" content="Java中compareTo与compare方法比较">
+<meta property="og:url" content="https://ko-saru.github.io/2018/05/08/compareTo&compare/index.html">
 <meta property="og:site_name" content="Kosaru&#39;s Blog">
-<meta property="og:description" content="代码如下： public class Mutiply {      public static void main(String[] args){          String str1 = &amp;quot;7832974972840919321747983209327&amp;quot;;         String str2 = &amp;quot;1987432091904327543957&amp;quot;;">
-<meta property="og:image" content="https://ko-saru.github.io/photo/4.JPG">
-<meta property="og:updated_time" content="2018-04-26T12:53:08.854Z">
+<meta property="og:description" content="review">
+<meta property="og:image" content="https://ko-saru.github.io/photo/5-8/1.jpg">
+<meta property="og:updated_time" content="2018-05-08T08:28:16.453Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="大数相乘">
-<meta name="twitter:description" content="代码如下： public class Mutiply {      public static void main(String[] args){          String str1 = &amp;quot;7832974972840919321747983209327&amp;quot;;         String str2 = &amp;quot;1987432091904327543957&amp;quot;;">
-<meta name="twitter:image" content="https://ko-saru.github.io/photo/4.JPG">
+<meta name="twitter:title" content="Java中compareTo与compare方法比较">
+<meta name="twitter:description" content="review">
+<meta name="twitter:image" content="https://ko-saru.github.io/photo/5-8/1.jpg">
   
     <link rel="alternate" href="/atom.xml" title="Kosaru&#39;s Blog" type="application/atom+xml">
   
@@ -138,63 +138,89 @@
     <div class="container post-box">
         <div class="content post-title is-flex center flex-column" style="margin-bottom: 70px; overflow: auto;">
             <h1 class="has-text-centered" style="padding-bottom: 10px; border-bottom: 3px solid #fff">
-                <strong>大数相乘</strong>
+                <strong>Java中compareTo与compare方法比较</strong>
             </h1>
             
             <div class="is-flex align-center">
                 <img class="post-avatar" src="/photo/wuhanyu.png">
                 <span style="padding:0 10px;"> <span class="sub-title">By</span> kosaru</span>
-                <span class="post-date sub-title">at: 2018-04-15</span>
+                <span class="post-date sub-title">at: 2018-05-08</span>
             </div>
             
                 <div>
                     
-                         <a class="tag is-post-tag" href="/tags/programming/">programming</a>
+                         <a class="tag is-post-tag" href="/tags/java/">java</a>
                     
                 </div>
             
         </div>
         <div class="content" style="overflow: auto">
-            <p><div align="center" style="display:none"><br><img src="/photo/4.JPG" height="250" width="495"><br></div><br><strong>代码如下：</strong><br></p>
-<pre><code>public class Mutiply {
+            <p><div align="center" style="display:none"><br><img src="/photo/5-8/1.jpg" height="330" width="495"><br></div></p>
+<p></p><h1>java中compareTo和compare方法之比较</h1><hr><p></p>
+<p><font size="4">这两个方法经常搞混淆，现对其进行总结以加深记忆。 </font><br> </p>
+<p><font size="4">1,compareTo(Object o)方法是java.lang.Comparable<t>接口中的方法，当需要对某个类的对象进行排序时，该类需要实现Comparable<t>接口的，必须重写public int compareTo (T o)方法，比如MapReduce中Map函数和Reduce函数处理的<key,value>,其中需要根据key对键值对进行排序，所以，key实现了WritableComparable<t>接口，实现这个接口可同时用于序列化和反序列化。WritableComparable<t>接口(用于序列化和反序列化)是Writable接口和Comparable<t>接口的组合； </t></t></t></key,value></t></t></font><br> </p>
+<p><font size="4">2,compare(Object o1,Object o2)方法是java.util.Comparator<t>接口的方法，它实际上用的是待比较对象的compareTo(Object o)方法。 </t></font><br> </p>
+<p><font size="4">下面我们写一来看看上面两个方法是怎么用的： </font><br> </p>
+<p><font size="4">首先，写一个User类，代码如下：</font><br> </p>
+<pre><code>public class User implements Comparable&lt;Object&gt;{
+    int id;
+    String name;
 
-    public static void main(String[] args){
-
-        String str1 = &quot;7832974972840919321747983209327&quot;;
-        String str2 = &quot;1987432091904327543957&quot;;
-        System.out.println(multiply(str1,str2));
-
+    public User(int id,String name){
+        this.id = id;
+        this.name = name;
     }
-    public static String multiply(String num1,String num2){
+    /*
+     * Getters and Setters
+    */
+    public int getId() {
+        return id;
+    }
+    public void setId(int id) {
+        this.id = id;
+    }
+    public String getName() {
+        return name;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
 
-        int len1 = num1.length();
-        int len2 = num2.length();
-        //结果最大长度len1+len2,最小为len1+len2-1
-        int[] num = new int[len1+len2]; //数组默认初始化均为0
-        for(int i=0;i&lt;len2;i++){
-
-            int n1 = num2.charAt(len2-1-i)-&apos;0&apos;;
-            int tmp = 0; //表示进位
-            for(int j=0;j&lt;len1;j++){
-                int n2 = num1.charAt(len1-1-j)-&apos;0&apos;;
-                tmp = tmp + num[i+j] + n1*n2;
-                num[i+j] = tmp%10;
-                tmp = tmp/10;
+    @Override
+    public int compareTo(Object o) {
+        if(this ==o){
+            return 0;            
+        }
+        else if (o!=null &amp;&amp; o instanceof User) {   
+            User u = (User) o; 
+            if(id&lt;=u.id){
+                return -1;
+            }else{
+                   return 1;
             }
-            num[len1+i] = tmp; //下面的数与上面最高位相乘得到的那个进位
+        }else{
+               return -1;
+        }
+    }
+}
+</code></pre><p><font size="4">接下来，我们写一个测试类Test:</font><br> </p>
+<pre><code>public class Test{
+    //编写Comparator,根据User的id对User进行排序
+    private static final Comparator&lt;User&gt; COMPARATOR = new Comparator&lt;User&gt;() {
+       public int compare(User o1, User o2) {
+           return o1.compareTo(o2);//运用User类的compareTo方法比较两个对象       
+      }
+   };
 
+    public static void main(String[] args) {
+        ArrayList&lt;User&gt; student = new ArrayList&lt;User&gt;();
+        User user1 = new User(1,&quot;yueliming&quot;);
+        User user2 = new User(2,&quot;yueliming&quot;);
+
+        Collections.sort(student, COMPARATOR);//用我们写好的Comparator对student进行排序
+        for(int i=0;i&lt;student.size();i++){
+            System.out.println(student.get(i).getId());
         }
-        //现在数组中存的是从个位开始到高位，所以需要倒过来
-        //先找到数组中从后面开始不为0的数，该数为最高位。
-        int i = len1+len2-1;
-        while(i&gt;=0 &amp;&amp; num[i]==0){
-            i--;
-        }
-        String result = &quot;&quot;;
-        while(i&gt;=0){
-            result+=num[i--];
-        }
-        return result;
     }
 }
 </code></pre>

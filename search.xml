@@ -3,6 +3,94 @@
   
     
     <entry>
+      <title><![CDATA[Java中compareTo与compare方法比较]]></title>
+      <url>/2018/05/08/compareTo&amp;compare/</url>
+      <content type="html"><![CDATA[<p><div align="center" style="display:none"><br><img src="/photo/5-8/1.jpg" height="330" width="495"><br></div></p>
+<p></p><h1>java中compareTo和compare方法之比较</h1><hr><p></p>
+<p><font size="4">这两个方法经常搞混淆，现对其进行总结以加深记忆。 </font><br> </p>
+<p><font size="4">1,compareTo(Object o)方法是java.lang.Comparable<t>接口中的方法，当需要对某个类的对象进行排序时，该类需要实现Comparable<t>接口的，必须重写public int compareTo (T o)方法，比如MapReduce中Map函数和Reduce函数处理的<key,value>,其中需要根据key对键值对进行排序，所以，key实现了WritableComparable<t>接口，实现这个接口可同时用于序列化和反序列化。WritableComparable<t>接口(用于序列化和反序列化)是Writable接口和Comparable<t>接口的组合； </t></t></t></key,value></t></t></font><br> </p>
+<p><font size="4">2,compare(Object o1,Object o2)方法是java.util.Comparator<t>接口的方法，它实际上用的是待比较对象的compareTo(Object o)方法。 </t></font><br> </p>
+<p><font size="4">下面我们写一来看看上面两个方法是怎么用的： </font><br> </p>
+<p><font size="4">首先，写一个User类，代码如下：</font><br> </p>
+<pre><code>public class User implements Comparable&lt;Object&gt;{
+    int id;
+    String name;
+
+    public User(int id,String name){
+        this.id = id;
+        this.name = name;
+    }
+    /*
+     * Getters and Setters
+    */
+    public int getId() {
+        return id;
+    }
+    public void setId(int id) {
+        this.id = id;
+    }
+    public String getName() {
+        return name;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        if(this ==o){
+            return 0;            
+        }
+        else if (o!=null &amp;&amp; o instanceof User) {   
+            User u = (User) o; 
+            if(id&lt;=u.id){
+                return -1;
+            }else{
+                   return 1;
+            }
+        }else{
+               return -1;
+        }
+    }
+}
+</code></pre><p><font size="4">接下来，我们写一个测试类Test:</font><br> </p>
+<pre><code>public class Test{
+    //编写Comparator,根据User的id对User进行排序
+    private static final Comparator&lt;User&gt; COMPARATOR = new Comparator&lt;User&gt;() {
+       public int compare(User o1, User o2) {
+           return o1.compareTo(o2);//运用User类的compareTo方法比较两个对象       
+      }
+   };
+
+    public static void main(String[] args) {
+        ArrayList&lt;User&gt; student = new ArrayList&lt;User&gt;();
+        User user1 = new User(1,&quot;yueliming&quot;);
+        User user2 = new User(2,&quot;yueliming&quot;);
+
+        Collections.sort(student, COMPARATOR);//用我们写好的Comparator对student进行排序
+        for(int i=0;i&lt;student.size();i++){
+            System.out.println(student.get(i).getId());
+        }
+    }
+}
+</code></pre>]]></content>
+      
+        <categories>
+            
+            <category> java </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> java </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[深入理解Java枚举类型(enum)]]></title>
       <url>/2018/05/07/enum/</url>
       <content type="html"><![CDATA[<p><div align="center" style="display:none"><br><img src="/photo/5-7/1.jpg" height="330" width="495"><br></div></p>
