@@ -23,7 +23,7 @@
 <meta property="og:image" content="https://ko-saru.github.io/photo/5-7/e.jpg">
 <meta property="og:image" content="https://ko-saru.github.io/photo/5-7/f.jpg">
 <meta property="og:image" content="https://ko-saru.github.io/photo/5-7/g.jpg">
-<meta property="og:updated_time" content="2018-05-08T07:09:30.213Z">
+<meta property="og:updated_time" content="2018-05-08T07:10:39.698Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="深入理解Java枚举类型(enum)">
 <meta name="twitter:description" content="Java枚举类型">
@@ -765,7 +765,7 @@ public class EnumDemo4 {
 <font size="4">
 
 <ul>
-<li><p>序列化可能会破坏单例模式，比较每次反序列化一个序列化的对象实例时都会创建一个新的实例，解决方案如下：</p></li></ul></font><br><br><br><p></p>
+<li><p>序列化可能会破坏单例模式，比较每次反序列化一个序列化的对象实例时都会创建一个新的实例，解决方案如下：</p></li></ul></font><br> <p></p>
 <p>  //测试例子(四种写解决方式雷同)<br>  public class Singleton implements java.io.Serializable {     </p>
 <pre><code>public static Singleton INSTANCE = new Singleton();     
 
@@ -778,7 +778,8 @@ private Object readResolve() {
    }    
 </code></pre><p>  } </p>
 <font size="4">
-<li><p>使用反射强行调用私有构造器，解决方式可以修改构造器，让它在创建第二个实例的时候抛异常，如下：</p></li></font><br><br><br><p></p>
+
+<li><p>使用反射强行调用私有构造器，解决方式可以修改构造器，让它在创建第二个实例的时候抛异常，如下：</p></li></font><br><p></p>
 <p>  public static Singleton INSTANCE = new Singleton();<br>  private static volatile  boolean  flag = true;<br>  private Singleton(){</p>
 <pre><code>if(flag){
 flag = false;   
@@ -1559,7 +1560,7 @@ return (E) universe[Long.numberOfTrailingZeros(lastReturned)];
         <br>
         Copyright © Wu Hanyu 2018
         <br>
-        Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+        Создано с помощью <a href="http://hexo.io/" target="_blank">Hexo</a>
       </div>
     </div>
   </div>

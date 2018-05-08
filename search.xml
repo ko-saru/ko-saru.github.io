@@ -608,7 +608,7 @@ public class EnumDemo4 {
 <font size="4">
 
 <ul>
-<li><p>序列化可能会破坏单例模式，比较每次反序列化一个序列化的对象实例时都会创建一个新的实例，解决方案如下：</p></li></ul></font><br><br><br><p></p>
+<li><p>序列化可能会破坏单例模式，比较每次反序列化一个序列化的对象实例时都会创建一个新的实例，解决方案如下：</p></li></ul></font><br> <p></p>
 <p>  //测试例子(四种写解决方式雷同)<br>  public class Singleton implements java.io.Serializable {     </p>
 <pre><code>public static Singleton INSTANCE = new Singleton();     
 
@@ -621,7 +621,8 @@ private Object readResolve() {
    }    
 </code></pre><p>  } </p>
 <font size="4">
-<li><p>使用反射强行调用私有构造器，解决方式可以修改构造器，让它在创建第二个实例的时候抛异常，如下：</p></li></font><br><br><br><p></p>
+
+<li><p>使用反射强行调用私有构造器，解决方式可以修改构造器，让它在创建第二个实例的时候抛异常，如下：</p></li></font><br><p></p>
 <p>  public static Singleton INSTANCE = new Singleton();<br>  private static volatile  boolean  flag = true;<br>  private Singleton(){</p>
 <pre><code>if(flag){
 flag = false;   
