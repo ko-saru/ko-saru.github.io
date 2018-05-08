@@ -22,8 +22,8 @@
 <meta property="og:image" content="https://ko-saru.github.io/photo/5-7/d.jpg">
 <meta property="og:image" content="https://ko-saru.github.io/photo/5-7/e.jpg">
 <meta property="og:image" content="https://ko-saru.github.io/photo/5-7/f.jpg">
-<meta property="og:image" content="https://ko-saru.github.io/photo/5-7/g.jpg">
-<meta property="og:updated_time" content="2018-05-08T07:20:15.298Z">
+<meta property="og:image" content="https://ko-saru.github.io/photo/5-7/g.png">
+<meta property="og:updated_time" content="2018-05-08T07:33:28.040Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="深入理解Java枚举类型(enum)">
 <meta name="twitter:description" content="Java枚举类型">
@@ -1626,7 +1626,7 @@ lastReturned = unseen &amp; -unseen;
 //取值后减去已取得lastReturned
 unseen -= lastReturned;
 return (E) universe[Long.numberOfTrailingZeros(lastReturned)];
-</code></pre><p><font size="4">我们通过原理图来协助理解，现在假设集合中已保存所有可能的枚举实例变量，我们需要把它们遍历展示出来，下面的第一个枚举元素的获取过程，显然通过unseen &amp; -unseen;操作，我们可以获取到二进制低位开始的第一个1的数值，该计算的结果是要么全部都是0，要么就只有一个1，然后赋值给lastReturned，通过Long.numberOfTrailingZeros(lastReturned)获取到该bit为1在64位的long类型中的位置，即从低位算起的第几个bit，如图，该bit的位置恰好是低位的第1个bit位置，也就指明了universe数组的第一个元素就是要获取的枚举变量。执行unseen -= lastReturned;后继续进行第2个元素的遍历，依次类推遍历出所有值，这就是EnumSet的取值过程，真正存储枚举变量的是universe数组，而通过long类型变量的bit位的0或1表示存储该枚举变量在universe数组的那个位置，这样做的好处是任何操作都是执行long类型变量的bit位操作，这样执行效率将特别高，毕竟是二进制直接执行，只有最终获取值时才会操作到数组universe。</font><br><br><img src="/photo/5-7/g.jpg" alt="alt text"><br></p>
+</code></pre><p><font size="4">我们通过原理图来协助理解，现在假设集合中已保存所有可能的枚举实例变量，我们需要把它们遍历展示出来，下面的第一个枚举元素的获取过程，显然通过unseen &amp; -unseen;操作，我们可以获取到二进制低位开始的第一个1的数值，该计算的结果是要么全部都是0，要么就只有一个1，然后赋值给lastReturned，通过Long.numberOfTrailingZeros(lastReturned)获取到该bit为1在64位的long类型中的位置，即从低位算起的第几个bit，如图，该bit的位置恰好是低位的第1个bit位置，也就指明了universe数组的第一个元素就是要获取的枚举变量。执行unseen -= lastReturned;后继续进行第2个元素的遍历，依次类推遍历出所有值，这就是EnumSet的取值过程，真正存储枚举变量的是universe数组，而通过long类型变量的bit位的0或1表示存储该枚举变量在universe数组的那个位置，这样做的好处是任何操作都是执行long类型变量的bit位操作，这样执行效率将特别高，毕竟是二进制直接执行，只有最终获取值时才会操作到数组universe。</font><br><br><img src="/photo/5-7/g.png" alt="alt text"><br></p>
 <p><font size="4">ok~，到这关于EnumSet的实现原理主要部分我们就分析完了，其内部使用位向量，存储结构很简洁，节省空间，大部分操作都是按位运算，直接操作二进制数据，因此效率极高。当然通过前面的分析，我们也掌握位向量的运算原理。好~，关于java枚举，我们暂时聊到这。</font><br> </p>
 <p><font size="5"><a href="https://blog.csdn.net/javazejian/article/details/71333103" target="_blank" rel="noopener">博客出处</a></font><br> </p>
 
