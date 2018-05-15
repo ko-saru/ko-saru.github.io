@@ -3,6 +3,15 @@
   
     
     <entry>
+      <title><![CDATA[Test]]></title>
+      <url>/2018/05/15/test/</url>
+      <content type="html"><![CDATA[<p><script src="https://cdn.bootcss.com/jquery/1.10.2/jquery.min.js"></script></p>
+<div id="jsi-particle-container" class="container"></div><br><div>克隆的步骤：</div>]]></content>
+      
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[Java中compareTo与compare方法比较]]></title>
       <url>/2018/05/08/compareTo&amp;compare/</url>
       <content type="html"><![CDATA[<p><div align="center" style="display:none"><br><img src="/photo/5-8/1.jpg" height="330" width="495"><br></div></p>
