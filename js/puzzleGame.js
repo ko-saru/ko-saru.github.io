@@ -15,8 +15,8 @@ imgOrigArr 和 imgRanfArr这两个数组分别存放正确顺序排列和乱序�
 var puzzleGame = function(param){
 /************* 参数处理 ******************/
 	this.img = param.img || '';//待操作的图片
-	this.photoArr = ['images/lake.jpg','images/building.jpg','images/gym.jpg','images/lake3.jpg','images/winter.jpg',
-	                 'images/winter2.jpg','images/school.jpg','images/library.jpg'];  //存储背景图片位置
+	this.photoArr = ['/photo/images/lake.jpg','/photo/images/building.jpg','/photo/images/gym.jpg','/photo/images/lake3.jpg','/photo/images/winter.jpg',
+	                 '/photo/images/winter2.jpg','/photo/images/school.jpg','/photo/images/library.jpg'];  //存储背景图片位置
 	this.photoIndex = 0;
 
 /************* 节点 ******************/
