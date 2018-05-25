@@ -15,10 +15,10 @@ imgOrigArr 和 imgRanfArr这两个数组分别存放正确顺序排列和乱序�
 var puzzleGame = function(param){
 /************* 参数处理 ******************/
 	this.img = param.img || '';//待操作的图片
-	this.software = ['images/software/1.jpg','images/software/2.jpg','images/software/3.jpg','images/software/4.jpg','images/software/5.jpg',
-	                 'images/software/6.jpg','images/software/7.jpg','images/software/8.jpg']; //存储背景图片位置
-	this.bigHouse = ['images/bigHouse/1.jpg','images/bigHouse/2.jpg','images/bigHouse/3.jpg','images/bigHouse/4.jpg','images/bigHouse/5.jpg',
-	                 'images//bigHouse/6.jpg','images/bigHouse/7.jpg','images/bigHouse/8.jpg']; 
+	this.software = ['photo/images/software/1.jpg','photo/images/software/2.jpg','photo/images/software/3.jpg','photo/images/software/4.jpg','photo/images/software/5.jpg',
+	                 'photo/images/software/6.jpg','photo/images/software/7.jpg','photo/images/software/8.jpg']; //存储背景图片位置
+	this.bigHouse = ['photo/images/bigHouse/1.jpg','photo/images/bigHouse/2.jpg','photo/images/bigHouse/3.jpg','photo/images/bigHouse/4.jpg','photo/images/bigHouse/5.jpg',
+	                 'photo/images//bigHouse/6.jpg','photo/images/bigHouse/7.jpg','photo/images/bigHouse/8.jpg']; 
 	this.photoArr = this.software; 
 	//this.albumName = ['self.photoArr','self.bigHouse'];
 	this.nameArr = ['软件学院拼图','大House拼图'];
@@ -472,7 +472,7 @@ puzzleGame.prototype = {
 
 /* 加入图片，运行代码 */
 $(document).ready(function(){
-	var pg = new puzzleGame({'img':'images/software/1.jpg'});
+	var pg = new puzzleGame({'img':'photo/images/software/1.jpg'});
 });
 
 
