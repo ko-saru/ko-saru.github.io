@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>puzzle game</title>
+	<script type="text/javascript" src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+	<script type="text/javascript" src="../js/puzzleGame.js"></script>
+	<script async type="text/javascript" src="../js/canvas.js"></script>
+	<link rel="stylesheet" href="../css/puzzleGame.css" />
+</head>
+<body>
+	<canvas id="canvas"></canvas>
+	<div id="focus">
+		<ul>
+			<li><div class="pic" style="center center;">
+				<img src="images/software/1.jpg" />
+			</div></li> 
+			<li><div class="pic" style="center center;">
+				<img src="images/software/2.jpg" />
+			</div></li>
+			<li><div class="pic" style="center center;">
+				<img src="images/software/3.jpg" />
+			</div></li>
+			<li><div class="pic" style="center center;">
+				<img src="images/software/4.jpg" />
+			</div></li>
+			<li><div class="pic" style="center center;">
+				<img src="images/software/5.jpg" />
+			</div></li>
+			<li><div class="pic" style="center center;">
+				<img src="images/software/6.jpg" />
+			</div></li>
+			<li><div class="pic" style="center center;">
+				<img src="images/software/7.jpg" />
+			</div></li>
+		    <li><div class="pic" style="center center;">
+				<img src="images/software/8.jpg" />
+			</div></li>
+		</ul>
+	</div>
+	<div id="wrap">
+		<h1 align="center" style="color:white">软件学院拼图</h1>
+		<div id="left">
+			<ul>
+				<li id="start">
+					<p style="color:white">开始游戏:</p><span>开始</span>
+				</li>
+				<li id="level">
+					<p style="color:white">选择难度:</p><span>3x3</span>
+				</li>
+				<li id="photo">
+					<p style="color:white">更换拼图:</p><span>更换图片</span>
+				</li>
+				<li id="album">
+                    <p style="color:white">预览相册：</p><span>浏览相册</span>
+				</li>
+				<li id="change">
+                    <p style="color:white">更换相册：</p><span>更换相册</span>
+				</li>				
+			</ul>
+		</div>
+		<div id="right">
+			<div id="imgArea"></div>
+		</div>
+	</div>
+</body>
+</html>
