@@ -15,16 +15,24 @@ imgOrigArr 和 imgRanfArr这两个数组分别存放正确顺序排列和乱序�
 var puzzleGame = function(param){
 /************* 参数处理 ******************/
 	this.img = param.img || '';//待操作的图片
-	this.photoArr = ['/photo/images/lake.jpg','/photo/images/building.jpg','/photo/images/gym.jpg','/photo/images/lake3.jpg','/photo/images/winter.jpg',
-	                 '/photo/images/winter2.jpg','/photo/images/school.jpg','/photo/images/library.jpg'];  //存储背景图片位置
+	this.software = ['images/software/1.jpg','images/software/2.jpg','images/software/3.jpg','images/software/4.jpg','images/software/5.jpg',
+	                 'images/software/6.jpg','images/software/7.jpg','images/software/8.jpg']; //存储背景图片位置
+	this.bigHouse = ['images/bigHouse/1.jpg','images/bigHouse/2.jpg','images/bigHouse/3.jpg','images/bigHouse/4.jpg','images/bigHouse/5.jpg',
+	                 'images//bigHouse/6.jpg','images/bigHouse/7.jpg','images/bigHouse/8.jpg']; 
+	this.photoArr = this.software; 
+	//this.albumName = ['self.photoArr','self.bigHouse'];
+	this.nameArr = ['软件学院拼图','大House拼图'];
 	this.photoIndex = 0;
-
+	this.nameIndex = 0;
+	//this.albumIndex = 0;
+    
 /************* 节点 ******************/
 	this.btnStart = $('#wrap #left ul #start span');//开始游戏按钮
 	this.btnLevel = $('#wrap #left ul #level span');//难度选择按钮
 	this.btnPhoto = $('#wrap #left ul #photo span');//更换拼图背景按钮
 	this.btnAlbum = $('#wrap #left ul #album span');//
-	this.divPhoto = $('#focus ul li div');
+	this.btnChange = $('#wrap #left ul #change span');
+	this.divPhoto = $('#focus ul li div.pic');
 	this.imgArea = $('#wrap #right #imgArea');//图片显示区域
 
 	this.imgCells = '';//用于记录碎片节点的变量
@@ -65,6 +73,7 @@ puzzleGame.prototype = {
 		this.levelSelect();
 		this.nextPhoto();
 		this.showPhoto();
+		this.changeSeries();
 		this.gameState();
 	},
 
@@ -392,7 +401,7 @@ puzzleGame.prototype = {
 
 	},
 
-    //bug: 首次点击正常，第二次出现问题
+
 	showPhoto:function(){
 
 		var self = this;
@@ -400,33 +409,70 @@ puzzleGame.prototype = {
 			$(this).addClass('mouseOn');
 		}).bind('mouseup',function(){
 			$(this).removeClass('mouseOn');
-		}).bind('click',function(){
-
-            $("#focus").show("fast",function(){
+		}).bind('click',function(){                         
+                
+                $("#focus").show("fast",function(){
 	            self.divPhoto.show("slow",function(){
+                     
+	                 self.divPhoto.animate({   //-=2800px   
+	                      left:'-=3400px'
+	                 },12000,function(){
 
-	                 self.divPhoto.animate({
-	                      left:'-=350px'
-	                 },2000,function(){
 	                 	 self.divPhoto.animate({
-	            	 		left:'0px'
-	           			 },2000,function(){
-	           			 	self.divPhoto.hide("fast");
-	                 	    $("#focus").hide("fast"); 
-	                 	    self.divPhoto.css("display","none");
+	            	 		left:'0px',
+	            	 		display:'none'
+	           			 },6000,function(){
+	                 	    $("#focus").hide();
 	           			 });
 	                 });
 	            });
-
             });
+             
+		});
+
+	},
+
+
+	changeSeries:function(){
+	   var len = this.nameArr.length;
+       var self = this;
+       var flag = true;
+       var img = $('#focus ul li div.pic img');
+       this.btnChange.bind('mousedown',function(){
+			$(this).addClass('mouseOn');
+		}).bind('mouseup',function(){
+			$(this).removeClass('mouseOn');
+		}).bind('click',function(){
+			 self.nameIndex = (self.nameIndex + 1)%len;
+             $("h1").text(self.nameArr[self.nameIndex]);
+             if(flag){
+                $("body").css("background","#b72d2d");
+                self.photoArr = self.bigHouse;
+                for(var i = 0; i < img.length; i++){
+                	img[i].setAttribute("src", self.bigHouse[i]);
+               
+                 }
+                flag = false;
+             }else{
+             	$("body").css("background","#34507b");
+                self.photoArr = self.software;
+                for(var i = 0; i < img.length; i++){
+                	img[i].setAttribute("src", self.software[i]);
+               
+                 }
+             	flag = true;
+             }
+             self.img = self.photoArr[0];
+             self.imgSplit();
 
 		});
+
 	}
 }
 
 /* 加入图片，运行代码 */
 $(document).ready(function(){
-	var pg = new puzzleGame({'img':'/photo/images/lake.jpg'});
+	var pg = new puzzleGame({'img':'images/software/1.jpg'});
 });
 
 
