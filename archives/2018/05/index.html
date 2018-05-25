@@ -155,8 +155,7 @@
                         
                         </div>
                         <p class="post-content-text is-marginless has-padding text-shadow">
-                            &lt;!doctype html&gt;
-        puzzle game                                                                             ..
+                                    puzzle game                                                                                                   ..
                         </p>
                         <p class="date text-shadow">2018-05-24</p>
                         <button class="button is-info is-small">Read More</button>
@@ -602,7 +601,7 @@ FlyWeightFactory负责创建和管理享元单元，当一个客户端请求时�
         <br>
         Copyright © Wu Hanyu 2018
         <br>
-        Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+        Propulsé by <a href="http://hexo.io/" target="_blank">Hexo</a>
       </div>
     </div>
   </div>
@@ -611,5 +610,20 @@ FlyWeightFactory负责创建和管理享元单元，当一个客户端请求时�
 <script src="/js/search_core.js"></script>
 <script src="/js/script.js"></script>
 
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </body>
 </html>
