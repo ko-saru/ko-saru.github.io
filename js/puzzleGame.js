@@ -422,8 +422,8 @@ puzzleGame.prototype = {
 
 			                 	 self.divPhoto.animate({
 			            	 		left:'0px',
-			            	 		display:'none'
 			           			 },6000,function(){
+			           			 	self.divPhoto.stop(true,true);
 			                 	    $("#focus").hide();
 			           			 });
 			                 });
