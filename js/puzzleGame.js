@@ -18,7 +18,7 @@ var puzzleGame = function(param){
 	this.software = ['photo/images/software/1.jpg','photo/images/software/2.jpg','photo/images/software/3.jpg','photo/images/software/4.jpg','photo/images/software/5.jpg',
 	                 'photo/images/software/6.jpg','photo/images/software/7.jpg','photo/images/software/8.jpg']; //存储背景图片位置
 	this.bigHouse = ['photo/images/bigHouse/1.jpg','photo/images/bigHouse/2.jpg','photo/images/bigHouse/3.jpg','photo/images/bigHouse/4.jpg','photo/images/bigHouse/5.jpg',
-	                 'photo/images//bigHouse/6.jpg','photo/images/bigHouse/7.jpg','photo/images/bigHouse/8.jpg']; 
+	                 'photo/images/bigHouse/6.jpg','photo/images/bigHouse/7.jpg','photo/images/bigHouse/8.jpg']; 
 	this.photoArr = this.software; 
 	//this.albumName = ['self.photoArr','self.bigHouse'];
 	this.nameArr = ['软件学院拼图','大House拼图'];
@@ -411,22 +411,25 @@ puzzleGame.prototype = {
 			$(this).removeClass('mouseOn');
 		}).bind('click',function(){                         
                 
-                $("#focus").show("fast",function(){
-	            self.divPhoto.show("slow",function(){
-                     
-	                 self.divPhoto.animate({   //-=2800px   
-	                      left:'-=3400px'
-	                 },12000,function(){
+              if(!self.btnAlbum.is(":animated")){
 
-	                 	 self.divPhoto.animate({
-	            	 		left:'0px',
-	            	 		display:'none'
-	           			 },6000,function(){
-	                 	    $("#focus").hide();
-	           			 });
-	                 });
-	            });
-            });
+		            $("#focus").show("fast",function(){
+			            self.divPhoto.show("slow",function(){
+		                     
+			                 self.divPhoto.animate({   //-=2800px   
+			                      left:'-=3400px'
+			                 },12000,function(){
+
+			                 	 self.divPhoto.animate({
+			            	 		left:'0px',
+			            	 		display:'none'
+			           			 },6000,function(){
+			                 	    $("#focus").hide();
+			           			 });
+			                 });
+			            });
+		            });
+              }
              
 		});
 
