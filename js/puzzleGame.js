@@ -446,28 +446,31 @@ puzzleGame.prototype = {
 		}).bind('mouseup',function(){
 			$(this).removeClass('mouseOn');
 		}).bind('click',function(){
-			 self.nameIndex = (self.nameIndex + 1)%len;
-             $("h1").text(self.nameArr[self.nameIndex]);
-             if(flag){
-                $("body").css("background","#b72d2d");
-                self.photoArr = self.bigHouse;
-                for(var i = 0; i < img.length; i++){
-                	img[i].setAttribute("src", self.bigHouse[i]);
-               
-                 }
-                flag = false;
-             }else{
-             	$("body").css("background","#34507b");
-                self.photoArr = self.software;
-                for(var i = 0; i < img.length; i++){
-                	img[i].setAttribute("src", self.software[i]);
-               
-                 }
-             	flag = true;
-             }
-             self.img = self.photoArr[0];
-             self.imgSplit();
 
+			 if(!self.btnAlbum.is(":animated")){
+
+				 self.nameIndex = (self.nameIndex + 1)%len;
+	             $("h1").text(self.nameArr[self.nameIndex]);
+	             if(flag){
+	                $("body").css("background","#b72d2d");
+	                self.photoArr = self.bigHouse;
+	                for(var i = 0; i < img.length; i++){
+	                	img[i].setAttribute("src", self.bigHouse[i]);
+	               
+	                 }
+	                flag = false;
+	             }else{
+	             	$("body").css("background","#34507b");
+	                self.photoArr = self.software;
+	                for(var i = 0; i < img.length; i++){
+	                	img[i].setAttribute("src", self.software[i]);
+	               
+	                 }
+	             	flag = true;
+	             }
+	             self.img = self.photoArr[0];
+	             self.imgSplit();
+            }
 		});
 
 	}
